@@ -1,0 +1,33 @@
+/* 
+================================
+Main style sheet for Numeric Pad
+================================
+*/
+
+.container {
+}
+
+.quantityDisplay {
+  font-size: var(--fs-xxl);
+  margin-block: 0.5em;
+}
+
+.numericPadContainer {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(4, 1fr);
+  gap: 0.5em;
+  margin-bottom: 1em;
+}
+
+.numericPadContainer > * {
+  border: 1px solid black;
+  cursor: pointer;
+  border-radius: 3px;
+  font-size: var(--fs-md);
+  font-weight: 500;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  line-height: 3em;
+}

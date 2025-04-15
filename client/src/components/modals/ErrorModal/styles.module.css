@@ -1,0 +1,40 @@
+/* 
+================================
+Main style sheet for Error Modal
+================================
+*/
+
+.errorModalContainer {
+  display: flex;
+  flex-direction: column;
+  width: 35vw;
+  gap: 1em;
+}
+
+.titleWrapper {
+  display: flex;
+  gap: 0.5rem;
+  padding: 0 0 1rem 0;
+  border-bottom: 2px solid var(--cl-green-dark);
+}
+.titleWrapper > * {
+  font-size: var(--fs-xl);
+  line-height: var(--fs-xl);
+  color: var(--cl-green-darker);
+}
+.titleWrapper i {
+  color: var(--cl-green-dark);
+}
+
+.errorMessage {
+  min-height: 4em;
+  margin-top: 1rem;
+}
+.errorMessage h4 {
+  margin-bottom: 0.5rem;
+}
+.errorMessage .details {
+  display: flex;
+  font-size: var(--fs-sm);
+  margin-top: 0.75rem;
+}

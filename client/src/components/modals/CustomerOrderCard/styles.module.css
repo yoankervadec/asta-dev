@@ -1,0 +1,37 @@
+/* 
+================================
+Main style sheet for Customer Order Card
+================================
+*/
+
+.customerOrderCardContainer {
+  width: 90vw;
+  /* min-height: 60svh; */
+}
+.mainTitleWrapper {
+  background-color: var(--cl-background-light);
+  z-index: 2;
+  position: sticky;
+  top: 0;
+  padding-bottom: 1em;
+}
+.mainTitleWrapper > .titleContent {
+  border-bottom: 2px solid var(--cl-brown);
+}
+.titleContent {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2em;
+  padding-block: 0.5em;
+}
+.titleContent h3 {
+  font-weight: 500;
+}
+.mainButtonWrapper {
+  display: flex;
+  gap: 0.5em;
+}
+
+.customerOrderCardContent {
+  overflow: hidden;
+}

@@ -1,0 +1,152 @@
+/* 
+================================
+Input Cell style sheet
+================================
+*/
+
+/* Container */
+.modalCellGroup {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: var(--cl-grey-dark);
+  font-size: var(--fs-sm);
+  width: 100%;
+  /* white-space: nowrap; */
+}
+
+/* Label */
+.modalCellGroup label {
+  margin-right: 1rem;
+  flex-shrink: 1;
+}
+
+/* Basic Input/Select */
+.modalCellGroup > input,
+.modalCellGroup > select,
+.modalCellGroup .datePicker {
+  background-color: var(--cl-background-focus);
+  flex-shrink: 0;
+  /* width: clamp(7rem, 17vw, 22rem); */
+  width: 70%;
+  border-radius: 5px;
+  line-height: max(var(--fs-xxl), 1.7rem);
+  padding: 0 0.5rem;
+  outline: 1.5px solid var(--cl-grey-disabled);
+  transition: background-color 0.15s;
+  text-overflow: ellipsis;
+}
+
+/* Focused */
+.modalCellGroup > input:focus-within:not([disabled]):not([readonly]),
+.modalCellGroup > select:focus-within:not([disabled]):not([readonly]) {
+  background-color: var(--cl-background-light);
+  outline: 1.5px solid var(--cl-grey-dark);
+}
+/* Invalid Input */
+.modalCellGroup > input:user-invalid {
+  outline: 1.5px solid red !important;
+  color: red;
+  font-weight: 600;
+}
+/* Disabled/Readonly */
+.modalCellGroup > input:disabled,
+.modalCellGroup > input:read-only {
+  outline: 1.5px solid var(--cl-grey-disabled);
+}
+/* Hover not Disabled/Readonly */
+.modalCellGroup > input:hover:not([readonly]):not([disabled]),
+.modalCellGroup > select:hover:not([readonly]):not([disabled]) {
+  background-color: var(--cl-background-light);
+}
+
+.clickable:hover {
+  cursor: pointer;
+  text-decoration: underline;
+}
+/* Toggle Button specific */
+.toggleButtonInputContainer {
+  /* width: clamp(7rem, 17vw, 22rem); */
+  width: 70%;
+  flex-shrink: 0;
+}
+
+.toggleButton {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 28px;
+}
+
+.toggleButton input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+/* Default Styles for .slider */
+.slider {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: var(--cl-background-focus);
+  transition: 0.2s;
+  border-radius: 28px;
+}
+.slider:hover {
+  background-color: #d0cfcf;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 22px;
+  width: 22px;
+  left: 3px;
+  bottom: 3px;
+  background-color: var(--cl-background-light);
+  transition: 0.2s;
+  border-radius: 50%;
+}
+
+/* Toggle Checked State */
+.toggleButton input:checked + .slider {
+  background-color: var(--cl-green-dark);
+}
+
+.toggleButton input:checked + .slider:before {
+  transform: translateX(32px);
+}
+
+/* Media query specifically for iPads in both portrait and landscape modes */
+@media screen and (min-width: 768px) and (max-width: 1024px) and (orientation: portrait),
+  screen and (min-width: 768px) and (max-width: 1366px) and (orientation: landscape) {
+  .toggleButton {
+    width: 45px;
+    height: 25px;
+  }
+
+  .slider {
+    border-radius: 25px;
+  }
+
+  .slider:before {
+    height: 18px;
+    width: 18px;
+    left: 3.5px;
+    bottom: 3.5px;
+    transform: translateX(1.4px);
+  }
+
+  .toggleButton input:checked + .slider:before {
+    transform: translateX(20px);
+  }
+}
+
+/* Date Picker */
+.datePicker > *,
+.datePicker input {
+  width: 100%;
+}

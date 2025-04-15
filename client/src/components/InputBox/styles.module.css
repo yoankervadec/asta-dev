@@ -1,0 +1,47 @@
+/* 
+================================
+Main style sheet for Main Input Box
+================================
+*/
+
+.inputBoxContainer {
+  font-size: var(--fs-lg);
+  position: relative;
+  width: max-content;
+  font-weight: 400;
+  display: flex;
+  gap: 0.5em;
+  border-radius: 10px;
+  border: 2px solid var(--cl-background-focus);
+  padding: 0.5em 0.5em 0.5em;
+  transition: background-color 0.2s, border 0.2s;
+}
+.inputBoxContainer:hover,
+.inputBoxContainer:focus-within {
+  background-color: var(--cl-background-focus);
+  border: 2px solid var(--cl-default-box-shadow);
+}
+
+.inputBoxContainer input {
+  text-transform: capitalize;
+  width: 25ch;
+  font-size: var(--fs-md);
+  color: var(--cl-grey-dark) !important;
+}
+
+.autocompleteWrapper {
+  position: relative;
+  display: inline-block;
+}
+
+.suggestionText {
+  position: absolute;
+  font-size: var(--fs-md) !important;
+  top: 50%;
+  left: 0;
+  transform: translateY(-49%);
+  /* color: gray; */
+  opacity: 20%;
+  pointer-events: none;
+  font-size: inherit;
+}

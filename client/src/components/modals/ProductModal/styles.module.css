@@ -1,0 +1,149 @@
+/* 
+================================
+Main style sheet for Product Card
+================================
+*/
+
+/* Layout */
+.productCardContainer {
+  max-width: 80em;
+}
+.mainTitleWrapper {
+  background-color: var(--cl-background-light);
+  z-index: 2;
+  position: sticky;
+  top: 0;
+  padding-bottom: 1em;
+}
+.titleContent h3 {
+  font-weight: 500;
+}
+.titleContent {
+  display: flex;
+  gap: 2em;
+  padding-block: 0.5em;
+}
+.mainTitleWrapper > .titleContent {
+  border-bottom: 2px solid var(--cl-brown);
+}
+.mainButtonWrapper {
+  display: flex;
+  gap: 0.5em;
+}
+
+.productCardContent {
+  overflow: hidden;
+}
+
+/* Input Section */
+.inventoryToolWrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1em;
+}
+.buttonWrapper {
+  display: flex;
+  gap: 1em;
+}
+.buttonWrapper button {
+  border: 1px solid var(--cl-grey-disabled);
+  font-size: var(--fs-xxl);
+  padding: 0.25em 1.5em;
+  border-radius: 4px;
+  background-color: var(--cl-background-focus);
+}
+.inventoryToolWrapper > input {
+  width: 6em;
+  padding: 0.5em 0.15em;
+  font-size: var(--fs-xl);
+  text-align: center;
+  background-color: var(--cl-background-focus);
+  border: 1px solid var(--cl-grey-disabled);
+  border-radius: 4px;
+}
+
+/* Attributes */
+.attributeSelection {
+}
+.attributeList {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1em;
+  margin-block: 1em;
+  max-width: 30em;
+}
+.attributeList label {
+  background-color: var(--cl-background-focus);
+  padding: 0.5em 0.5em;
+  border-radius: 4px;
+  min-width: 10ch;
+  text-align: center;
+}
+.attributeList label:has(input[type="checkbox"]:checked) {
+  background-color: var(--cl-green-light);
+  /* color: var(--cl-background-light); */
+  font-weight: 500;
+}
+.attributeList label:hover {
+  cursor: pointer;
+}
+.attributeList label input[type="checkbox"]:checked + span {
+  text-decoration: underline;
+}
+
+.commitButton {
+  background-color: var(--cl-green-dark);
+  border: 2px solid var(--cl-green-darker);
+  font-size: var(--fs-md);
+  font-weight: 500;
+  color: var(--cl-background-light);
+  width: calc(100% - 12em);
+  text-align: center;
+  padding-block: 1em;
+  border-radius: 4px;
+}
+.inventoryToolWrapper button {
+  cursor: pointer;
+  transition: background 0.15s, transform 0.2s;
+  user-select: none;
+  -webkit-user-select: none;
+}
+.inventoryToolWrapper button:focus-visible,
+.inventoryToolWrapper input:focus-visible {
+  outline: 2px solid var(--cl-grey-dark);
+}
+.inventoryToolWrapper button:active {
+  transform: scale(1.025);
+}
+
+/* Customer orders Table */
+.ordersTableWrapper {
+  overflow-y: auto;
+  border-radius: 4px;
+  border: 1px solid var(--cl-grey-disabled);
+  min-height: 100px;
+  max-height: 250px;
+}
+.ordersTable {
+  table-layout: fixed;
+  width: 100%;
+  color: var(--cl-grey-dark);
+}
+.ordersTable thead {
+  position: sticky;
+  top: 0;
+  /* z-index: 1; */
+}
+.ordersTable thead th {
+  background-color: var(--cl-background-focus);
+  font-weight: 500;
+}
+.ordersTable th,
+.ordersTable td {
+  padding: 0.75em 0.5em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

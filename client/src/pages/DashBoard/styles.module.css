@@ -1,0 +1,139 @@
+/* 
+================================
+Main style sheet for Dashboard
+================================
+*/
+
+/* Layout */
+.contentWrapper {
+  flex-grow: 1;
+  height: 400px;
+  background-color: var(--cl-background-light);
+}
+.jobsWrapper {
+  --min-column-width: 380px;
+  display: grid;
+  grid-template-columns: repeat(
+    auto-fill,
+    minmax(min(var(--min-column-width), 100%), 1fr)
+  );
+  gap: 1rem;
+  padding: 0.6em;
+  overflow-y: auto;
+  overflow-x: hidden;
+  max-height: 100%;
+}
+
+/* Cards */
+.cardContainer {
+  container-type: inline-size;
+  container-name: card;
+  background-color: var(--cl-background-light);
+  cursor: default;
+  padding: 0.5em;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+@container card (max-width: 420px) {
+  .cardBody {
+    /* when short */
+    flex-direction: column;
+  }
+  .itemsTable th.itemNo,
+  .itemsTable td.itemNo {
+    text-align: left !important;
+  }
+}
+
+.topBar {
+}
+.status {
+  /* Status color */
+  --status-quote: #d1d3d4;
+  --status-ready: rgb(135, 220, 148);
+  --status-waiting: #fff9a6;
+  --status-payment-pending: #d5f1a3;
+  --status-processing: #f1a8a8;
+  /* Required date color */
+  --required-date-future: #a8e6a1;
+  --required-date-soon: #fff9a6;
+  --required-date-past: #f1a8a8;
+
+  display: flex;
+  gap: 1em;
+}
+.status > span {
+  border-radius: 0.25em;
+  padding: 0.35em 0.5em;
+  font-size: var(--fs-sm);
+  font-weight: 500;
+}
+.topButtonWrapper {
+}
+.bottomButtonWrapper {
+  padding-top: 0.5em;
+  margin-top: 0.5em;
+}
+.bottomButtonWrapper button {
+  background-color: var(--cl-grey-disabled);
+  color: var(--cl-grey-dark);
+  font-size: var(--fs-md);
+  cursor: pointer;
+  padding: 0.1em 0.3em;
+  border-radius: 4px;
+}
+/* body */
+.cardBody {
+  /* When wide */
+  min-height: 100px;
+  display: flex;
+  margin-top: 0.5em;
+  gap: 1em;
+}
+.jobInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25em;
+  flex-shrink: 0;
+}
+.jobContact {
+}
+.jobDetails {
+  font-size: var(--fs-sm);
+  opacity: 80%;
+}
+
+.jobItemsWrapper {
+  width: 100%;
+  border: 1px solid var(--cl-grey-disabled);
+  border-radius: 4px;
+  padding: 0.25em;
+}
+/* Items Table */
+.itemsTable {
+  table-layout: fixed;
+  width: 100%;
+}
+.itemsTable thead {
+  background-color: var(--cl-green-light);
+  font-weight: 500;
+}
+.itemsTable thead th {
+  padding-block: 0.25em;
+}
+.itemsTable tbody td {
+  padding-block: 0.25em;
+}
+.itemsTable td.itemNo {
+  white-space: nowrap;
+}
+.itemsTable th.quantity,
+.itemsTable td.quantity {
+  padding-right: 0.5em;
+  text-align: center;
+}
+
+.itemsTable tbody tr:nth-child(even) {
+  background-color: var(--cl-background-focus);
+}

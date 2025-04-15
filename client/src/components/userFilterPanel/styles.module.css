@@ -1,0 +1,40 @@
+/* 
+================================
+Main style sheet for User Filter Panel
+================================
+*/
+
+.userFilterContainer {
+  width: max-content;
+  display: flex;
+  gap: 0.5em;
+}
+.userFilterContainer button {
+  width: 9em;
+  border-radius: 6px;
+}
+.userFilterContainer button {
+  background-color: var(--cl-background-focus);
+}
+.userFilterContainer button.active {
+  background-color: var(--cl-green-dark);
+  color: var(--cl-background-light);
+}
+.userFilterContainer button.innactive {
+  border: 2px solid var(--cl-green-dark);
+}
+/* .userFilterContainer button::after {
+  content: " : All";
+} */
+.userFilterContainer button.innactive::after {
+  content: " : No";
+}
+.userFilterContainer button.innactive::before {
+  content: "\2716  ";
+}
+.userFilterContainer button.active::after {
+  content: " : Yes";
+}
+.userFilterContainer button.active::before {
+  content: "\2714  ";
+}

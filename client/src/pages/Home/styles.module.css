@@ -1,0 +1,15 @@
+/* 
+================================
+Main style sheet for Pos Page
+================================
+*/
+
+.footerContainer {
+  flex-shrink: 0;
+  min-height: 12em;
+}
+.gridContainer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1em;
+}

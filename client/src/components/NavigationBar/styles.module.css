@@ -1,0 +1,47 @@
+/*
+================================
+Main style sheet for Main Navigation Bar
+================================
+*/
+
+.navigationBarWrapper {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-auto-rows: calc((6em + 8vw) / 2);
+  gap: 1em;
+}
+
+.linkWrapper {
+  aspect-ratio: 1 / 1;
+  width: calc((6em + 8vw) / 2);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5em;
+  padding: 0.5em;
+  transition: transform 0.125s;
+  user-select: none;
+}
+.linkWrapper:focus-visible {
+  outline: 2px solid var(--cl-grey-dark);
+}
+.linkWrapper:hover,
+.linkWrapper:active {
+  transform: scale(1.025);
+  cursor: pointer;
+}
+
+.linkWrapper p {
+  font-size: var(--fs-sm);
+  font-style: italic;
+  width: 100%;
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.linkWrapper i {
+  font-size: var(--fs-nav-icon);
+  color: var(--cl-green-dark);
+}
