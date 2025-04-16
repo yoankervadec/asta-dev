@@ -153,7 +153,13 @@ export const fetchViewOrderHeader = async (orderNo) => {
     // Determine addDisable
     const addDisable =
       orderHeader.consolidated === 1 ||
-      orderLines.some((line) => line.status.shipped === 1);
+      orderLines.some((line) => line.status.shipped === 1) ||
+      orderLines.some((line) => line.status.posted === 1) ||
+      orderLines.every((line) => line.status.active === 0);
+    // Determine modifyDisable
+    const modifyDisable =
+      orderHeader.has_invoice === 1 ||
+      orderLines.every((line) => line.status.active === 0);
 
     // Disabled toggles
     const toggles = {
@@ -161,7 +167,7 @@ export const fetchViewOrderHeader = async (orderNo) => {
       payDisable,
       convertDisable,
       addDisable,
-      modifyDisable: addDisable,
+      modifyDisable,
     };
 
     // Construct final JSON object
@@ -171,6 +177,8 @@ export const fetchViewOrderHeader = async (orderNo) => {
         status: orderStatus,
         quote: orderHeader.quote,
         consolidated: orderHeader.consolidated,
+        hasInvoice: orderHeader.has_invoice,
+        invoiceCount: orderHeader.invoice_count,
         posted: orderHeader.posted,
         linesToShip,
         toggles,

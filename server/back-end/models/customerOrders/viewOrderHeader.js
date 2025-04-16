@@ -29,6 +29,8 @@ export const viewOrderHeader = async (
         o.quote,
         o.priority,
         o.consolidated,
+        o.has_invoice,
+        COALESCE(COUNT(ih.invoice_no), 0) AS invoice_count,
         o.posted,
         o.tax_region,
         o.extra AS order_extra,
@@ -42,6 +44,8 @@ export const viewOrderHeader = async (
         users AS uo ON o.created_by = uo.user_id
       JOIN
         users AS ucl ON cl.created_by = ucl.user_id
+      LEFT JOIN
+        invoice_headers AS ih ON o.order_no = ih.order_no
       `;
 
     // Add conditions dynamically
@@ -72,6 +76,8 @@ export const viewOrderHeader = async (
 
     // Add ORDER BY clause
     sql += `
+      GROUP BY
+        o.order_no
       ORDER BY
         o.order_no DESC
     `;

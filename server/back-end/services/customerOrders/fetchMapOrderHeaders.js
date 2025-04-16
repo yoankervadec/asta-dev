@@ -179,6 +179,8 @@ export const fetchMapOrderHeaders = async (
           status: orderStatus,
           quote: orderHeader.quote,
           consolidated: orderHeader.consolidated,
+          hasInvoice: orderHeader.has_invoice,
+          invoiceCount: orderHeader.invoice_count,
           posted: orderHeader.posted,
           linesToShip,
         },
