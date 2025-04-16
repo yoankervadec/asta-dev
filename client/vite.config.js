@@ -5,12 +5,12 @@ import react from "@vitejs/plugin-react";
 export default defineConfig({
   plugins: [react()],
   server: {
-    allowedHosts: ['asta.local'],
+    allowedHosts: ["asta.local"],
     host: "0.0.0.0",
-    port: 3300,
+    port: 3700,
     proxy: {
       "/api": {
-        target: "http://localhost:8080", // Back-end URL
+        target: "http://localhost:8081", // Back-end URL
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, ""),
       },
