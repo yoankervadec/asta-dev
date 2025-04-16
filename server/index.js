@@ -80,8 +80,6 @@ console.log(
   `Starting server in ${process.env.NODE_ENV} at port ${PORT} allowing ${allowedOrigins}.`
 );
 
-console.log("Bonjour Blanche");
-
 // Start the server
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
