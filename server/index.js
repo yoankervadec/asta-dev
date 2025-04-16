@@ -76,8 +76,11 @@ app.use("/request", confirmationRoutes);
 
 const PORT = process.env.PORT;
 
-console.log("Using PORT:", process.env.PORT);
-console.log("CORS_ORIGINS:", process.env.CORS_ORIGINS);
+console.log(
+  `Starting server in ${process.env.NODE_ENV} at port ${PORT} allowing ${allowedOrigins}.`
+);
+
+console.log("Bonjour Blanche");
 
 // Start the server
 app.listen(PORT, () => {
