@@ -32,9 +32,11 @@ const app = express();
 app.use(express.json());
 
 // CORS Configuration
+const allowedOrigins = process.env.CORS_ORIGINS.split(",");
+
 app.use(
   cors({
-    origin: ["http://10.0.0.69:5173", "http://10.0.0.69:3300"],
+    origin: allowedOrigins,
     methods: ["GET", "POST"],
     credentials: true,
   })
