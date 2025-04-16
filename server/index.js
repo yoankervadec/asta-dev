@@ -76,6 +76,9 @@ app.use("/request", confirmationRoutes);
 
 const PORT = process.env.PORT;
 
+console.log("Using PORT:", process.env.PORT);
+console.log("CORS_ORIGINS:", process.env.CORS_ORIGINS);
+
 // Start the server
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
