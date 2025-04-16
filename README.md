@@ -255,7 +255,7 @@ npm install
 echo "Restarting PM2 production processes..."
 cd ../
 pm2 start asta-server-prod
-npm2 start asta-client-prod
+pm2 start asta-client-prod
 
 echo "Deployment from remote complete!"
 ```
