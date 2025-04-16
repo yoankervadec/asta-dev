@@ -22,44 +22,44 @@ const alterOrderMapping = {
 
   // Clients Validation
   clientName: {
-    table: "clients",
+    table: "orders",
     column: "name",
     validate: (value) => typeof value === "string" && value.trim() !== "",
   },
   clientName2: {
-    table: "clients",
+    table: "orders",
     column: "name2",
     validate: (value) => typeof value === "string",
   },
   clientPhone: {
-    table: "clients",
+    table: "orders",
     column: "phone",
     validate: (value) => /^\d{3}-\d{3}-\d{4}$/.test(value), // Matches 555-555-5555 format
   },
   clientPhone2: {
-    table: "clients",
+    table: "orders",
     column: "phone2",
     validate: (value) =>
       value === "" || null || /^\d{3}-\d{3}-\d{4}$/.test(value),
   },
   clientEmail: {
-    table: "clients",
+    table: "orders",
     column: "email",
     validate: (value) =>
       typeof value === "string" && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value),
   },
   clientAddress: {
-    table: "clients",
+    table: "orders",
     column: "address",
     validate: (value) => typeof value === "string" && value.trim() !== "",
   },
   clientCity: {
-    table: "clients",
+    table: "orders",
     column: "city",
     validate: (value) => typeof value === "string" && value.trim() !== "",
   },
   clientPostalCode: {
-    table: "clients",
+    table: "orders",
     column: "postal_code",
     validate: (value) => /^[A-Za-z]\d[A-Za-z] \d[A-Za-z]\d$/.test(value),
   },

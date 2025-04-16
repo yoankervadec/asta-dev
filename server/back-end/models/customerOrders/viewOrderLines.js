@@ -14,8 +14,8 @@ export const viewOrderLines = async (
     SELECT
         ol.order_no,
         cl.client_id,
-        cl.name,
-        cl.phone,
+        o.name,
+        o.phone,
         ol.line_no,
         ol.item_no,
         pr.description,

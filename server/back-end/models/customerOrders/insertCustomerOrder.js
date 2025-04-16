@@ -13,19 +13,37 @@ export const insertCustomerOrder = async (
   try {
     const [result] = await connection.query(
       `
-      INSERT INTO
-        orders (
-          client_id,
-          required_date,
-          quote,
-          tax_region,
-          extra,
-          created_by
-        )
-      VALUES
-        (?, ?, ?, ?, ?, ?)
+      INSERT INTO orders (
+        client_id,
+        name,
+        name2,
+        phone,
+        phone2,
+        email,
+        address,
+        city,
+        postal_code,
+        required_date,
+        quote,
+        tax_region,
+        extra,
+        created_by
+      )
+      SELECT
+        c.client_id,
+        c.name,
+        c.name2,
+        c.phone,
+        c.phone2,
+        c.email,
+        c.address,
+        c.city,
+        c.postal_code,
+        ?, ?, ?, ?, ?
+      FROM clients c
+      WHERE c.client_id = ?
       `,
-      [clientId, requiredDate, quote, taxRegion, orderExtra, createdBy]
+      [requiredDate, quote, taxRegion, orderExtra, createdBy, clientId]
     );
 
     return result.insertId; // order_no

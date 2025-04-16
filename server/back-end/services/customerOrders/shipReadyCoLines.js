@@ -8,6 +8,8 @@ import { insertTransaction } from "../../models/transactions/insertTransaction.j
 import { insertItemEntry } from "../../models/itemEntries/insertItemEntry.js";
 import { insertItemEntryAttribute } from "../../models/itemEntries/insertItemEntryAttribute.js";
 import { updateOrderLineStatus } from "../../models/customerOrders/updateOrderLineStatus.js";
+import { insertInvoiceHeader } from "../../models/invoices/insertInvoiceHeader.js";
+import { insertInvoiceLines } from "../../models/invoices/insertInvoiceLines.js";
 
 import { AppError } from "../../utils/errorHandling/AppError.js";
 
@@ -86,6 +88,16 @@ export const shipReadyCoLines = async (createdBy, orderNo) => {
     for (const line of linesToShip) {
       const lineNo = line.lineNo;
       await updateOrderLineStatus(connection, orderNo, lineNo, "shipped", 1);
+    }
+
+    // Generate Invoice Header
+    const invoiceNo = await insertInvoiceHeader(connection, orderNo, createdBy);
+
+    // Second loop to insert Invoice Lines
+    for (const line of linesToShip) {
+      const { orderNo, lineNo } = line;
+
+      await insertInvoiceLines(connection, invoiceNo, orderNo, lineNo);
     }
 
     await connection.commit();
