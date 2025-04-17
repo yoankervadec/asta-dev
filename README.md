@@ -1,4 +1,4 @@
-# POS System
+# Asta POS
 
 A web-based Point of Sale (POS) system built with **React**, **Express**, and **MySQL**, designed for fast and scalable transaction and inventory management. It supports deep-linkable modals, reusable logic, persistent filters, and efficient client/server communication.
 
