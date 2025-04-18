@@ -23,6 +23,8 @@ export const fetchJobs = async (
       orderLinesMap.get(line.orderNo).push(line);
     });
 
+    if (orderHeaders.length === 0) return null;
+
     const ordersWithLines = orderHeaders.map((order) => ({
       ...order,
       orderLines: orderLinesMap.get(order.meta.orderNo) || [],

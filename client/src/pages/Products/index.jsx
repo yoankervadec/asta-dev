@@ -15,6 +15,7 @@ import InputBox from "../../components/InputBox";
 import NavigationBar from "../../components/NavigationBar";
 import ProductsTable from "./ProductsTable";
 import ValidateProductsModal from "./ValidateProductsModal";
+import CreateProductModal from "./CreateProductModal";
 
 const Products = () => {
   const navigate = useNavigate();
@@ -23,6 +24,7 @@ const Products = () => {
   const [filterText, setFilterText] = useState("");
   const [selectedProducts, setSelectedProducts] = useState([]);
   const [showValidateModal, setShowValidateModal] = useState(false);
+  const [showNewProductModal, setShowNewProductModal] = useState(false);
   const { data, isLoading } = useFetchProducts();
 
   const rows = data?.data?.products || [];
@@ -70,6 +72,7 @@ const Products = () => {
       type: "button",
       title: "New product",
       icon: "fas fa-plus",
+      onClick: () => setShowNewProductModal(true),
     },
     {
       type: "button",
@@ -97,6 +100,9 @@ const Products = () => {
             onClose={() => setShowValidateModal(false)}
             onValidate={handleAddToCard}
           />
+        )}
+        {showNewProductModal && (
+          <CreateProductModal onClose={() => setShowNewProductModal(false)} />
         )}
       </div>
       <NavigationBar navIcons={navIcons} />

@@ -144,6 +144,8 @@ Good Modals
   max-width: 80em;
 }
 .medium-modal-container {
+  width: 60em;
+  max-width: 100%;
 }
 .small-modal-container {
 }

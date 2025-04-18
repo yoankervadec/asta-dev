@@ -34,57 +34,43 @@ export const handleFetchAllProducts = async (req, res) => {
 // Create new product
 export const handleCreateProduct = async (req, res) => {
   const isAuthenticated = req.session?.userId;
-  const created_by = req.session.userId;
+  const createdBy = req.session.userId;
 
   // Extract product details from request body
   const {
-    item_no,
+    itemNo,
     description,
     type,
-    pp_thousand,
+    pricePerThousand,
     thickness,
     width,
     length,
     cost,
   } = req.body;
 
-  // Validate that all required fields are present
-  if (
-    !item_no ||
-    !description ||
-    !type ||
-    !pp_thousand ||
-    !thickness ||
-    !width ||
-    !length
-  ) {
-    return sendErrorResponse(
-      res,
-      400,
-      "Missing required fields",
-      "",
-      isAuthenticated
-    );
-  }
-
   try {
-    // Delegate to the service layer
-    await createProduct({
-      item_no,
+    await createProduct(
+      itemNo,
       description,
       type,
-      pp_thousand,
+      pricePerThousand,
       thickness,
       width,
       length,
       cost,
-      created_by,
-    });
+      createdBy
+    );
 
     sendSuccessResponse(res, 200, {}, isAuthenticated);
   } catch (err) {
-    const status = err.message.includes("already exists") ? 400 : 500;
-    sendErrorResponse(res, status, err.message, "", isAuthenticated);
+    sendErrorResponse(
+      res,
+      err.status || 500,
+      err.message,
+      err.title || "An unnexpected error occured.",
+      isAuthenticated,
+      err.stack || new Error().stack
+    );
   }
 };
 

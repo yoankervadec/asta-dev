@@ -4,15 +4,15 @@
 import { query } from "../../configs/db.config.js";
 
 export const insertNewProduct = async (
-  item_no,
+  itemNo,
   description,
   type,
-  pp_thousand,
+  pricePerThousand,
   thickness,
   width,
   length,
   cost,
-  created_by
+  createdBy
 ) => {
   try {
     const result = await query(
@@ -30,20 +30,20 @@ export const insertNewProduct = async (
       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
     `,
       [
-        item_no,
+        itemNo,
         description,
         type,
-        pp_thousand,
+        pricePerThousand,
         thickness,
         width,
         length,
         cost,
-        created_by,
+        createdBy,
       ]
     );
 
     return result;
   } catch (error) {
-    throw error;
+    throw new Error("Failed to insert Product: " + error.message);
   }
 };

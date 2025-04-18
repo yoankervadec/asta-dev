@@ -31,6 +31,6 @@ export const selectSingleProduct = async (itemNo) => {
 
     return product;
   } catch (error) {
-    throw new Error("Failed to fetch product details: " + error.message); // Handle any errors
+    throw new Error("Failed to select Product Details: " + error.message); // Handle any errors
   }
 };
