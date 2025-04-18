@@ -2,6 +2,7 @@
 // client/src/components/modals/ProductModal/SectionInventory.jsx
 
 import React, { useState } from "react";
+import { useModalNavigation } from "../../../hooks/useModalNavigation";
 import usePostSessionProduct from "../../../hooks/fetch/production/usePostSessionProduct";
 
 import InputCell from "../../Inputcell";
@@ -10,6 +11,7 @@ import Loading from "../../loaders/Loading";
 import styles from "./styles.module.css";
 
 const SectionInventory = ({ data, session }) => {
+  const { syncOpenModal } = useModalNavigation();
   const { itemNo, inventory, possibleAttributes = [] } = data || {};
   const { header, lines = [] } = session || {};
   const [quantity, setQuantity] = useState(0);
@@ -77,7 +79,9 @@ const SectionInventory = ({ data, session }) => {
             label="Current Session&nbsp;:"
             value={header?.session_no}
             readOnly
-            disabled
+            onClick={() =>
+              syncOpenModal("session", { sessionNo: header?.session_no })
+            }
           />
           <InputCell
             label="Quantity on Session&nbsp;:"

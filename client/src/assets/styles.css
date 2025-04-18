@@ -134,6 +134,49 @@ main {
 
 /*
 ================================
+Good Modals
+================================
+*/
+
+.xl-modal-container {
+}
+.large-modal-container {
+  max-width: 80em;
+}
+.medium-modal-container {
+}
+.small-modal-container {
+}
+.xl-modal-container .modal-body,
+.large-modal-container .modal-body,
+.medium-modal-container .modal-body,
+.small-modal-container .modal-body {
+  overflow: hidden;
+}
+
+.modal-title-wrapper {
+  background-color: var(--cl-background-light);
+  z-index: 2;
+  position: sticky;
+  top: 0;
+  padding-bottom: 1em;
+}
+.modal-title-wrapper > .modal-title-content {
+  border-bottom: 2px solid var(--cl-brown);
+  display: flex;
+  gap: 2em;
+  padding-block: 0.5em;
+}
+.modal-title-wrapper > .modal-title-content h3 {
+  font-weight: 500;
+}
+.modal-title-wrapper > .modal-title-btn-wrapper {
+  display: flex;
+  gap: 0.5em;
+}
+
+/*
+================================
 Shitty Modals
 ================================
 */
@@ -185,6 +228,7 @@ Shitty Modals
 .modal-title {
   margin-bottom: 1em;
 }
+
 /*
 ================================
 Buttons

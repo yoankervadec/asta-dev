@@ -10,6 +10,8 @@ import { fetchWorkTable } from "../services/production/fetchWorkTable.js";
 import { addWorkSessionLine } from "../services/production/addWorkSessionLine.js";
 import { fetchWorkSession } from "../services/production/fetchWorkSession.js";
 import { postWorkSession } from "../services/production/postWorkSession.js";
+import { fetchSessionHeaders } from "../services/production/fetchSessionHeaders.js";
+import { fetchSessionLines } from "../services/production/fetchSessionLines.js";
 
 export const handleFetchWorkTable = async (req, res) => {
   const isAuthenticated = req.session.userId;
@@ -74,6 +76,49 @@ export const handlePostWorkSession = async (req, res) => {
       err.status || 500,
       err.message,
       err.title || "An unnexpected error occured.",
+      isAuthenticated,
+      err.stack || new Error().stack
+    );
+  }
+};
+
+export const handleFetchSession = async (req, res) => {
+  const isAuthenticated = req.session.userId;
+  const { sessionNo, itemNo, posted } = req.query;
+
+  try {
+    const sessionNoParsed = isNaN(sessionNo) ? null : parseFloat(sessionNo);
+
+    let postedBool = null;
+    if (typeof posted === "string") {
+      const lower = posted.toLowerCase();
+      if (lower === "true") postedBool = true;
+      else if (lower === "false") postedBool = false;
+      // else leave as null
+    }
+
+    const header = await fetchSessionHeaders(sessionNoParsed, postedBool);
+    const lines = await fetchSessionLines(
+      sessionNoParsed,
+      itemNo || null,
+      postedBool
+    );
+
+    sendSuccessResponse(
+      res,
+      200,
+      {
+        header: header?.[0] || null,
+        lines,
+      },
+      isAuthenticated
+    );
+  } catch (err) {
+    sendErrorResponse(
+      res,
+      err.status || 500,
+      err.message,
+      err.title || "An unexpected error occurred.",
       isAuthenticated,
       err.stack || new Error().stack
     );

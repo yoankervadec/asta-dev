@@ -52,6 +52,19 @@ export const handleRequestConfirmation = async (req, res) => {
         isAuthenticated
       );
       break;
+    case "post-session":
+      sendSuccessResponse(
+        res,
+        200,
+        {
+          requiresConfirmation: true,
+          confirmationMessage: `Do you want to commit the inventory changes?`,
+          confirmationAction: "/production/session/post",
+          body: req.body,
+        },
+        isAuthenticated
+      );
+      break;
     default:
       sendErrorResponse(
         res,

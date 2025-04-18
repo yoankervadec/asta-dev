@@ -11,6 +11,7 @@ import ConfirmationModal from "../ConfirmationModal";
 import CustomerOrderCard from "../CustomerOrderCard";
 import ClientCard from "../ClientCard";
 import ProductModal from "../ProductModal";
+import SessionModal from "../SessionModal";
 
 import styles from "./styles.module.css";
 
@@ -62,6 +63,9 @@ export default function ModalContainer() {
             break;
           case "productCard":
             Content = <ProductModal {...modal.props} />;
+            break;
+          case "session":
+            Content = <SessionModal {...modal.props} />;
             break;
         }
 
