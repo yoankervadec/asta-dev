@@ -11,6 +11,8 @@ import usePostRequestCancelCoLine from "../../../hooks/fetch/customerOrders/useP
 import usePostPayCo from "../../../hooks/fetch/customerOrders/usePostPayCo";
 import usePostRequestShipCo from "../../../hooks/fetch/customerOrders/usePostRequestShipCo";
 import usePostAddCoLine from "../../../hooks/fetch/customerOrders/usePostAddCoLine";
+import { viewPdf } from "../../../api/pdf/viewPdf";
+import { downloadPdf } from "../../../api/pdf/downloadPdf";
 
 import SectionInformation from "./SectionInformation";
 import SectionCustomer from "./SectionCustomer";
@@ -227,7 +229,12 @@ const CustomerOrderCard = () => {
               <i className="fas fa-repeat"></i>
               Convert to order
             </button>
-            <button className="small-btn cancel-btn" disabled={true}>
+            <button
+              className="small-btn cancel-btn"
+              onClick={() => {
+                viewPdf(`/pdf/order-card`, orderNo);
+              }}
+            >
               <i className="fas fa-print"></i>Print
             </button>
           </div>
