@@ -4,7 +4,7 @@
 const alterProductMapping = {
   itemNo: {
     table: "products",
-    column: "item_no",
+    column: "NOT_ALLOWED",
     validate: (value) => typeof value === "string" && value.trim() !== "",
   },
   description: {

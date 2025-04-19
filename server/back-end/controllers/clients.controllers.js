@@ -21,10 +21,11 @@ export const handleFetchAllClients = async (req, res) => {
   } catch (err) {
     sendErrorResponse(
       res,
-      500,
-      "Failed to fetch clients",
+      err.status || 500,
       err.message,
-      isAuthenticated
+      err.title || "An unnexpected error occured",
+      isAuthenticated,
+      err.stack || new Error().stack
     );
   }
 };
@@ -41,10 +42,11 @@ export const handleAlterClientTransactionHeader = async (req, res) => {
   } catch (err) {
     sendErrorResponse(
       res,
-      500,
-      "Failed to select client1",
+      err.status || 500,
       err.message,
-      isAuthenticated
+      err.title || "An unnexpected error occured",
+      isAuthenticated,
+      err.stack || new Error().stack
     );
   }
 };
@@ -61,7 +63,7 @@ export const handleCreateClient = async (req, res) => {
     email,
     address,
     city,
-    postal_code,
+    postalCode,
     extra,
   } = req.body;
 
@@ -74,7 +76,7 @@ export const handleCreateClient = async (req, res) => {
       email,
       address,
       city,
-      postal_code,
+      postalCode,
       extra,
       createdBy
     );
@@ -86,7 +88,8 @@ export const handleCreateClient = async (req, res) => {
       err.status || 500,
       err.message,
       err.title || "An unnexpected error occured",
-      isAuthenticated
+      isAuthenticated,
+      err.stack || new Error().stack
     );
   }
 };

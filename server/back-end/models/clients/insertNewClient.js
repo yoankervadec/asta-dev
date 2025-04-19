@@ -11,7 +11,7 @@ export const insertNewClient = async (
   email,
   address,
   city,
-  postal_code,
+  postalCode,
   extra,
   createdBy
 ) => {
@@ -41,12 +41,12 @@ export const insertNewClient = async (
         email,
         address,
         city,
-        postal_code,
+        postalCode,
         extra,
         createdBy,
       ]
     );
   } catch (error) {
-    throw new Error("Failed to insert client: " + error.message);
+    throw new Error("Failed to insert Client: " + error.message);
   }
 };

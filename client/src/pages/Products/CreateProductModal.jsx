@@ -134,7 +134,7 @@ const CreateProductModal = ({ onClose, existingProducts = [] }) => {
                   <div className="df-section-content">
                     <h4>Details</h4>
                     <InputCell
-                      label="Thickness.&nbsp;:"
+                      label="Thickness&nbsp;:"
                       value={formData.thickness}
                       type="number"
                       onChange={updateField("thickness")}

@@ -4,6 +4,7 @@
 import { insertNewClient } from "../../models/clients/insertNewClient.js";
 
 import clientsMapping from "../../mappings/clientsMapping.js";
+import { AppError } from "../../utils/errorHandling/AppError.js";
 
 export const createClient = async (
   name,
@@ -13,7 +14,7 @@ export const createClient = async (
   email,
   address,
   city,
-  postal_code,
+  postalCode,
   extra,
   createdBy
 ) => {
@@ -25,16 +26,10 @@ export const createClient = async (
           fieldMapping.required &&
           (value === undefined || value === null || value === "")
         ) {
-          throw {
-            status: 400,
-            message: `"${key}" is required.`,
-          };
+          throw new AppError(400, `"${key}" is required.`);
         }
         if (!fieldMapping.validate(value)) {
-          throw {
-            status: 400,
-            message: `Invalid value for "${key}"`,
-          };
+          throw new AppError(400, `Invalid value for "${key}"`);
         }
       }
     }
@@ -48,7 +43,7 @@ export const createClient = async (
       email,
       address,
       city,
-      postal_code,
+      postalCode,
       extra,
       createdBy,
     });
@@ -60,11 +55,11 @@ export const createClient = async (
       email,
       address,
       city,
-      postal_code,
+      postalCode,
       extra,
       createdBy
     );
   } catch (error) {
-    throw new Error("Failed to create new client: " + error.message);
+    throw error;
   }
 };

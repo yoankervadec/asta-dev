@@ -9,11 +9,13 @@ import NavigationBar from "../../components/NavigationBar";
 import InputBox from "../../components/InputBox";
 import CustomersTable from "./CustomersTable";
 import Loading from "../../components/loaders/Loading";
+import CreateCustomerModal from "./CreateCustomerModal";
 
 import usePostSelectCustomer from "../../hooks/fetch/customers/usePostSelectCustomer";
 
 const Customers = () => {
   const [filterText, setFilterText] = useState("");
+  const [showNewCustomerModal, setShowNewCustomerModal] = useState(false);
   const [selectedClientId, setSelectedClientId] = useState(null);
   const postSelectCustomer = usePostSelectCustomer();
 
@@ -54,8 +56,14 @@ const Customers = () => {
     {
       type: "button",
       title: "Select customer",
-      icon: "fas fa-user-plus",
+      icon: "fas fa-check",
       onClick: () => handlePostSelectCustomer(),
+    },
+    {
+      type: "button",
+      title: "New Customer",
+      icon: "fas fa-user-plus",
+      onClick: () => setShowNewCustomerModal(true),
     },
   ];
 
@@ -71,6 +79,9 @@ const Customers = () => {
           onSelectClient={handleSelectClient}
           selectedClientId={selectedClientId}
         />
+        {showNewCustomerModal && (
+          <CreateCustomerModal onClose={() => setShowNewCustomerModal(false)} />
+        )}
       </div>
       <NavigationBar navIcons={navIcons} />
     </div>
