@@ -83,14 +83,16 @@ export const createCustomerOrder = async (createdBy) => {
       );
 
       // Insert payment entry if payment
-      await insertPaymentEntry(
-        connection,
-        transactionId,
-        orderNo,
-        clientId,
-        paymentAmountAsDecimal,
-        paymentMethodId
-      );
+      if (paymentAmountAsDecimal > 0) {
+        await insertPaymentEntry(
+          connection,
+          transactionId,
+          orderNo,
+          clientId,
+          paymentAmountAsDecimal,
+          paymentMethodId
+        );
+      }
     }
 
     // Insert orders list (items)
