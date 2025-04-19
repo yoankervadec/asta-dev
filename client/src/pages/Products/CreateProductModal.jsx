@@ -5,6 +5,7 @@ import React, { useState } from "react";
 import InputCell from "../../components/Inputcell";
 
 import usePostNewProduct from "../../hooks/fetch/products/usePostNewProduct";
+import { parseItemNo } from "./productParser.util";
 
 const CreateProductModal = ({ onClose }) => {
   const postNewProduct = usePostNewProduct();
@@ -12,7 +13,7 @@ const CreateProductModal = ({ onClose }) => {
     itemNo: "",
     description: "",
     type: "",
-    pricePerThousand: 0,
+    pricePerThousand: 1500,
     thickness: 0,
     width: 0,
     length: 0,
@@ -20,10 +21,20 @@ const CreateProductModal = ({ onClose }) => {
   });
 
   const updateField = (field) => (value) => {
-    setFormData((prev) => ({
-      ...prev,
-      [field]: value,
-    }));
+    if (field === "itemNo") {
+      const parsed = parseItemNo(value);
+
+      setFormData((prev) => ({
+        ...prev,
+        itemNo: value,
+        ...(parsed || {}), // only overwrite fields if parsed successfully
+      }));
+    } else {
+      setFormData((prev) => ({
+        ...prev,
+        [field]: value,
+      }));
+    }
   };
 
   const handleSubmit = () => {
@@ -78,12 +89,22 @@ const CreateProductModal = ({ onClose }) => {
                     />
                     <InputCell
                       label="Type&nbsp;:"
+                      type="select"
                       value={formData.type}
                       onChange={updateField("type")}
+                      options={[
+                        { label: "--", value: "" },
+                        { label: "Pin", value: "Pin" },
+                        { label: "Erable", value: "Erable" },
+                        { label: "Pruche", value: "Pruche" },
+                        { label: "Cedre", value: "Cedre" },
+                        { label: "Chene", value: "Chene" },
+                      ]}
                     />
                     <InputCell
                       label="Price per thousand&nbsp;:"
                       value={formData.pricePerThousand}
+                      type="number"
                       onChange={updateField("pricePerThousand")}
                     />
                   </div>
@@ -92,16 +113,19 @@ const CreateProductModal = ({ onClose }) => {
                     <InputCell
                       label="Thickness.&nbsp;:"
                       value={formData.thickness}
+                      type="number"
                       onChange={updateField("thickness")}
                     />
                     <InputCell
                       label="Width&nbsp;:"
                       value={formData.width}
+                      type="number"
                       onChange={updateField("width")}
                     />
                     <InputCell
                       label="Length&nbsp;:"
                       value={formData.length}
+                      type="number"
                       onChange={updateField("length")}
                     />
                     <InputCell

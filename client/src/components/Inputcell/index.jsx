@@ -120,7 +120,9 @@ const InputCell = ({
           required={required}
           autoComplete="off"
           placeholder="--"
-          {...(type === "number" ? { min, max, step } : {})}
+          {...(type === "number"
+            ? { min, max, step, inputMode: "numeric" }
+            : {})}
         />
       )}
     </div>
