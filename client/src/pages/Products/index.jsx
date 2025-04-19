@@ -102,7 +102,10 @@ const Products = () => {
           />
         )}
         {showNewProductModal && (
-          <CreateProductModal onClose={() => setShowNewProductModal(false)} />
+          <CreateProductModal
+            onClose={() => setShowNewProductModal(false)}
+            existingProducts={rows}
+          />
         )}
       </div>
       <NavigationBar navIcons={navIcons} />

@@ -1,14 +1,15 @@
 //
 // client/src/pages/Products/CreateProductModal.jsx
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import InputCell from "../../components/Inputcell";
 
 import usePostNewProduct from "../../hooks/fetch/products/usePostNewProduct";
 import { parseItemNo } from "./productParser.util";
 
-const CreateProductModal = ({ onClose }) => {
+const CreateProductModal = ({ onClose, existingProducts = [] }) => {
   const postNewProduct = usePostNewProduct();
+  const [isDuplicate, setIsDuplicate] = useState(false);
   const [formData, setFormData] = useState({
     itemNo: "",
     description: "",
@@ -19,6 +20,18 @@ const CreateProductModal = ({ onClose }) => {
     length: 0,
     cost: 0,
   });
+
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      const trimmed = formData.itemNo.trim().toLowerCase();
+      const duplicate = existingProducts.some(
+        (p) => p.itemNo.trim().toLowerCase() === trimmed
+      );
+      setIsDuplicate(duplicate);
+    }, 300); // debounce delay
+
+    return () => clearTimeout(timeout); // cleanup on re-type
+  }, [formData.itemNo, existingProducts]);
 
   const updateField = (field) => (value) => {
     if (field === "itemNo") {
@@ -82,6 +95,16 @@ const CreateProductModal = ({ onClose }) => {
                       value={formData.itemNo}
                       onChange={updateField("itemNo")}
                     />
+                    {isDuplicate && (
+                      <p
+                        style={{
+                          color: "red",
+                          marginTop: "-0.5em",
+                        }}
+                      >
+                        **This item number already exists.**
+                      </p>
+                    )}
                     <InputCell
                       label="Description&nbsp;:"
                       value={formData.description}
