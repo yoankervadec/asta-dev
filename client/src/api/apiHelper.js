@@ -19,7 +19,7 @@ export async function apiHelper(endpoint, options = {}, navigate = null) {
       useModalStore.getState().openModal("progress", {
         message: "This request is taking longer than usual...",
       });
-    }, 1500); // 1.5 second before panic
+    }, 2000); // 2 seconds before panic
 
     const response = await api({
       url: endpoint,
