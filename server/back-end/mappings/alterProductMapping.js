@@ -2,6 +2,11 @@
 // server/back-end/mappings/alterProductMapping.js
 
 const alterProductMapping = {
+  itemNo: {
+    table: "products",
+    column: "item_no",
+    validate: (value) => typeof value === "string" && value.trim() !== "",
+  },
   description: {
     table: "products",
     column: "description",

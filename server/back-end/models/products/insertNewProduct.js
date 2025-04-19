@@ -3,7 +3,7 @@
 
 import { query } from "../../configs/db.config.js";
 
-export const insertNewProduct = async (
+export const insertNewProduct = async ({
   itemNo,
   description,
   type,
@@ -12,8 +12,8 @@ export const insertNewProduct = async (
   width,
   length,
   cost,
-  createdBy
-) => {
+  createdBy,
+}) => {
   try {
     const result = await query(
       `

@@ -43,7 +43,7 @@ const useFormField = (
   // Handle blur (when the user finishes editing)
   const handleBlur = (onBlurCallback) => {
     if (userChanged && !mutation.isPending) {
-      const payload = { field: fieldName, updatedValue: value };
+      const payload = { field: fieldName, updatedValue: value.trim() };
 
       if (lineNo !== undefined) {
         payload.lineNo = lineNo; // Only add lineNo if it's defined
