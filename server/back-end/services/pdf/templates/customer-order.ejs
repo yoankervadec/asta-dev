@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <title>Bon de Commande</title>
+    <style>
+      :root {
+        --font-family-base: "Open Sans", sans-serif;
+        --font-size-base: 0.85em;
+        --font-size-small: 0.75em;
+        --font-size-large: 1.1em;
+
+        --color-text: #333;
+        --color-border: #ccc;
+        --color-header-bg: #f0f0f0;
+
+        --space-xs: 0.25em;
+        --space-sm: 0.5em;
+        --space-md: 1em;
+        --space-lg: 2em;
+
+        --border-radius: 6px;
+        --border-width: 2px;
+        --border-style: solid;
+      }
+
+      *:where(
+          :not(h1, h2, h3, h4, strong, dialog, canvas, img, svg, video):not(
+              svg *
+            )
+        ) {
+        all: unset;
+        display: revert;
+      }
+
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: var(--font-family-base);
+        color: var(--color-text);
+        width: 60em;
+        margin: auto;
+        padding: var(--space-lg);
+      }
+
+      header,
+      footer,
+      main {
+        margin-bottom: var(--space-lg);
+      }
+
+      h1,
+      h2 {
+        margin-bottom: var(--space-sm);
+        margin-top: 0;
+      }
+
+      .document-header {
+        text-align: right;
+        margin-bottom: var(--space-md);
+      }
+
+      .document-header h1 {
+        font-size: 2em;
+        margin-bottom: 0.2em;
+      }
+
+      .sellers-info,
+      .customer-info p {
+        font-size: var(--font-size-base);
+        line-height: 1.4em;
+      }
+
+      .df-section-wrapper {
+        break-inside: avoid;
+        padding: var(--space-md);
+        margin-bottom: 1.5em;
+        border: var(--border-width) var(--border-style) var(--color-border);
+        border-radius: var(--border-radius);
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: var(--font-size-base);
+        margin-top: var(--space-sm);
+      }
+
+      th,
+      td {
+        padding: var(--space-sm);
+        text-align: left;
+        border-bottom: 1px solid var(--color-border);
+        word-wrap: break-word;
+      }
+
+      thead {
+        background-color: var(--color-header-bg);
+        font-weight: 600;
+      }
+
+      .policy p {
+        font-size: var(--font-size-small);
+        margin-block: var(--space-xs);
+      }
+
+      .payment {
+        flex: 1;
+        text-align: right;
+        font-size: var(--font-size-base);
+      }
+
+      .payment p {
+        margin-block: var(--space-xs);
+      }
+
+      .payment td.total {
+        font-weight: bold;
+        font-size: var(--font-size-large);
+        margin-top: var(--space-md);
+      }
+
+      .footer-content {
+        display: flex;
+        justify-content: space-between;
+        font-size: var(--font-size-small);
+      }
+
+      .signature-block {
+        margin-top: var(--space-lg);
+      }
+
+      .signature-line {
+        margin-top: calc(var(--space-lg) + 1em);
+        border-top: 1px solid #000;
+        width: 200px;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Header -->
+    <header>
+      <div class="document-header">
+        <h1>Bon de Commande</h1>
+        <p># <%= data.orderHeader.orderInfo.orderNo %></p>
+        <p>Date: <%= data.orderHeader.orderInfo.createdAt %></p>
+      </div>
+      <div class="sellers-info">
+        <p><strong>Scierie Le Tourneur</strong></p>
+        <p>360 Rte. 329, Lachute, QC J8H 3W9</p>
+        <p>T. (514)-571-3733</p>
+        <p>maprefontaine@gmail.com</p>
+      </div>
+    </header>
+
+    <!-- Main -->
+    <main>
+      <!-- Customer Info -->
+      <section class="df-section-wrapper customer-info">
+        <h2>Client</h2>
+        <p><strong><%= data.orderHeader.customer.name %></strong></p>
+        <p><%= data.orderHeader.customer.name2 %></p>
+        <p><%= data.orderHeader.customer.location.address %></p>
+        <p><%= data.orderHeader.customer.contact.phone %></p>
+        <p><%= data.orderHeader.customer.contact.phone2 %></p>
+        <p><%= data.orderHeader.customer.contact.email %></p>
+      </section>
+
+      <!-- Items -->
+      <section class="df-section-wrapper">
+        <h2>Produits et Services</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>Produit</th>
+              <th>Quantité</th>
+              <th>Description</th>
+              <th>Description (suite)</th>
+              <th style="text-align: end">Prix Unitaire</th>
+              <th style="text-align: end">Rabais (%)</th>
+              <th style="text-align: end">Total</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% data.orderLines.forEach(line => { %>
+            <tr>
+              <td><%= line.item.itemNo %></td>
+              <td><%= line.item.quantity %></td>
+              <td><%= line.item.description %></td>
+              <td><%= line.item.attributeNameSetAsString %></td>
+              <td style="text-align: end">
+                <%= line.pricing.unitPriceToString %>
+              </td>
+              <td style="text-align: end">
+                <%= line.pricing.lineDiscountAmountToString %>
+              </td>
+              <td style="text-align: end">
+                <%= line.pricing.lineSubtotalToString %>
+              </td>
+            </tr>
+            <% }) %>
+          </tbody>
+        </table>
+      </section>
+
+      <!-- Payment Summary -->
+      <section class="df-section-wrapper">
+        <h2>Paiement et Conditions</h2>
+        <div style="display: flex; gap: 2em">
+          <div class="policy" style="flex-grow: 2">
+            <p>
+              Les délais de production sont de 2 à 4 semaines selon
+              l'achalandage.
+            </p>
+            <p>Les planches ne sont pas triées ni classées.</p>
+          </div>
+          <div class="payment">
+            <table style="width: 15em; table-layout: auto">
+              <tbody>
+                <tr>
+                  <td style="border: none">Sous-total:</td>
+                  <td style="text-align: end; border: none">
+                    <%= data.orderHeader.totals.subtotalToString %>
+                  </td>
+                </tr>
+                <tr>
+                  <td style="border: none">TPS (5%):</td>
+                  <td style="text-align: end; border: none">
+                    <%= data.orderHeader.totals.gstToString %>
+                  </td>
+                </tr>
+                <tr>
+                  <td style="border: none">TVQ (9.975%):</td>
+                  <td style="text-align: end; border: none">
+                    <%= data.orderHeader.totals.pstToString %>
+                  </td>
+                </tr>
+                <tr>
+                  <td style="border: none">Rabais:</td>
+                  <td style="text-align: end; border: none">
+                    <%= data.orderHeader.totals.discountToString %>
+                  </td>
+                </tr>
+                <tr>
+                  <td style="border: none">Paiement:</td>
+                  <td style="text-align: end; border: none">
+                    <%= data.orderHeader.totals.paymentAmountToString %>
+                  </td>
+                </tr>
+                <tr>
+                  <td style="border: none" class="total">Total:</td>
+                  <td class="total" style="text-align: end; border: none">
+                    <%= data.orderHeader.totals.totalToString %>
+                  </td>
+                </tr>
+                <tr>
+                  <td style="border: none">Balance:</td>
+                  <td style="text-align: end; border: none">
+                    <%= data.orderHeader.totals.balanceToString %>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>

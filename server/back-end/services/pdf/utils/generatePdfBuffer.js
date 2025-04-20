@@ -13,7 +13,7 @@ const __dirname = dirname(__filename);
 export const generatePdfBuffer = async (templateName, data) => {
   const templatePath = path.join(
     __dirname,
-    "../../../templates",
+    "../templates",
     `${templateName}.ejs`
   );
   const html = await ejs.renderFile(templatePath, data);

@@ -232,7 +232,7 @@ const CustomerOrderCard = () => {
             <button
               className="small-btn cancel-btn"
               onClick={() => {
-                downloadPdf(`/pdf/order-card`, orderNo);
+                viewPdf(`/pdf/order-card`, orderNo);
               }}
             >
               <i className="fas fa-print"></i>Print
