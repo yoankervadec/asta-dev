@@ -148,6 +148,8 @@ Good Modals
   max-width: 100%;
 }
 .small-modal-container {
+  width: 40em;
+  max-width: 100%;
 }
 .xl-modal-container .modal-body,
 .large-modal-container .modal-body,

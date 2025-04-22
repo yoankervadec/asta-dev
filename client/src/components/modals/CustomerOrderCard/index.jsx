@@ -18,11 +18,12 @@ import SectionInformation from "./SectionInformation";
 import SectionCustomer from "./SectionCustomer";
 import SectionItems from "./SectionItems";
 import SectionPaymentEntries from "./SectionPaymentEntries";
-
-import styles from "./styles.module.css";
 import PaymentModal from "./PaymentModal";
 import SmallProductsModal from "../../../pages/Products/SmallProductsModal";
 import ValidateProductsModal from "../../../pages/Products/ValidateProductsModal";
+import PrintModal from "./PrintModal";
+
+import styles from "./styles.module.css";
 
 const CustomerOrderCard = () => {
   const queryClient = useQueryClient();
@@ -45,15 +46,18 @@ const CustomerOrderCard = () => {
   const [showProductsModal, setShowProductsModal] = useState(false);
   const [selectedProducts, setSelectedProducts] = useState([]);
   const [showValidateModal, setShowValidateModal] = useState(false);
+  const [showPrintModal, setShowPrintModal] = useState(false);
 
   // Fetch and Deconstruct Data
   const { data, isLoading } = useFetchCustomerOrderCard(orderNo ?? null);
-  const orderHeader = data?.data?.customerOrderCard?.orderHeader || {};
+  const {
+    orderHeader = {},
+    orderLines = [],
+    paymentEntries = [],
+    invoices = [],
+  } = data?.data?.customerOrderCard || {};
   const { meta, customer, orderInfo, totals } = orderHeader || {};
-  const itemRows = data?.data?.customerOrderCard?.orderLines || [];
-  const paymentRows = data?.data?.customerOrderCard?.paymentEntries || [];
   const remainingBalance = totals?.balanceAsDecimal;
-  const paymentAmount = totals?.paymentAmountAsDecimal;
 
   //
   // Payment / Cancel(Refund)
@@ -68,7 +72,7 @@ const CustomerOrderCard = () => {
   };
 
   const handleRequestDeleteLine = (lineNo) => {
-    const line = itemRows.find((r) => r.lineNo === lineNo);
+    const line = orderLines.find((r) => r.lineNo === lineNo);
     // Ignore canceled or shipped lines
     if (line.status.shipped === 1 || line.status.active === 0) return;
 
@@ -97,7 +101,7 @@ const CustomerOrderCard = () => {
 
   // Helper for cancelation(refund)
   const calculateRefundForLine = (lineNo) => {
-    const line = itemRows.find((r) => r.lineNo === lineNo);
+    const line = orderLines.find((r) => r.lineNo === lineNo);
     const canceledAmount = line?.pricing?.lineTotalAsDecimal || 0;
 
     return remainingBalance - canceledAmount;
@@ -201,6 +205,11 @@ const CustomerOrderCard = () => {
     );
   };
 
+  // Handle Open PrintModal
+  const handleShowPrintModal = () => {
+    setShowPrintModal(true);
+  };
+
   if (!modalParams) return null;
   return (
     <div className={styles.customerOrderCardContainer}>
@@ -232,7 +241,8 @@ const CustomerOrderCard = () => {
             <button
               className="small-btn cancel-btn"
               onClick={() => {
-                downloadPdf(`/pdf/order-card`, orderNo);
+                // downloadPdf(`/pdf/order-card`, orderNo);
+                handleShowPrintModal();
               }}
             >
               <i className="fas fa-print"></i>Print
@@ -246,12 +256,12 @@ const CustomerOrderCard = () => {
         <SectionInformation meta={meta} data={orderHeader} />
         <SectionCustomer meta={meta} data={customer} />
         <SectionItems
-          rows={itemRows}
+          rows={orderLines}
           meta={meta}
           onDeleteLine={handleRequestDeleteLine}
           onOpenAddItem={handleShowProductsModal}
         />
-        <SectionPaymentEntries rows={paymentRows} />
+        <SectionPaymentEntries rows={paymentEntries} />
       </div>
       <div className="btn-container">
         <button onClick={syncCloseModal} className="regular-btn cancel-btn">
@@ -286,6 +296,13 @@ const CustomerOrderCard = () => {
           products={selectedProducts}
           onClose={() => setShowValidateModal(false)}
           onValidate={handleAddCoLine}
+        />
+      )}
+      {showPrintModal && (
+        <PrintModal
+          onClose={() => setShowPrintModal(false)}
+          order={orderHeader}
+          invoices={invoices}
         />
       )}
     </div>
