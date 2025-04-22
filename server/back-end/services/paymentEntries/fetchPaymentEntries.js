@@ -2,6 +2,7 @@
 // server/back-end/services/paymentEntries/fetchPaymentEntries.js
 
 import { selectPaymentEntries } from "../../models/paymentEntries/selectPaymentEntries.js";
+import { formatDate } from "../../utils/dates/dateHelper.js";
 
 import { isValidNumberOrNull } from "../../utils/typeCheck/typeCheck.js";
 
@@ -33,7 +34,7 @@ export const fetchPaymentEntries = async (
           transactionId: line.transaction_id,
           orderNo: line.order_no,
           clientId: line.client_id,
-          date: line.date,
+          date: formatDate(line.date),
           method: line.payment_method,
           amount: parseFloat(line.payment_amount),
         },

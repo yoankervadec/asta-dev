@@ -78,7 +78,7 @@ export const viewInvoiceLines = async (invoiceNo = null, orderNo = null) => {
 
     sql += `
       GROUP BY
-        ih.invoice_no,
+        il.invoice_no,
         il.line_no,
         cl.client_id,
         cl.name,
