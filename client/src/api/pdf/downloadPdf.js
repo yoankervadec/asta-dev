@@ -3,13 +3,13 @@
 
 import fetchPdfBlob from "./fetchPdfBlob";
 
-export const downloadPdf = async (url, id) => {
+export const downloadPdf = async (url, id, documentType) => {
   try {
-    const blob = await fetchPdfBlob(url, id);
+    const blob = await fetchPdfBlob(url, id, documentType);
     const link = document.createElement("a");
 
     link.href = URL.createObjectURL(blob);
-    link.download = `order-${id}.pdf`; // 👈 Clean filename
+    link.download = `${documentType || "document"}-${id}.pdf`;
     document.body.appendChild(link);
     link.click();
     link.remove();

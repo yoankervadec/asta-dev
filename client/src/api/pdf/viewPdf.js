@@ -3,7 +3,7 @@
 
 import fetchPdfBlob from "./fetchPdfBlob";
 
-export const viewPdf = async (url, id) => {
+export const viewPdf = async (url, id, documentType) => {
   try {
     const blob = await fetchPdfBlob(url, id);
     const blobURL = URL.createObjectURL(blob);
@@ -14,7 +14,7 @@ export const viewPdf = async (url, id) => {
         <!DOCTYPE html>
         <html>
           <head>
-            <title>Order #${id}</title>
+            <title>${documentType || "document"} #${id}</title>
             <style>
               html, body { margin: 0; height: 100%; overflow: hidden; }
               iframe { width: 100%; height: 100%; border: none; }

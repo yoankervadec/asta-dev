@@ -1,0 +1,133 @@
+:root {
+  --font-family-base: "Open Sans", sans-serif;
+  --font-size-base: 0.85em;
+  --font-size-small: 0.75em;
+  --font-size-large: 1.1em;
+
+  --color-text: #333;
+  --color-border: #ccc;
+  --color-header-bg: #f0f0f0;
+
+  --space-xs: 0.25em;
+  --space-sm: 0.5em;
+  --space-md: 1em;
+  --space-lg: 2em;
+
+  --border-radius: 6px;
+  --border-width: 2px;
+  --border-style: solid;
+}
+
+*:where(
+    :not(h1, h2, h3, h4, strong, dialog, canvas, img, svg, video):not(svg *)
+  ) {
+  all: unset;
+  display: revert;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: var(--font-family-base);
+  color: var(--color-text);
+  width: 60em;
+  margin: auto;
+  padding: var(--space-lg);
+}
+
+header,
+footer,
+main {
+  margin-bottom: var(--space-lg);
+}
+
+h1,
+h2 {
+  margin-bottom: var(--space-sm);
+  margin-top: 0;
+}
+
+.document-header {
+  text-align: right;
+  margin-bottom: var(--space-md);
+}
+
+.document-header h1 {
+  font-size: 2em;
+  margin-bottom: 0.2em;
+}
+
+.sellers-info,
+.customer-info p {
+  font-size: var(--font-size-base);
+  line-height: 1.4em;
+}
+
+.df-section-wrapper {
+  break-inside: avoid;
+  padding: var(--space-md);
+  margin-bottom: 1.5em;
+  border: var(--border-width) var(--border-style) var(--color-border);
+  border-radius: var(--border-radius);
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--font-size-base);
+  margin-top: var(--space-sm);
+}
+
+th,
+td {
+  padding: var(--space-sm);
+  text-align: left;
+  border-bottom: 1px solid var(--color-border);
+  word-wrap: break-word;
+}
+
+thead {
+  background-color: var(--color-header-bg);
+  font-weight: 600;
+}
+
+.policy p {
+  font-size: var(--font-size-small);
+  margin-block: var(--space-xs);
+}
+
+.payment {
+  flex: 1;
+  text-align: right;
+  font-size: var(--font-size-base);
+}
+
+.payment p {
+  margin-block: var(--space-xs);
+}
+
+.payment td.total {
+  font-weight: bold;
+  font-size: var(--font-size-large);
+  margin-top: var(--space-md);
+}
+
+.footer-content {
+  display: flex;
+  justify-content: space-between;
+  font-size: var(--font-size-small);
+}
+
+.signature-block {
+  margin-top: var(--space-lg);
+}
+
+.signature-line {
+  margin-top: calc(var(--space-lg) + 1em);
+  border-top: 1px solid #000;
+  width: 200px;
+}

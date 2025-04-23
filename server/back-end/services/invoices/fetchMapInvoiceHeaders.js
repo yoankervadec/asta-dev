@@ -88,11 +88,9 @@ export const fetchMapInvoiceHeaders = async (
           itemNo: line.item_no,
           description: line.description,
           quantity: line.quantity,
-          attributes: {
-            attributeIdSetAsString: line.attr_id_set_as_string,
-            attributeNameSetAsString: line.attr_name_set_as_string,
-            attributes: line.attr_as_array || "[]",
-          },
+          attributeIdSetAsString: line.attr_id_set_as_string,
+          attributeNameSetAsString: line.attr_name_set_as_string,
+          attributes: line.attr_as_array || "[]",
         },
         pricing: {
           unitPriceAsDecimal: parseFloat(line.unit_price),
@@ -156,12 +154,16 @@ export const fetchMapInvoiceHeaders = async (
         (acc, line) => {
           acc.subtotalAsDecimal += line.pricing.lineSubtotalAsDecimal;
           acc.discountAsDecimal += line.pricing.lineDiscountAsDecimal;
+          acc.pstAsDecimal += line.pricing.linePstAsDecimal;
+          acc.gstAsDecimal += line.pricing.lineGstAsDecimal;
           acc.totalAsDecimal += line.pricing.lineTotalAsDecimal;
           return acc;
         },
         {
           subtotalAsDecimal: 0,
           discountAsDecimal: 0,
+          pstAsDecimal: 0,
+          gstAsDecimal: 0,
           totalAsDecimal: 0,
         }
       );
@@ -183,6 +185,21 @@ export const fetchMapInvoiceHeaders = async (
           rawTotals.discountAsDecimal
         ).toLocaleString(undefined, { minimumFractionDigits: 2 }),
 
+        pstAsDecimal: roundToTwoDecimals(rawTotals.pstAsDecimal),
+        pstToString: roundToTwoDecimals(rawTotals.pstAsDecimal).toLocaleString(
+          undefined,
+          {
+            minimumFractionDigits: 2,
+          }
+        ),
+
+        gstAsDecimal: roundToTwoDecimals(rawTotals.gstAsDecimal),
+        gstToString: roundToTwoDecimals(rawTotals.gstAsDecimal).toLocaleString(
+          undefined,
+          {
+            minimumFractionDigits: 2,
+          }
+        ),
         totalAsDecimal: roundToTwoDecimals(rawTotals.totalAsDecimal),
         totalToString: roundToTwoDecimals(
           rawTotals.totalAsDecimal
@@ -226,6 +243,8 @@ export const fetchMapInvoiceHeaders = async (
           extra: header.order_extra,
         },
         details: {
+          documentType: "Facture",
+          documentNo: invoiceNo,
           createdAt: formatDate(header.invoice_created_at),
           createdBy: header.invoice_created_by_name,
         },

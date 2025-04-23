@@ -204,6 +204,8 @@ export const fetchViewOrderHeader = async (orderNo) => {
         },
       },
       orderInfo: {
+        documentType: "Bon de Commande",
+        documentNo: orderHeader.order_no,
         orderNo: orderHeader.order_no,
         requiredDate: format(new Date(orderHeader.required_date), "yyyy-MM-dd"),
         extra: orderHeader.order_extra,

@@ -65,7 +65,11 @@ const PrintModal = ({ onClose, order = {}, invoices = [] }) => {
                         <button
                           className="small-btn cancel-btn"
                           onClick={() => {
-                            viewPdf("/pdf/order-card", orderInfo?.orderNo);
+                            viewPdf(
+                              "/pdf/order-card",
+                              orderInfo?.orderNo,
+                              orderInfo?.documentType
+                            );
                           }}
                         >
                           Print
@@ -75,7 +79,11 @@ const PrintModal = ({ onClose, order = {}, invoices = [] }) => {
                         <button
                           className="small-btn cancel-btn"
                           onClick={() => {
-                            downloadPdf("/pdf/order-card", orderInfo?.orderNo);
+                            downloadPdf(
+                              "/pdf/order-card",
+                              orderInfo?.orderNo,
+                              orderInfo?.documentType
+                            );
                           }}
                         >
                           Download
@@ -97,12 +105,30 @@ const PrintModal = ({ onClose, order = {}, invoices = [] }) => {
                           <span>{invoice?.totals?.totalToString}</span>
                         </td>
                         <td style={{ textAlign: "center" }}>
-                          <button className="small-btn cancel-btn">
+                          <button
+                            className="small-btn cancel-btn"
+                            onClick={() => {
+                              viewPdf(
+                                "/pdf/invoice",
+                                invoice?.invoiceNo,
+                                invoice?.details?.documentType
+                              );
+                            }}
+                          >
                             Print
                           </button>
                         </td>
                         <td style={{ textAlign: "center" }}>
-                          <button className="small-btn cancel-btn">
+                          <button
+                            className="small-btn cancel-btn"
+                            onClick={() => {
+                              downloadPdf(
+                                "/pdf/invoice",
+                                invoice?.invoiceNo,
+                                invoice?.details?.documentType
+                              );
+                            }}
+                          >
                             Download
                           </button>
                         </td>
