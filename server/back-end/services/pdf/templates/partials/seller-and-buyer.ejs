@@ -1,0 +1,30 @@
+<!-- /partials/seller-and-buyer.ejs -->
+
+<section class="coordinates">
+  <article>
+    <h2>Scierie Le Tourneur</h2>
+    <p style="font-weight: 600">Marc André Préfontaine</p>
+    <p>360 Rte. 329, Lachute, QC J8H 3W9</p>
+    <p>T. (514)-571-3733</p>
+    <p>mapretontaine@gmail.com</p>
+  </article>
+  <article>
+    <h3 style="font-weight: 600"><%= customer.name %></h3>
+    <p><%= customer.name2 %></p>
+    <% const addressParts = []; if (customer.location.address &&
+    customer.location.address.trim()) {
+    addressParts.push(customer.location.address.trim()); } if
+    (customer.location.city && customer.location.city.trim()) {
+    addressParts.push(customer.location.city.trim()); } if
+    (customer.location.postalCode && customer.location.postalCode.trim()) {
+    addressParts.push(customer.location.postalCode.trim()); } %> <% if
+    (addressParts.length) { %>
+    <p><%= addressParts.join(', ') %></p>
+    <% } %>
+    <p><span>T. </span>450-612-9070</p>
+    <% if (customer.contact.phone2 && customer.contact.phone2.trim()) { %>
+    <p><span>T. </span><%= customer.contact.phone2 %></p>
+    <% } %>
+    <p><%= customer.contact.email %></p>
+  </article>
+</section>

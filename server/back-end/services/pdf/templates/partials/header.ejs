@@ -1,14 +1,23 @@
 <!-- /partials/header.ejs -->
+
 <header>
-  <div class="document-header">
-    <h1><%= info.documentType %></h1>
-    <p># <%= info.documentNo %></p>
-    <p>Date: <%= info.createdAt %></p>
-  </div>
-  <div class="sellers-info">
-    <p><strong>Scierie Le Tourneur</strong></p>
-    <p>360 Rte. 329, Lachute, QC J8H 3W9</p>
-    <p>T. (514)-571-3733</p>
-    <p>maprefontaine@gmail.com</p>
+  <div
+    style="
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 1em;
+      margin-bottom: 2em;
+      border-bottom: 1px solid var(--color-text);
+    "
+  >
+    <img src="data:image/png;base64,<%= logoBase64 %>" />
+    <div>
+      <h1 style="font-size: 3em">
+        <span style="margin-right: 1ch"><%= info.documentType %></span
+        ><span><%= info.documentNo %></span>
+      </h1>
+      <h2 style="text-align: end"><%= info.createdAt %></h2>
+    </div>
   </div>
 </header>

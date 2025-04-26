@@ -18,6 +18,8 @@ export const generatePdfBuffer = async (templateName, data) => {
     `${templateName}.ejs`
   );
   const cssPath = path.join(__dirname, "../templates/styles/styles.css");
+  const logoPath = path.join(__dirname, "../templates/img/Logo_LeTourneur.png");
+  const logoBase64 = await fs.readFile(logoPath, { encoding: "base64" });
 
   const [htmlTemplate, cssContent] = await Promise.all([
     fs.readFile(templatePath, "utf-8"),
@@ -26,7 +28,7 @@ export const generatePdfBuffer = async (templateName, data) => {
 
   const html = await ejs.render(
     htmlTemplate,
-    { ...data, styles: `<style>${cssContent}</style>` },
+    { ...data, styles: `<style>${cssContent}</style>`, logoBase64 },
     {
       async: true,
       filename: templatePath, // ensures EJS can resolve relative includes
