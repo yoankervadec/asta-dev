@@ -57,6 +57,7 @@ export const fetchViewOrderHeader = async (orderNo) => {
           acc.pstAsDecimal += line.pricing.linePst;
           acc.gstAsDecimal += line.pricing.lineGst;
           acc.totalAsDecimal += line.pricing.lineTotal;
+          acc.boardfeetAsDecimal += line.item.lineBoardfeet;
           return acc;
         },
         {
@@ -65,6 +66,7 @@ export const fetchViewOrderHeader = async (orderNo) => {
           pstAsDecimal: 0,
           gstAsDecimal: 0,
           totalAsDecimal: 0,
+          boardfeetAsDecimal: 0,
         }
       );
 
@@ -75,6 +77,11 @@ export const fetchViewOrderHeader = async (orderNo) => {
 
     // Manually round and format totals
     const totals = {
+      boardfeetAsDecimal: roundToTwoDecimals(rawTotals.boardfeetAsDecimal),
+      boardfeetToString: roundToTwoDecimals(
+        rawTotals.boardfeetAsDecimal
+      ).toLocaleString(undefined, { minimumFractionDigits: 2 }),
+
       subtotalAsDecimal: roundToTwoDecimals(rawTotals.subtotalAsDecimal),
       subtotalToString: roundToTwoDecimals(
         rawTotals.subtotalAsDecimal

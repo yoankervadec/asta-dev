@@ -7,6 +7,7 @@ import { returnLineDiscount } from "../../utils/financial/returnLineDiscount.js"
 import { returnLineAmount } from "../../utils/financial/returnLineAmount.js";
 import { returnTaxAmount } from "../../utils/financial/returnTaxAmount.js";
 import { roundToTwoDecimals } from "../../utils/financial/roundToTwoDecimals.js";
+import { returnBoardfeet } from "../../utils/financial/returnBoardfeet.js";
 
 import {
   isValidBooleanOrNull,
@@ -43,6 +44,10 @@ export const fetchOrderLines = async (
 
     // Transform raw data into the desired format
     const lines = result.map((line) => {
+      const lineBoardfeet =
+        returnBoardfeet(line.thickness, line.width, line.length) *
+        line.quantity;
+
       // Calculate tax rate
       const pstRate = parseFloat(line.pst);
       const gstRate = parseFloat(line.gst);
@@ -83,6 +88,7 @@ export const fetchOrderLines = async (
         item: {
           itemNo: line.item_no,
           quantity: line.quantity,
+          lineBoardfeet,
         },
         pricing: {
           unitPrice: parseFloat(line.unit_price),

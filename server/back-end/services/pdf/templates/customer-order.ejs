@@ -17,115 +17,152 @@
     <%- await include('partials/header', { customer, info }) %>
     <!-- Main -->
     <main>
-      <!-- Customer Info -->
-      <section class="df-section-wrapper customer-info">
-        <h2>Client</h2>
-        <p><strong><%= customer.name %></strong></p>
-        <p><%= customer.name2 %></p>
-        <p><%= customer.location.address %></p>
-        <p><%= customer.contact.phone %></p>
-        <p><%= customer.contact.phone2 %></p>
-        <p><%= customer.contact.email %></p>
+      <!-- Seller and Customer Info -->
+      <%- await include('partials/seller-and-buyer', { customer }) %>
+      <section class="document-meta">
+        <article>
+          <span
+            ><%= totals.boardfeetToString ? "PMP: " + totals.boardfeetToString :
+            "" %></span
+          >
+          <span
+            ><%= totals.surfaceToString ? "Surface Couvrante: " +
+            totals.surfaceToString : "" %></span
+          >
+          <span
+            ><%= info.requiredDate ? "Date Requise: " + info.requiredDate : ""
+            %></span
+          >
+
+          <span
+            ><%= info.documentType === "invoice" ? "Commande: " +
+            info.documentNo : "" %></span
+          >
+        </article>
       </section>
 
       <!-- Items -->
-      <section class="df-section-wrapper">
-        <h2>Produits et Services</h2>
+      <section>
+        <h3>Produits et Services</h3>
         <table>
           <thead>
             <tr>
-              <th>Produit</th>
-              <th>Quantité</th>
-              <th>Description</th>
-              <th>Description (suite)</th>
-              <th style="text-align: end">Prix Unitaire</th>
-              <th style="text-align: end">Rabais (%)</th>
-              <th style="text-align: end">Total</th>
+              <th><span>Produit</span></th>
+              <th><span>Quantité</span></th>
+              <th><span>Description</span></th>
+              <th><span>Description (suite)</span></th>
+              <th style="text-align: end"><span>Prix Unitaire</span></th>
+              <th style="text-align: end"><span>Rabais (%)</span></th>
+              <th style="text-align: end"><span>Total</span></th>
             </tr>
           </thead>
           <tbody>
             <% lines.forEach(line => { %>
             <tr>
-              <td><%= line.item.itemNo %></td>
-              <td><%= line.item.quantity %></td>
-              <td><%= line.item.description %></td>
-              <td><%= line.item.attributeNameSetAsString %></td>
+              <td><span><%= line.item.itemNo %></span></td>
+              <td><span><%= line.item.quantity %></span></td>
+              <td><span><%= line.item.description %></span></td>
+              <td><span><%= line.item.attributeNameSetAsString %></span></td>
               <td style="text-align: end">
-                <%= line.pricing.unitPriceToString %>
+                <span><%= line.pricing.unitPriceToString %></span>
               </td>
               <td style="text-align: end">
-                <%= line.pricing.lineDiscountAmountToString %>
+                <span><%= line.pricing.lineDiscountAmountToString %></span>
               </td>
               <td style="text-align: end">
-                <%= line.pricing.lineSubtotalToString %>
+                <span><%= line.pricing.lineSubtotalToString %></span>
               </td>
             </tr>
             <% }) %>
+            <tr style="border-top: 2px solid var(--color-text)">
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td style="text-align: start; text-wrap: nowrap">
+                <span>Sous-total:</span>
+              </td>
+              <td style="text-align: end">
+                <span> <%= totals.subtotalToString %> </span>
+              </td>
+            </tr>
+            <tr>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td style="text-align: end; font-size: var(--fs-sm)">
+                <span>(73470 5726)</span>
+              </td>
+              <td></td>
+              <td style="text-align: start; text-wrap: nowrap">
+                <span>TPS (5%):</span>
+              </td>
+              <td style="text-align: end">
+                <span> <%= totals.gstToString %> </span>
+              </td>
+            </tr>
+            <tr>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td style="text-align: end; font-size: var(--fs-sm)">
+                <span>(1029812574)</span>
+              </td>
+              <td></td>
+              <td style="text-align: start; text-wrap: nowrap">
+                <span>TVQ (9.975%):</span>
+              </td>
+              <td style="text-align: end">
+                <span> <%= totals.pstToString %> </span>
+              </td>
+            </tr>
+            <% if (totals.discountAsDecimal > 0) { %>
+            <tr>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td style="text-align: start; text-wrap: nowrap">
+                <span>Rabais:</span>
+              </td>
+              <td style="text-align: end">
+                <span> <%= totals.discountToString %> </span>
+              </td>
+            </tr>
+            <% } %>
+            <tr>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td style="text-align: start; text-wrap: nowrap">
+                <span>Total:</span>
+              </td>
+              <td style="text-align: end">
+                <span> <%= totals.totalToString %> </span>
+              </td>
+            </tr>
           </tbody>
         </table>
       </section>
-
-      <!-- Payment Summary -->
-      <section class="df-section-wrapper">
-        <h2>Paiement et Conditions</h2>
-        <div style="display: flex; gap: 2em">
-          <div class="policy" style="flex-grow: 2">
-            <p>
-              Les délais de production sont de 2 à 4 semaines selon
-              l'achalandage.
-            </p>
-            <p>Les planches ne sont pas triées ni classées.</p>
-          </div>
-          <div class="payment">
-            <table style="width: 15em; table-layout: auto">
-              <tbody>
-                <tr>
-                  <td style="border: none">Sous-total:</td>
-                  <td style="text-align: end; border: none">
-                    <%= totals.subtotalToString %>
-                  </td>
-                </tr>
-                <tr>
-                  <td style="border: none">TPS (5%):</td>
-                  <td style="text-align: end; border: none">
-                    <%= totals.gstToString %>
-                  </td>
-                </tr>
-                <tr>
-                  <td style="border: none">TVQ (9.975%):</td>
-                  <td style="text-align: end; border: none">
-                    <%= totals.pstToString %>
-                  </td>
-                </tr>
-                <tr>
-                  <td style="border: none">Rabais:</td>
-                  <td style="text-align: end; border: none">
-                    <%= totals.discountToString %>
-                  </td>
-                </tr>
-                <tr>
-                  <td style="border: none">Paiement:</td>
-                  <td style="text-align: end; border: none">
-                    <%= totals.paymentAmountToString %>
-                  </td>
-                </tr>
-                <tr>
-                  <td style="border: none" class="total">Total:</td>
-                  <td class="total" style="text-align: end; border: none">
-                    <%= totals.totalToString %>
-                  </td>
-                </tr>
-                <tr>
-                  <td style="border: none">Balance:</td>
-                  <td style="text-align: end; border: none">
-                    <%= totals.balanceToString %>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </section>
     </main>
+    <footer>
+      <article class="tnc-constant">
+        <p>
+          Le bois est un matériau naturel : des variations de couleur et de
+          grain peuvent survenir.
+        </p>
+        <p>Les commandes spéciales ne sont ni échangeables ni remboursables.</p>
+      </article>
+      <article>
+        <p>Les planches ne sont pas triées ni classées.</p>
+      </article>
+      <article style="text-align: center; margin-top: 1em">
+        <p>&copy; Scierie Le Tourneur 2025</p>
+      </article>
+    </footer>
   </body>
 </html>

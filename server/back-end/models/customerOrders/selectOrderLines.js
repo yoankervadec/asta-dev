@@ -16,6 +16,9 @@ export const selectOrderLines = async (
         cl.client_id,
         ol.line_no,
         ol.item_no,
+        pr.thickness,
+        pr.width,
+        pr.length,
         ol.quantity,
         ol.discount,
         ol.unit_price,
@@ -30,6 +33,8 @@ export const selectOrderLines = async (
         orders_list AS ol
       JOIN
         orders AS o ON ol.order_no = o.order_no
+      JOIN
+        products AS pr ON ol.item_no = pr.item_no
       JOIN
         clients AS cl ON o.client_id = cl.client_id
       JOIN
