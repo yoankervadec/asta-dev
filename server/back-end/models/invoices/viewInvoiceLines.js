@@ -42,7 +42,7 @@ export const viewInvoiceLines = async (invoiceNo = null, orderNo = null) => {
         orders_list AS ol ON il.order_no = ol.order_no
         AND il.line_no = ol.line_no
       JOIN
-        invoice_headers AS ih ON il.order_no = ih.order_no
+        invoice_headers AS ih ON il.invoice_no = ih.invoice_no
       JOIN 
         products AS pr ON ol.item_no = pr.item_no
       JOIN 
