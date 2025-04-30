@@ -65,7 +65,7 @@
               <td style="text-align: center">
                 <span><%= line.quantityRequired %></span>
               </td>
-              <td><span><%= line.orderNo %></span></td>
+              <td><span><%= line.client + " - " + line.orderNo %></span></td>
             </tr>
             <% })%>
           </tbody>

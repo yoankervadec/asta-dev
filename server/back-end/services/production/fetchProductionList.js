@@ -18,6 +18,7 @@ export const fetchProductionList = async (dateGroupRangeDays = 7) => {
         quantityOrdered: line.quantity_ordered,
         quantityReserved: line.quantity_reserved,
         quantityRequired: line.quantity_required,
+        client: line.name,
         item: {
           itemNo: line.item_no,
           type: line.type,
