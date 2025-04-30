@@ -1,6 +1,8 @@
 //
 // client/src/pages/DashBoard/index.jsx
 
+import { viewPdf } from "../../api/pdf/viewPdf";
+
 import useFetchJobs from "../../hooks/fetch/dashboard/useFetchJobs";
 
 import Loading from "../../components/loaders/Loading";
@@ -17,6 +19,14 @@ const DashBoard = () => {
       to: "/home",
       title: "Home",
       icon: "fas fa-house",
+    },
+    {
+      type: "button",
+      title: "Production list",
+      icon: "fas fa-download",
+      onClick: () => {
+        viewPdf("/pdf/production-list", "", "Production List");
+      },
     },
   ];
   return (

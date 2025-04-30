@@ -245,7 +245,7 @@ const CustomerOrderCard = () => {
                 handleShowPrintModal();
               }}
             >
-              <i className="fas fa-print"></i>Print
+              <i className="fas fa-file-pdf"></i>Export
             </button>
           </div>
         </div>
