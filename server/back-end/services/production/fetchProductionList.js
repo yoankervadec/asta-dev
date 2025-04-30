@@ -15,10 +15,12 @@ export const fetchProductionList = async (dateGroupRangeDays = 7) => {
       return {
         orderNo: line.order_no,
         lineNo: line.line_no,
+        quantityOrdered: line.quantity_ordered,
+        quantityReserved: line.quantity_reserved,
+        quantityRequired: line.quantity_required,
         item: {
           itemNo: line.item_no,
           type: line.type,
-          quantity: line.quantity,
           dimensions: {
             thickness: line.thickness,
             width: line.width,
@@ -41,7 +43,7 @@ export const fetchProductionList = async (dateGroupRangeDays = 7) => {
 
     const sortedLines = sortProductionList(lines, dateGroupRangeDays);
 
-    console.log(JSON.stringify(sortedLines, null, 2));
+    // console.log(JSON.stringify(sortedLines, null, 2));
     return sortedLines || [];
   } catch (error) {
     throw error;
