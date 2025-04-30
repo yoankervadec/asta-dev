@@ -21,8 +21,11 @@
           border-bottom: 1px solid var(--color-text);
         "
       >
+        <% const printDate = new Date().toLocaleDateString('fr-CA', { year:
+        'numeric', month: 'long', day: 'numeric' }) %>
+
         <h1 style="margin-bottom: 0.5em">Production List</h1>
-        <h4>Printed: Tue Apr 29 2025 17:18:02</h4>
+        <h4><%= printDate %></h4>
       </div>
     </header>
     <main>
@@ -30,7 +33,10 @@
       <section>
         <span style="font-size: var(--fs-lg)">
           <strong><span><%= section.type %></span></strong>
-          <span><%= section.requiredDate%></span>
+          <% const formattedDate = new
+          Date(section.requiredDate).toLocaleDateString('fr-CA', { year:
+          'numeric', month: 'short', day: 'numeric' }) %>
+          <span><%= formattedDate %></span>
         </span>
         <table style="margin-top: 1em">
           <colgroup>
@@ -54,9 +60,7 @@
               <td style="text-align: center">
                 <span><%= index + 1 %></span>
               </td>
-              <td style="text-align: center; transform: scale(2)">
-                <span style="vertical-align: 0.2em">&#x2610;</span>
-              </td>
+              <td style="text-align: center"><span>☐</span></td>
               <td><span><%= line.item.itemNo %></span></td>
               <td style="text-align: center">
                 <span><%= line.quantityRequired %></span>
