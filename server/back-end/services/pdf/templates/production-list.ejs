@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -9,9 +9,8 @@
       href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="../styles/reset.css" />
-    <link rel="stylesheet" href="../styles/styles2.css" />
     <title>Production List</title>
+    <%- styles %>
   </head>
   <body>
     <header>
@@ -50,9 +49,11 @@
             </tr>
           </thead>
           <tbody>
-            <% section.items.forEach(line => { %>
+            <% section.items.forEach((line, index) => { %>
             <tr>
-              <td style="text-align: center"><span>1</span></td>
+              <td style="text-align: center">
+                <span><%= index + 1 %></span>
+              </td>
               <td style="text-align: center; transform: scale(2)">
                 <span style="vertical-align: 0.2em">&#x2610;</span>
               </td>

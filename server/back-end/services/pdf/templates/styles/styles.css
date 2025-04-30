@@ -4,7 +4,7 @@ RESET STYLES
 
 */
 
-*:where(:not(dialog, canvas, img, svg, video):not(svg *)) {
+*:where(:not(dialog, strong, canvas, img, svg, video):not(svg *)) {
   all: unset;
   display: revert;
 }

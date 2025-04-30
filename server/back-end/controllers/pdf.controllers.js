@@ -3,6 +3,7 @@
 
 import { generateOrderPdf } from "../services/pdf/generateOrderPdf.js";
 import { generateInvoicePdf } from "../services/pdf/generateInvoicePdf.js";
+import { generateProductionListPdf } from "../services/pdf/generateProductionListPdf.js";
 
 export const handleGenerateOrderPdf = async (req, res) => {
   const { id } = req.body;
@@ -34,6 +35,23 @@ export const handleGenerateInvoicePdf = async (req, res) => {
     res.send(pdfBuffer);
   } catch (err) {
     console.error("Error generating invoice PDF:", err);
+    res.status(500).send("Failed to generate PDF");
+  }
+};
+
+export const handleGenerateProductionListPdf = async (req, res) => {
+  const { dateGroupRangeDays } = req.body;
+
+  try {
+    const pdfBuffer = await generateProductionListPdf(dateGroupRangeDays);
+    res.set({
+      "Content-Type": "application/pdf",
+      "Content-Disposition": `inline; filename=production-list.pdf`,
+    });
+
+    res.send(pdfBuffer);
+  } catch (err) {
+    console.error("Error generating Production List PDF:", err);
     res.status(500).send("Failed to generate PDF");
   }
 };

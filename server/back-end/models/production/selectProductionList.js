@@ -45,6 +45,7 @@ export const selectProductionList = async () => {
         AND ol.posted = 0
         AND ol.status != 1
         AND o.posted = 0
+        AND o.quote = 0
       ORDER BY
         o.priority,
         o.required_date,

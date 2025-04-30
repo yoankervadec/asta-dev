@@ -1,6 +1,8 @@
 //
 // server/back-end/services/production/util/sortProductionList.js
 
+import { format } from "date-fns";
+
 // Sorting and grouping for production lines
 
 export const sortProductionList = (lines = [], dateGroupRangeDays = 7) => {
@@ -50,9 +52,9 @@ export const sortProductionList = (lines = [], dateGroupRangeDays = 7) => {
     for (const line of sortedLines) {
       if (
         !currentGroup || // No group yet
-        currentGroup.priority.priority !== line.priority.priority || // Priority changed
+        currentGroup.priority !== line.priority.priority || // Priority changed
         Math.abs(
-          new Date(currentGroup.priority.requiredDateAsDate) -
+          new Date(currentGroup.requiredDateAsDate) -
             new Date(line.priority.requiredDateAsDate)
         ) /
           (1000 * 60 * 60 * 24) >
@@ -62,7 +64,11 @@ export const sortProductionList = (lines = [], dateGroupRangeDays = 7) => {
         // Start a new group
         currentGroup = {
           priority: line.priority.priority,
-          requiredDate: line.priority.requiredDateAsDate,
+          requiredDateAsDate: line.priority.requiredDateAsDate,
+          requiredDate: format(
+            new Date(line.priority.requiredDateAsDate),
+            "yyyy-MM-dd"
+          ),
           type: line.item.type,
           items: [],
         };

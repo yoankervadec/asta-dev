@@ -66,10 +66,15 @@ const PrintModal = ({ onClose, order = {}, invoices = [] }) => {
                           className="small-btn cancel-btn"
                           onClick={() => {
                             viewPdf(
-                              "/pdf/order-card",
+                              "/pdf/production-list",
                               orderInfo?.orderNo,
                               orderInfo?.documentType
                             );
+                            // viewPdf(
+                            //   "/pdf/order-card",
+                            //   orderInfo?.orderNo,
+                            //   orderInfo?.documentType
+                            // );
                           }}
                         >
                           Print
