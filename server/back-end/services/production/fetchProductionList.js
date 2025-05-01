@@ -44,7 +44,7 @@ export const fetchProductionList = async (dateGroupRangeDays = 7) => {
 
     const sortedLines = sortProductionList(lines, dateGroupRangeDays);
 
-    console.log(JSON.stringify(sortedLines, null, 2));
+    // console.log(JSON.stringify(sortedLines, null, 2));
     return sortedLines || [];
   } catch (error) {
     throw error;

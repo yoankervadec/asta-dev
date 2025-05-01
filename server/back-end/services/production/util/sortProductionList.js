@@ -3,83 +3,68 @@
 
 import { format } from "date-fns";
 
-// Sorting and grouping for production lines
-
 export const sortProductionList = (lines = [], dateGroupRangeDays = 7) => {
   try {
-    // Sort lines
-    const sortedLines = lines.sort((a, b) => {
+    if (!lines.length) return [];
+
+    // Step 1: Sort input first to ensure consistent group formation
+    const linesSorted = [...lines].sort((a, b) => {
+      // Sort by priority first (0 is lowest)
       if (a.priority.priority !== b.priority.priority) {
         if (a.priority.priority === 0) return 1;
         if (b.priority.priority === 0) return -1;
         return b.priority.priority - a.priority.priority;
       }
 
-      // Group required date for 7 days
+      // Group by required date with range
       const dateA = new Date(a.priority.requiredDateAsDate);
       const dateB = new Date(b.priority.requiredDateAsDate);
       const diffDays = (dateA - dateB) / (1000 * 60 * 60 * 24);
 
-      if (Math.abs(diffDays) <= dateGroupRangeDays) {
-        // Already same week, continue to next sort
-      } else {
+      if (Math.abs(diffDays) > dateGroupRangeDays) {
         return diffDays;
       }
 
-      // Same priority and same week, sort by type
-      if (a.item.type !== b.item.type) {
-        return a.item.type.localeCompare(b.item.type);
-      }
-
-      // Same type, now by dimensions
-      if (a.item.dimensions.thickness !== b.item.dimensions.thickness) {
-        return a.item.dimensions.thickness - b.item.dimensions.thickness;
-      }
-      if (a.item.dimensions.width !== b.item.dimensions.width) {
-        return a.item.dimensions.width - b.item.dimensions.width;
-      }
-      if (a.item.dimensions.length !== b.item.dimensions.length) {
-        return a.item.dimensions.length - b.item.dimensions.length;
-      }
-
-      return 0;
+      // Sort by type
+      return a.item.type.localeCompare(b.item.type);
     });
 
+    // Step 2: Group lines
     const consolidated = [];
-
     let currentGroup = null;
 
-    for (const line of sortedLines) {
-      if (
-        !currentGroup || // No group yet
-        currentGroup.priority !== line.priority.priority || // Priority changed
-        Math.abs(
-          new Date(currentGroup.requiredDateAsDate) -
-            new Date(line.priority.requiredDateAsDate)
-        ) /
+    for (const line of linesSorted) {
+      const lineDate = new Date(line.priority.requiredDateAsDate);
+
+      const shouldStartNewGroup =
+        !currentGroup ||
+        currentGroup.priority !== line.priority.priority ||
+        Math.abs(new Date(currentGroup.requiredDateAsDate) - lineDate) /
           (1000 * 60 * 60 * 24) >
-          dateGroupRangeDays || // Date group changed
-        currentGroup.type !== line.item.type // Type changed
-      ) {
-        // Start a new group
+          dateGroupRangeDays ||
+        currentGroup.type !== line.item.type;
+
+      if (shouldStartNewGroup) {
         currentGroup = {
           priority: line.priority.priority,
           requiredDateAsDate: line.priority.requiredDateAsDate,
-          requiredDate: format(
-            new Date(line.priority.requiredDateAsDate),
-            "yyyy-MM-dd"
-          ),
+          requiredDate: format(lineDate, "yyyy-MM-dd"),
           type: line.item.type,
           items: [],
         };
         consolidated.push(currentGroup);
       }
 
-      // Add line line into the current group
       currentGroup.items.push(line);
     }
 
-    // console.log(JSON.stringify(consolidated, null, 2));
+    // Step 3: Sort items within each group by item length descending
+    for (const group of consolidated) {
+      group.items.sort(
+        (a, b) => b.item.dimensions.length - a.item.dimensions.length
+      );
+    }
+
     return consolidated;
   } catch (error) {
     throw error;
