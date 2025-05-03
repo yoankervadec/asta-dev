@@ -58,11 +58,25 @@ export const sortProductionList = (lines = [], dateGroupRangeDays = 7) => {
       currentGroup.items.push(line);
     }
 
-    // Step 3: Sort items within each group by item length descending
+    // Step 3: Sort items within each group by item dimension descending
     for (const group of consolidated) {
-      group.items.sort(
-        (a, b) => b.item.dimensions.length - a.item.dimensions.length
-      );
+      group.items.sort((a, b) => {
+        const dimA = a.item.dimensions;
+        const dimB = b.item.dimensions;
+
+        // Sort by length DESC
+        if (dimB.length !== dimA.length) {
+          return dimB.length - dimA.length;
+        }
+
+        // Then by width DESC
+        if (dimB.width !== dimA.width) {
+          return dimB.width - dimA.width;
+        }
+
+        // Then by thickness DESC
+        return dimB.thickness - dimA.thickness;
+      });
     }
 
     return consolidated;

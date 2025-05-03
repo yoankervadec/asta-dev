@@ -12,6 +12,7 @@ const pool = mysql.createPool({
   user: process.env.DB_USER,
   password: process.env.DB_PASSWORD,
   database: process.env.DB_NAME,
+  waitForConnections: true,
   multipleStatements: true,
 });
 
@@ -32,3 +33,9 @@ export const query = async (sql, params, connection = null) => {
 export const getConnection = async () => {
   return await pool.getConnection();
 };
+
+process.on("SIGINT", async () => {
+  console.log("Closing jobs database pool...");
+  await pool.end();
+  process.exit(0);
+});

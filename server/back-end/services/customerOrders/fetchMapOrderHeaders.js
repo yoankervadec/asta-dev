@@ -1,6 +1,9 @@
 //
 // server/back-end/services/customerOrders/fetchMapOrderHeaders.js
 
+import { runInBackground } from "../../../jobs/background/runInBackground.js";
+import { autoPostCustomerOrders } from "../../../jobs/background/autoPostCustomerOrders.js";
+
 import { format } from "date-fns";
 
 import { viewOrderHeader } from "../../models/customerOrders/viewOrderHeader.js";
@@ -223,6 +226,7 @@ export const fetchMapOrderHeaders = async (
       groupedOrders.push(orderDetails);
     }
 
+    runInBackground(() => autoPostCustomerOrders(groupedOrders));
     // console.log(groupedOrders);
     return groupedOrders;
   } catch (error) {
