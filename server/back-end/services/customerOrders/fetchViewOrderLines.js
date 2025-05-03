@@ -75,10 +75,8 @@ export const fetchViewOrderLines = async (
       );
 
       // Calculate Boardfeet
-      const lineBoardfeetAsDecimal = returnBoardfeet(
-        line.thickness,
-        line.width,
-        line.length
+      const lineBoardfeetAsDecimal = roundToTwoDecimals(
+        returnBoardfeet(line.thickness, line.width, line.length) * line.quantity
       );
 
       // Determine line status
