@@ -14,6 +14,7 @@ import Products from "./pages/Products";
 import CustomerOrders from "./pages/CustomerOrders";
 import DashBoard from "./pages/DashBoard";
 import Customers from "./pages/Customers";
+import Transactions from "./pages/Transactions";
 
 function App() {
   return (
@@ -28,6 +29,7 @@ function App() {
             <Route path="/customer-orders" element={<CustomerOrders />} />
             <Route path="/dashboard" element={<DashBoard />} />
             <Route path="/customers" element={<Customers />} />
+            <Route path="/transactions" element={<Transactions />} />
           </Routes>
         </main>
       </BrowserRouter>

@@ -85,6 +85,12 @@ const Home = () => {
       icon: "fas fa-chart-line",
     },
     {
+      type: "link",
+      to: "/transactions",
+      title: "Transactions",
+      icon: "fas fa-list",
+    },
+    {
       type: "button",
       title: "Void transaction",
       icon: "fas fa-ban",
