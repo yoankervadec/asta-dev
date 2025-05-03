@@ -42,6 +42,7 @@
       </section>
 
       <!-- Items -->
+      <% const showDiscountColumn = totals.discountAsDecimal > 0 %>
       <section>
         <h3>Produits et Services</h3>
         <table>
@@ -52,7 +53,9 @@
               <th><span>Description</span></th>
               <th><span>Description (suite)</span></th>
               <th style="text-align: end"><span>Prix Unitaire</span></th>
+              <% if (showDiscountColumn) { %>
               <th style="text-align: end"><span>Rabais ($)</span></th>
+              <% } %>
               <th style="text-align: end"><span>Total</span></th>
             </tr>
           </thead>
@@ -66,20 +69,29 @@
               <td style="text-align: end">
                 <span><%= line.pricing.unitPriceToString %></span>
               </td>
+              <% if (showDiscountColumn) { %>
               <td style="text-align: end">
-                <span><%= line.pricing.lineDiscountAmountToString %></span>
+                <%= line.pricing.lineDiscountAmountToString %>
               </td>
+              <% } %>
               <td style="text-align: end">
                 <span><%= line.pricing.lineSubtotalToString %></span>
               </td>
             </tr>
             <% }) %>
-            <tr style="border-top: 2px solid var(--color-text)">
+            <tr
+              style="
+                border-top: 2px solid var(--color-text);
+                border-bottom: none;
+              "
+            >
               <td></td>
               <td></td>
               <td></td>
               <td></td>
+              <% if (showDiscountColumn) { %>
               <td></td>
+              <% } %>
               <td style="text-align: start; text-wrap: nowrap">
                 <span>Sous-total:</span>
               </td>
@@ -90,7 +102,9 @@
             <tr>
               <td></td>
               <td></td>
+              <% if (showDiscountColumn) { %>
               <td></td>
+              <% } %>
               <td style="text-align: end; font-size: var(--fs-sm)">
                 <span>(73470 5726)</span>
               </td>
@@ -105,7 +119,9 @@
             <tr>
               <td></td>
               <td></td>
+              <% if (showDiscountColumn) { %>
               <td></td>
+              <% } %>
               <td style="text-align: end; font-size: var(--fs-sm)">
                 <span>(1029812574)</span>
               </td>
@@ -123,7 +139,6 @@
               <td></td>
               <td></td>
               <td></td>
-              <td></td>
               <td style="text-align: start; text-wrap: nowrap">
                 <span>Rabais:</span>
               </td>
@@ -137,7 +152,9 @@
               <td></td>
               <td></td>
               <td></td>
+              <% if (showDiscountColumn) { %>
               <td></td>
+              <% } %>
               <td style="text-align: start; text-wrap: nowrap">
                 <span>Total:</span>
               </td>
