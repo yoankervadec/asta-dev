@@ -19,6 +19,9 @@ export const viewOrderLines = async (
         ol.line_no,
         ol.item_no,
         pr.description,
+        pr.thickness,
+        pr.width,
+        pr.length,
         GROUP_CONCAT(
             DISTINCT la.attr_id
             ORDER BY la.attr_id SEPARATOR ', '

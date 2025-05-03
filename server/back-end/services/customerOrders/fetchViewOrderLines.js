@@ -7,6 +7,7 @@ import { returnLineDiscount } from "../../utils/financial/returnLineDiscount.js"
 import { returnLineAmount } from "../../utils/financial/returnLineAmount.js";
 import { returnPlusTax } from "../../utils/financial/returnPlusTax.js";
 import { returnLineStatus } from "../../utils/status/returnLineStatus.js";
+import { returnBoardfeet } from "../../utils/financial/returnBoardfeet.js";
 import { selectSingleProduct } from "../../models/products/selectSingleProduct.js";
 
 import {
@@ -73,6 +74,13 @@ export const fetchViewOrderLines = async (
         returnPlusTax(lineSubtotal, taxRate)
       );
 
+      // Calculate Boardfeet
+      const lineBoardfeetAsDecimal = returnBoardfeet(
+        line.thickness,
+        line.width,
+        line.length
+      );
+
       // Determine line status
       const lineStatus = returnLineStatus(
         line.shipped,
@@ -117,6 +125,11 @@ export const fetchViewOrderLines = async (
             minimumFractionDigits: 2,
           }),
           lineDiscountPercentage: line.discount,
+          lineBoardfeetAsDecimal,
+          lineBoardfeetToString: lineBoardfeetAsDecimal.toLocaleString(
+            undefined,
+            { minimumFractionDigits: 2 }
+          ),
         },
         status: {
           shipped: line.shipped,

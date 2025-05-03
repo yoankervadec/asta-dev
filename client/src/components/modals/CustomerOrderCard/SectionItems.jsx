@@ -69,6 +69,9 @@ const SectionItems = ({ rows = [], meta, onDeleteLine, onOpenAddItem }) => {
                 <span>Attributes</span>
               </th>
               <th className="align-end">
+                <span>Board Feet</span>
+              </th>
+              <th className="align-end">
                 <span>Unit Price</span>
               </th>
               <th className="align-end">
@@ -126,6 +129,9 @@ const TableRow = ({ row, onDeleteLine }) => {
       </td>
       <td>
         <span>{item?.attributeNameSetAsString}</span>
+      </td>
+      <td className="align-end">
+        <span>{pricing?.lineBoardfeetToString}</span>
       </td>
       <td className="align-end">
         <span>{pricing?.unitPriceToString}</span>
