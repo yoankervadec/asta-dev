@@ -36,6 +36,9 @@ const PosTable = ({ rows }) => {
               <span>Attributes</span>
             </th>
             <th className="align-end">
+              <span>Board Feet</span>
+            </th>
+            <th className="align-end">
               <span>Unit Price</span>
             </th>
             <th className="align-end">
@@ -110,6 +113,9 @@ const TableRow = ({ row }) => {
       </td>
       <td>
         <span>{item?.attributes?.attributeNameSetAsString}</span>
+      </td>
+      <td className="align-end">
+        <span>{item?.lineBoardfeetToString}</span>
       </td>
       <td className="align-end">
         <span>{pricing?.unitPriceToString}</span>
