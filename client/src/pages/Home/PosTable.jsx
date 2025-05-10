@@ -131,7 +131,7 @@ const TableRow = ({ row }) => {
         className="align-end"
       />
       <td className="align-end">
-        <span>{pricing?.lineTotalToString}</span>
+        <span>{pricing?.lineSubtotalToString}</span>
       </td>
     </tr>
   );

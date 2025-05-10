@@ -4,11 +4,7 @@
 import { fetchMapOrderHeaders } from "../customerOrders/fetchMapOrderHeaders.js";
 import { fetchViewOrderLines } from "../customerOrders/fetchViewOrderLines.js";
 
-export const fetchJobs = async (
-  quote = null,
-  posted = null,
-  orderNo = null
-) => {
+export const fetchJobs = async (quote = null, posted = 0, orderNo = null) => {
   try {
     const [orderHeaders, orderLines] = await Promise.all([
       fetchMapOrderHeaders(quote, posted, orderNo),

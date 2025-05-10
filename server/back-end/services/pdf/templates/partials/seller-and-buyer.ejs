@@ -21,7 +21,7 @@
     (addressParts.length) { %>
     <p><%= addressParts.join(', ') %></p>
     <% } %>
-    <p><span>T. </span><%= customer.phone %></p>
+    <p><span>T. </span><%= customer.contact.phone %></p>
     <% if (customer.contact.phone2 && customer.contact.phone2.trim()) { %>
     <p><span>T. </span><%= customer.contact.phone2 %></p>
     <% } %>
