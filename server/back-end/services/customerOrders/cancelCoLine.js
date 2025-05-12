@@ -3,7 +3,6 @@
 
 import { getConnection } from "../../configs/db.config.js";
 import { AppError } from "../../utils/errorHandling/AppError.js";
-import { allocateReservationsScheduler } from "../../../jobs/schedulers/schedulers.js";
 
 import { fetchViewOrderCard } from "./fetchViewOrderCard.js";
 import { updateCancelCoLine } from "../../models/customerOrders/updateCancelCoLine.js";
@@ -91,8 +90,6 @@ export const cancelCoLine = async (
     await updateCancelCoLine(connection, orderNo, lineNo);
 
     await connection.commit();
-    // Run reservation job
-    allocateReservationsScheduler.triggerNow();
   } catch (error) {
     await connection.rollback();
     throw error;

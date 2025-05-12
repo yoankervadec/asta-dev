@@ -9,8 +9,6 @@ import { insertWorkItemEntries } from "../../models/production/insertWorkItemEnt
 import { insertWorkSession } from "../../models/production/insertWorkSession.js";
 import { selectActiveSessionLines } from "../../models/production/selectActiveSessionLines.js";
 
-import { workTableScheduler } from "../../../jobs/schedulers/schedulers.js";
-
 const entryType = 3; // Production
 
 export const postWorkSession = async (userId) => {
@@ -45,9 +43,6 @@ export const postWorkSession = async (userId) => {
     await insertWorkSession(connection, userId);
 
     await connection.commit();
-
-    // trigger work table update
-    workTableScheduler.triggerNow();
   } catch (error) {
     await connection.rollback();
     throw error;

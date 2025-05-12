@@ -8,11 +8,6 @@ import cors from "cors";
 import session from "express-session";
 import cookieParser from "cookie-parser";
 
-import {
-  startAllSchedulers,
-  stopAllSchedulers,
-} from "./jobs/schedulers/schedulers.js";
-
 import schedulerRoutes from "./back-end/routes/scheduler.routes.js";
 import { isAuthenticated } from "./back-end/middleware/authMiddleware.js";
 import authRoutes from "./back-end/routes/auth.routes.js";
@@ -71,8 +66,6 @@ app.use("/production", proRoutes);
 app.use("/dashboard", dashboardRoutes);
 app.use("/pdf", pdfRoutes);
 app.use("/request", confirmationRoutes);
-
-// startAllSchedulers();
 
 const PORT = process.env.PORT;
 

@@ -1,7 +1,7 @@
 //
 // server/jobs/postCustomerOrders.js
 
-import { getConnection } from "../back-end/configs/db.config.js";
+import { getConnection } from "../../back-end/configs/db.config.js";
 
 // "works" bu posts Shipped with Balance...
 export const postCustomerOrders = async () => {

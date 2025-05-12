@@ -89,7 +89,6 @@ export const handleVoidTransactionLine = async (req, res) => {
   const { lineNo } = req.params;
 
   try {
-    // Delegate to service
     await voidTransactionLine(createdBy, lineNo);
 
     sendSuccessResponse(res, 200, {}, isAuthenticated);

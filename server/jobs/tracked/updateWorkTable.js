@@ -1,7 +1,7 @@
 //
 // server/jobs/updateWorkTable.js
 
-import { query } from "../back-end/configs/db.config.js";
+import { query } from "../../back-end/configs/db.config.js";
 
 export const updateWorkTable = async () => {
   const workTableQuery = `

@@ -1,7 +1,7 @@
 //
 // server/jobs/handleReservations.js
 
-import { getConnection } from "../back-end/configs/db.config.js";
+import { getConnection } from "../../back-end/configs/db.config.js";
 
 export const handleReservations = async () => {
   const connection = await getConnection();
