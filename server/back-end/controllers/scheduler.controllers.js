@@ -7,7 +7,7 @@ export const schedulerController = {
   startAllJobs: async (req, res) => {
     try {
       await scheduler.startAll();
-      res.json({ message: "All jobs started." });
+      res.json({ message: "Triggered restart successfully." });
     } catch (error) {
       console.error("Failed to start jobs:", error);
       res.status(500).json({ error: "Failed to start jobs" });
