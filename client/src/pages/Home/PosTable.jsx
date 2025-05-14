@@ -95,11 +95,13 @@ const TableRow = ({ row }) => {
   );
   return (
     <tr>
-      <td
-        className="key-row-selector"
-        onClick={() => syncOpenModal("productCard", { itemNo: item?.itemNo })}
-      >
-        <span>{item?.itemNo}</span>
+      <td>
+        <span
+          className="key-row-selector"
+          onClick={() => syncOpenModal("productCard", { itemNo: item?.itemNo })}
+        >
+          {item?.itemNo}
+        </span>
       </td>
       <EditableCell
         value={quantity}
