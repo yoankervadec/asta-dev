@@ -6,8 +6,10 @@ import styles from "./styles.module.css";
 import React, { useState } from "react";
 import { usePostHelper } from "../../api/postHelper";
 import { useModalNavigation } from "../../hooks/useModalNavigation";
+import { useQueryClient } from "@tanstack/react-query";
 import useFetchPosPage from "../../hooks/fetch/pos/useFetchPosPage";
 import usePostAddToCard from "../../hooks/fetch/products/usePostAddToCart";
+import usePostVoidLine from "../../hooks/fetch/pos/usePostVoidLine";
 
 import NavigationBar from "../../components/NavigationBar";
 import InputBox from "../../components/InputBox";
@@ -19,7 +21,9 @@ import PaymentModal from "./PaymentModal";
 
 const Home = () => {
   // Hooks
+  const queryClient = useQueryClient();
   const postAddToCart = usePostAddToCard();
+  const postVoidLine = usePostVoidLine();
   // States
   const [userInput, setUserInput] = useState("");
   const [showValidateModal, setShowValidateModal] = useState(false);
@@ -56,6 +60,21 @@ const Home = () => {
   const handleOpenPaymentModal = () => {
     if (rows.length > 0 && footerData?.client?.clientId !== null) {
       setShowPaymentModal(true);
+    }
+  };
+
+  const handleVoidLine = (lineNo) => {
+    if (!postVoidLine.isPending) {
+      postVoidLine.mutate(
+        {
+          lineNo,
+        },
+        {
+          onSuccess: () => {
+            queryClient.invalidateQueries(["posPage"]);
+          },
+        }
+      );
     }
   };
 
@@ -117,7 +136,7 @@ const Home = () => {
               dataList={products.map((product) => product.itemNo)}
             />
           </div>
-          <PosTable rows={rows} />
+          <PosTable rows={rows} onVoidLine={handleVoidLine} />
           <PosFooter data={footerData} />
           {showValidateModal && (
             <ValidateProductsModal

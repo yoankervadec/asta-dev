@@ -6,13 +6,14 @@ import useFormField from "../../hooks/useFormField";
 
 import EditableCell from "../../components/EditableCell";
 
-const PosTable = ({ rows }) => {
+const PosTable = ({ rows, onVoidLine }) => {
   const tableRows = rows || [];
 
   return (
     <div className="border-shadow table-container large-table">
       <table>
         <colgroup>
+          <col style={{ width: "4em" }} />
           <col style={{ width: "12ch" }} />
           <col style={{ width: "12ch" }} />
           <col style={{ width: "auto" }} />
@@ -23,6 +24,9 @@ const PosTable = ({ rows }) => {
         </colgroup>
         <thead>
           <tr>
+            <th>
+              <span>Delete</span>
+            </th>
             <th>
               <span>Item No.</span>
             </th>
@@ -51,7 +55,7 @@ const PosTable = ({ rows }) => {
         </thead>
         <tbody>
           {tableRows.map((row) => (
-            <TableRow key={row?.lineNo} row={row} />
+            <TableRow key={row?.lineNo} row={row} onVoidLine={onVoidLine} />
           ))}
         </tbody>
       </table>
@@ -59,7 +63,7 @@ const PosTable = ({ rows }) => {
   );
 };
 
-const TableRow = ({ row }) => {
+const TableRow = ({ row, onVoidLine }) => {
   const updateUrl = "/pos/updateLine";
   const refetchQueries = ["posPage"];
 
@@ -95,6 +99,12 @@ const TableRow = ({ row }) => {
   );
   return (
     <tr>
+      <td className="with-icon">
+        <i
+          className="fas fa-trash-can"
+          onClick={() => onVoidLine?.(lineNo)}
+        ></i>
+      </td>
       <td>
         <span
           className="key-row-selector"
