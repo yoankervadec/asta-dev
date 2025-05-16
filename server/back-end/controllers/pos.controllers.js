@@ -86,7 +86,7 @@ export const handleVoidTransaction = async (req, res) => {
 export const handleVoidTransactionLine = async (req, res) => {
   const createdBy = req.session.userId;
   const isAuthenticated = req.session?.userId;
-  const { lineNo } = req.params;
+  const { lineNo } = req.body;
 
   try {
     await voidTransactionLine(createdBy, lineNo);

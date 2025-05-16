@@ -13,6 +13,7 @@ export const handleRequestConfirmation = async (req, res) => {
   let message, confirmationUrl;
 
   switch (action) {
+    // From POS
     case "void-transaction":
       sendSuccessResponse(
         res,
@@ -26,6 +27,21 @@ export const handleRequestConfirmation = async (req, res) => {
         isAuthenticated
       );
       break;
+    // From POS
+    case "void-stage-line":
+      sendSuccessResponse(
+        res,
+        200,
+        {
+          requiresConfirmation: true,
+          confirmationMessage: "Do you want to void the transaction line?",
+          confirmationAction: "/pos/voidLine",
+          body: req.body,
+        },
+        isAuthenticated
+      );
+      break;
+    // From customer order
     case "cancel-line":
       sendSuccessResponse(
         res,
