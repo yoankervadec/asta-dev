@@ -29,11 +29,11 @@ const ConfirmationModal = ({ message, action, body = {} }) => {
         <p>{message}</p>
       </div>
       <div className="btn-container">
-        <button className="regular-btn confirm-btn" onClick={handleConfirm}>
-          Confirm
-        </button>
         <button className="regular-btn cancel-btn" onClick={() => closeModal()}>
           Cancel
+        </button>
+        <button className="regular-btn confirm-btn" onClick={handleConfirm}>
+          Confirm
         </button>
       </div>
     </div>
