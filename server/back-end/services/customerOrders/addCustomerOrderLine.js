@@ -19,7 +19,7 @@ export const addCustomerOrderLine = async (
   orderNo,
   itemNo,
   quantity = 1,
-  attributes = [],
+  attributes,
   createdBy
 ) => {
   const connection = await getConnection();
@@ -41,6 +41,13 @@ export const addCustomerOrderLine = async (
 
     if (!quantity || isNaN(quantity) || quantity <= 0) {
       throw new AppError(400, "Invalid quantity entered.");
+    }
+
+    if (!attributes || !Array.isArray(attributes.attributes)) {
+      throw new AppError(400, "Invalid attributes format.");
+    }
+    if (attributes.attributes.length === 0) {
+      attributes.attributes = [{ attrId: 1, attrName: "Rough" }];
     }
 
     await connection.beginTransaction();
