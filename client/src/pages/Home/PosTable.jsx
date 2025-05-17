@@ -21,6 +21,7 @@ const PosTable = ({ rows, onVoidLine }) => {
           <col style={{ width: "8em" }} />
           <col style={{ width: "8em" }} />
           <col style={{ width: "8em" }} />
+          <col style={{ width: "8em" }} />
         </colgroup>
         <thead>
           <tr>
