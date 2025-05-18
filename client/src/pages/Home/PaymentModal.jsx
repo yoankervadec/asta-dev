@@ -180,7 +180,7 @@ const PaymentModal = ({ onClose, data }) => {
 
   return (
     <div className="modal-overlay">
-      <div className="modal-content medium-modal">
+      <div className="modal-content medium-modal-container">
         <div className="modal-content-wrapper">
           <div className={styles.productCardContainer}>
             <div className={styles.mainTitleWrapper}>

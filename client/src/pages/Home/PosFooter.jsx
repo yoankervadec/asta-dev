@@ -8,27 +8,35 @@ const PosFooter = ({ data }) => {
   return (
     <section className={`border-shadow ${styles.footerContainer}`}>
       <div className={styles.gridContainer}>
-        <FooterCell title="Client ID&nbsp;:" value={client?.clientId} />
-        <FooterCell title="Name&nbsp;:" value={client?.clientName} />
-        <FooterCell title="Phone&nbsp;:" value={client?.contact?.phone} />
-        <FooterCell
-          title="Boardfeet&nbsp;:"
-          value={details?.totalBoardfeetToString}
-        />
-        <FooterCell title="User&nbsp;:" value={details?.createdByNameShort} />
-        <FooterCell title="Subtotal&nbsp;:" value={totals?.subtotalToString} />
-        <FooterCell
-          title="Discount&nbsp;:"
-          value={totals?.discountAmountToString}
-        />
-        <FooterCell title="TVQ&nbsp;:" value={totals?.pstAmountToString} />
-        <FooterCell title="TPS&nbsp;:" value={totals?.gstAmountToString} />
-        <FooterCell title="Total&nbsp;:" value={totals?.totalAmountToString} />
-        <FooterCell
-          title="Payment&nbsp;:"
-          value={payment?.paymentAmountToString}
-        />
-        <FooterCell title="Tax Region&nbsp;:" value={payment?.taxRegion} />
+        <div className={styles.columnWrapper}>
+          <FooterCell title="User&nbsp;:" value={details?.createdByNameShort} />
+          <FooterCell title="Client ID&nbsp;:" value={client?.clientId} />
+          <FooterCell title="Name&nbsp;:" value={client?.clientName} />
+          <FooterCell title="Phone&nbsp;:" value={client?.contact?.phone} />
+        </div>
+        <div className={styles.columnWrapper}>
+          <FooterCell
+            title="Boardfeet&nbsp;:"
+            value={details?.totalBoardfeetToString}
+          />
+          <FooterCell title="Tax Region&nbsp;:" value={payment?.taxRegion} />
+        </div>
+        <div className={styles.columnWrapper}>
+          <FooterCell
+            title="Subtotal&nbsp;:"
+            value={totals?.subtotalToString}
+          />
+          <FooterCell
+            title="Discount&nbsp;:"
+            value={totals?.discountAmountToString}
+          />
+          <FooterCell title="TVQ&nbsp;:" value={totals?.pstAmountToString} />
+          <FooterCell title="TPS&nbsp;:" value={totals?.gstAmountToString} />
+          <FooterCell
+            title="Total&nbsp;:"
+            value={totals?.totalAmountToString}
+          />
+        </div>
       </div>
     </section>
   );
@@ -36,9 +44,9 @@ const PosFooter = ({ data }) => {
 
 const FooterCell = ({ title, value }) => {
   return (
-    <div>
-      <span>{title}</span>
-      <span>{value}</span>
+    <div style={{ display: "flex", alignItems: "center" }}>
+      <label style={{ width: "6em" }}>{title}</label>
+      <input value={value} disabled></input>
     </div>
   );
 };

@@ -15,28 +15,14 @@ body {
 :root {
   /* Font sizes */
   --fs-xxs: clamp(0.4323rem, 0.1978rem + 0.4885vw, 0.5764rem);
-  /* Step -1: 10px → 13.3333px scaled down to 8.3px → 11.07px */
-
   --fs-sm: clamp(0.519rem, 0.2374rem + 0.5861vw, 0.6916rem);
-  /* Step 0: 12px → 16px scaled down to 9.96px → 13.28px */
-
   --fs-base: clamp(0.6225rem, 0.2849rem + 0.7034vw, 0.83rem);
-  /* Step 1: 14.4px → 19.2px scaled down to 11.95px → 15.94px */
-
   --fs-md: clamp(0.747rem, 0.3419rem + 0.843rem, 0.996rem);
-  /* Step 2: 17.28px → 23.04px scaled down to 14.34px → 19.12px */
-
   --fs-lg: clamp(0.8964rem, 0.4102rem + 1.0138vw, 1.1955rem);
-  /* Step 3: 20.736px → 27.648px scaled down to 17.21px → 22.95px */
-
   --fs-xl: clamp(1.0757rem, 0.4923rem + 1.2154vw, 1.4332rem);
-  /* Step 4: 24.8832px → 33.1776px scaled down to 20.66px → 27.54px */
-
   --fs-xxl: clamp(1.2918rem, 0.5907rem + 1.4596vw, 1.7201rem);
-  /* Step 5: 29.8598px → 39.8131px scaled down to 24.79px → 33.04px */
-
   --fs-xxxl: clamp(1.548rem, 0.7088rem + 1.7502vw, 2.0653rem);
-  /* Step 6: 34.9896px → 49.765px scaled down to 29.04px → 41.30px */
+
   /* Nav Icons */
   --fs-nav-icon: clamp(1.5rem, -0.1582rem + 3.2175vw, 2.6rem);
 
@@ -148,16 +134,22 @@ Good Modals
 .xl-modal-container {
 }
 .large-modal-container {
-  max-width: 80em;
+  width: 80em;
 }
 .medium-modal-container {
   width: 60em;
-  max-width: 100%;
 }
 .small-modal-container {
   width: 40em;
-  max-width: 100%;
 }
+
+.xl-modal-container,
+.large-modal-container,
+.medium-modal-container,
+.small-modal-container {
+  max-width: calc(100% - 2em);
+}
+
 .xl-modal-container .modal-body,
 .large-modal-container .modal-body,
 .medium-modal-container .modal-body,
