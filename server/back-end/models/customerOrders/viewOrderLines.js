@@ -36,6 +36,7 @@ export const viewOrderLines = async (
             'attrName', pa.attr_name
           )
         ) AS attr_as_array,
+        svc.service_as_array,
         ol.quantity,
         ol.discount,
         ol.unit_price,
@@ -67,6 +68,28 @@ export const viewOrderLines = async (
           AND ol.order_no = la.order_no
         JOIN
           products_attr AS pa ON la.attr_id = pa.attr_id
+        LEFT JOIN (
+          SELECT
+            order_no,
+            line_no,
+            JSON_ARRAYAGG(
+              JSON_OBJECT(
+                'serviceId', services.service_id,
+                'serviceName', services.service_name,
+                'serviceNameFr', services.service_name_fr,
+                'serviceCostFactor', services.cost_factor
+                )
+            ) AS service_as_array
+          FROM
+            orders_list_services
+          JOIN
+            services ON orders_list_services.service_id = services.service_id
+          GROUP BY
+            order_no,
+            line_no
+        ) AS svc ON
+          ol.order_no = svc.order_no
+          AND ol.line_no = svc.line_no
     `;
 
     // Add conditions dynamically
