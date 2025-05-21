@@ -77,7 +77,9 @@ export const viewOrderLines = async (
                 'serviceId', services.service_id,
                 'serviceName', services.service_name,
                 'serviceNameFr', services.service_name_fr,
-                'serviceCostFactor', services.cost_factor
+                'serviceCostFactor', services.cost_factor,
+                'completed', orders_list_services.completed,
+                'completedAt', orders_list_services.completed_at
                 )
             ) AS service_as_array
           FROM
