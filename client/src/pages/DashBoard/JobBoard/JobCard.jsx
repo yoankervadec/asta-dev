@@ -68,39 +68,37 @@ const JobCard = ({ job }) => {
       style={dndStyles}
       className={`${styles.cardContainer} border-shadow`}
     >
-      <div className={styles.topBar}>
+      {/* Top Status Bar */}
+      <div className={styles.statusBar}>
         <div className={styles.status}>
-          <span style={{ backgroundColor: statusColor }}>{status}</span>
           <span style={{ backgroundColor: requiredDateColor }}>
             {orderInfo.requiredDate}
           </span>
+          <span style={{ backgroundColor: statusColor }}>{status}</span>
         </div>
-        <div className={styles.topButtonWrapper}></div>
       </div>
+
+      {/* Card Body */}
       <div className={styles.cardBody}>
-        <div className={styles.jobInfo}>
-          <div className={styles.jobContact}>
-            <h4>{name}</h4>
-            <p>{contact.phone}</p>
-          </div>
+        {/* Order Information */}
+        <section className={styles.orderInformation}>
+          <h3>{customer.name}</h3>
+          <p>{customer.contact.phone}</p>
+          {/* Order Details */}
           <div className={styles.jobDetails}>
-            <p>{`Order : ${orderNo}`}</p>
-            <p>{`Total : ${totals.totalToString}`}</p>
-            <p>{`Date created : ${orderInfo.createdAt}`}</p>
+            <div style={{ display: "flex" }}>
+              <label>Order No.&nbsp;:</label>
+              <input value={orderInfo.orderNo} disabled></input>
+            </div>
+            <div style={{ display: "flex" }}>
+              <label>Created at&nbsp;:</label>
+              <input value={orderInfo.createdAt.split(" ")[0]} disabled></input>
+            </div>
           </div>
-        </div>
-        <div className={styles.jobItemsWrapper}>
-          <JobItems lines={orderLines} />
-        </div>
-      </div>
-      <div className={styles.bottomButtonWrapper}>
-        <button
-          onPointerUp={() =>
-            syncOpenModal("customerOrderCard", { orderNo: orderNo })
-          }
-        >
-          <i className="fas fa-arrow-up-right-from-square"></i>
-        </button>
+        </section>
+
+        {/* Items on Order */}
+        <section></section>
       </div>
     </article>
   );
@@ -109,37 +107,39 @@ const JobCard = ({ job }) => {
 const JobItems = ({ lines }) => {
   const { syncOpenModal } = useModalNavigation();
   return (
-    <table className={styles.itemsTable}>
-      <thead>
-        <tr>
-          <th className={styles.quantity}>
-            <span>Quantity</span>
-          </th>
-          <th className={styles.itemNo}>
-            <span>Item No.</span>
-          </th>
-        </tr>
-      </thead>
-      <tbody>
-        {lines.map((line) => (
-          <tr key={line.lineNo}>
-            <td className={styles.quantity}>
-              <span>{line.item.quantity}</span>
-            </td>
-            <td className={styles.itemNo}>
-              <span
-                className="key-row-selector"
-                onPointerUp={() =>
-                  syncOpenModal("productCard", { itemNo: line?.item?.itemNo })
-                }
-              >
-                {line.item.itemNo}
-              </span>
-            </td>
+    <div style={{ overflowY: "auto", flexFlow: "1", height: "200px" }}>
+      <table className={styles.itemsTable}>
+        <thead>
+          <tr>
+            <th className={styles.quantity}>
+              <span>Quantity</span>
+            </th>
+            <th className={styles.itemNo}>
+              <span>Item No.</span>
+            </th>
           </tr>
-        ))}
-      </tbody>
-    </table>
+        </thead>
+        <tbody>
+          {lines.map((line) => (
+            <tr key={line.lineNo}>
+              <td className={styles.quantity}>
+                <span>{line.item.quantity}</span>
+              </td>
+              <td className={styles.itemNo}>
+                <span
+                  className="key-row-selector"
+                  onPointerUp={() =>
+                    syncOpenModal("productCard", { itemNo: line?.item?.itemNo })
+                  }
+                >
+                  {line.item.itemNo}
+                </span>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
   );
 };
 

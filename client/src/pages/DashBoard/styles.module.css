@@ -29,10 +29,14 @@ Main style sheet for Dashboard
   container-type: inline-size;
   container-name: card;
   background-color: var(--cl-background-light);
-  cursor: default;
+  cursor: grab;
+  height: 30em;
   padding: 0.5em;
   user-select: none;
   -webkit-user-select: none;
+}
+.cardContainer:active {
+  cursor: grabbing;
 }
 
 @container card (max-width: 420px) {
@@ -40,14 +44,8 @@ Main style sheet for Dashboard
     /* when short */
     flex-direction: column;
   }
-  .itemsTable th.itemNo,
-  .itemsTable td.itemNo {
-    text-align: left !important;
-  }
 }
 
-.topBar {
-}
 .status {
   /* Status color */
   --status-quote: #d1d3d4;
@@ -63,77 +61,24 @@ Main style sheet for Dashboard
   display: flex;
   gap: 1em;
 }
-.status > span {
-  border-radius: 0.25em;
-  padding: 0.35em 0.5em;
-  font-size: var(--fs-sm);
+.status span {
   font-weight: 500;
+  min-width: 6em;
+  text-align: center;
+  padding: 0.4em 0.5em;
+  border-radius: 0.25em;
 }
-.topButtonWrapper {
-}
-.bottomButtonWrapper {
-  padding-top: 0.5em;
-  margin-top: 0.5em;
-}
-.bottomButtonWrapper button {
-  background-color: var(--cl-grey-disabled);
-  color: var(--cl-grey-dark);
-  font-size: var(--fs-md);
-  cursor: pointer;
-  padding: 0.1em 0.3em;
-  border-radius: 4px;
-}
-/* body */
+
 .cardBody {
-  /* When wide */
-  min-height: 100px;
   display: flex;
-  margin-top: 0.5em;
-  gap: 1em;
 }
-.jobInfo {
-  display: flex;
-  flex-direction: column;
-  gap: 0.25em;
-  flex-shrink: 0;
-}
-.jobContact {
+
+.orderInformation p {
+  font-size: var(--fs-md);
 }
 .jobDetails {
-  font-size: var(--fs-sm);
-  opacity: 80%;
+  font-size: var(--fs-base);
 }
-
-.jobItemsWrapper {
-  width: 100%;
-  border: 1px solid var(--cl-grey-disabled);
-  border-radius: 4px;
-  padding: 0.25em;
-}
-/* Items Table */
-.itemsTable {
-  table-layout: fixed;
-  width: 100%;
-}
-.itemsTable thead {
-  background-color: var(--cl-green-light);
-  font-weight: 500;
-}
-.itemsTable thead th {
-  padding-block: 0.25em;
-}
-.itemsTable tbody td {
-  padding-block: 0.25em;
-}
-.itemsTable td.itemNo {
-  white-space: nowrap;
-}
-.itemsTable th.quantity,
-.itemsTable td.quantity {
-  padding-right: 0.5em;
-  text-align: center;
-}
-
-.itemsTable tbody tr:nth-child(even) {
-  background-color: var(--cl-background-focus);
+.jobDetails label {
+  width: 6em;
 }
