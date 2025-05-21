@@ -2,12 +2,12 @@
 // server/back-end/services/customerOrderServices/processAndCompleteService.js
 
 import { fetchViewOrderLines } from "../customerOrders/fetchViewOrderLines.js";
-
 import { selectServiceConfig } from "../../models/customerOrderServices/selectServiceConfig.js";
 import { insertItemEntry } from "../../models/itemEntries/insertItemEntry.js";
 import { insertItemEntryAttribute } from "../../models/itemEntries/insertItemEntryAttribute.js";
 import { insertCustomerOrderLineAttribute } from "../../models/customerOrders/insertCustomerOrderLineAttribute.js";
 import { deleteCustomerOrderLineAttribute } from "../../models/customerOrders/deleteCustomerOrderLineAttribute.js";
+import { updateServiceLine } from "../../models/customerOrderServices/updateServiceLine.js";
 
 import { getConnection } from "../../configs/db.config.js";
 import { AppError } from "../../utils/errorHandling/AppError.js";
@@ -23,6 +23,24 @@ export const processAndCompleteService = async (orderNo, lineNo, serviceId) => {
       throw new AppError(
         400,
         `Order number "${orderNo}" invalid.`,
+        "Invalid Parameters."
+      );
+    }
+    if (lineNo === undefined || lineNo === null || isNaN(Number(lineNo))) {
+      throw new AppError(
+        400,
+        `Line number "${lineNo}" invalid.`,
+        "Invalid Parameters."
+      );
+    }
+    if (
+      serviceId === undefined ||
+      serviceId === null ||
+      isNaN(Number(serviceId))
+    ) {
+      throw new AppError(
+        400,
+        `Service ID "${serviceId}" invalid.`,
         "Invalid Parameters."
       );
     }
@@ -42,6 +60,7 @@ export const processAndCompleteService = async (orderNo, lineNo, serviceId) => {
       throw new AppError(400, "Cannot determine which line to process.");
     }
 
+    // Extract line and fields
     const line = processLine[0];
     // Reject if line not ready
     if (line.status.statusCode !== 1) {
@@ -58,8 +77,8 @@ export const processAndCompleteService = async (orderNo, lineNo, serviceId) => {
     if (!serviceConfig) {
       throw new AppError(400, "Service configuration not found.");
     }
-    const removeAttributes = serviceConfig.remove_attributes || []; // [1, 4]
-    const addAttributes = serviceConfig.add_attributes || []; // [ 2, 6, 8]
+    const removeAttributes = serviceConfig.remove_attributes || [];
+    const addAttributes = serviceConfig.add_attributes || [];
 
     // Handle inventory movement if required
     if (removeAttributes.length > 0) {
@@ -79,7 +98,6 @@ export const processAndCompleteService = async (orderNo, lineNo, serviceId) => {
         await insertItemEntryAttribute(connection, entryNo, attribute);
       }
     }
-
     if (addAttributes.length > 0) {
       const ITEM_ENTRY_TYPE = 4; // Positive
 
@@ -109,7 +127,6 @@ export const processAndCompleteService = async (orderNo, lineNo, serviceId) => {
         );
       }
     }
-
     if (addAttributes.length > 0) {
       for (const attribute of addAttributes) {
         await insertCustomerOrderLineAttribute(
@@ -121,9 +138,19 @@ export const processAndCompleteService = async (orderNo, lineNo, serviceId) => {
       }
     }
 
-    await connection.rollback();
-    // await connection.commit();
+    // Set the service line to completed
+    await updateServiceLine(
+      connection,
+      orderNo,
+      lineNo,
+      serviceId,
+      "completed",
+      true
+    );
+
+    await connection.commit();
   } catch (error) {
+    await connection.rollback();
     throw error;
   } finally {
     connection.release();

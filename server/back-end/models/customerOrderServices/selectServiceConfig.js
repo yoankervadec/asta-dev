@@ -3,10 +3,9 @@
 
 import { query } from "../../configs/db.config.js";
 
-export const selectServiceConfig = async (serviceId) => {
+export const selectServiceConfig = async (serviceId = null) => {
   try {
-    const result = await query(
-      `
+    let sql = `
       SELECT
         service_id,
         service_name,
@@ -16,12 +15,21 @@ export const selectServiceConfig = async (serviceId) => {
         add_attributes
       FROM
         services
-      WHERE
-        service_id = ?
-      `,
-      [serviceId]
-    );
+      `;
 
+    const conditions = [];
+    const params = [];
+
+    if (serviceId !== null) {
+      conditions.push("service_id = ?");
+      params.push(serviceId);
+    }
+
+    if (conditions.length > 0) {
+      sql += `WHERE ${conditions.join(" AND ")}`;
+    }
+
+    const result = await query(sql, params);
     return result;
   } catch (error) {
     throw new Error("Failed to select Service Configuration: " + error.message);
