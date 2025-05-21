@@ -419,6 +419,9 @@ td.with-icon > i:hover {
   color: var(--cl-grey-dark);
   transition: color 0.15s;
 }
+.strikethrough {
+  text-decoration: line-through;
+}
 .key-row-selector:hover {
   text-decoration: underline;
   cursor: pointer;

@@ -44,6 +44,8 @@ const SectionItems = ({ rows = [], meta, onDeleteLine, onOpenAddItem }) => {
             <col style={{ width: "10ch" }} />
             <col style={{ width: "auto" }} />
             <col style={{ width: "auto" }} />
+            <col style={{ width: "auto" }} />
+            <col style={{ width: "7em" }} />
             <col style={{ width: "7em" }} />
             <col style={{ width: "7em" }} />
             <col style={{ width: "7em" }} />
@@ -67,6 +69,9 @@ const SectionItems = ({ rows = [], meta, onDeleteLine, onOpenAddItem }) => {
               </th>
               <th>
                 <span>Attributes</span>
+              </th>
+              <th>
+                <span>Services</span>
               </th>
               <th className="align-end">
                 <span>Board Feet</span>
@@ -101,7 +106,7 @@ export default SectionItems;
 
 const TableRow = ({ row, onDeleteLine }) => {
   const { syncOpenModal } = useModalNavigation();
-  const { customer, item, pricing, status } = row;
+  const { customer, item, pricing, status, services } = row;
   return (
     <tr className={status.active === 1 ? "" : "row-canceled"}>
       <td className="with-icon">
@@ -129,6 +134,20 @@ const TableRow = ({ row, onDeleteLine }) => {
       </td>
       <td>
         <span>{item?.attributeNameSetAsString}</span>
+      </td>
+      <td>
+        {services?.services.map((s, i) => (
+          <span
+            key={i}
+            style={{
+              paddingInline: "0",
+            }}
+            className={`${s.completed ? "strikethrough" : "key-row-selector"}`}
+          >
+            {s.serviceName}
+            {i < services.services.length - 1 && ", "}
+          </span>
+        ))}
       </td>
       <td className="align-end">
         <span>{pricing?.lineBoardfeetToString}</span>

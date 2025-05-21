@@ -19,6 +19,7 @@ import coRoutes from "./back-end/routes/co.routes.js";
 import proRoutes from "./back-end/routes/production.routes.js";
 import dashboardRoutes from "./back-end/routes/dashboard.routes.js";
 import pdfRoutes from "./back-end/routes/pdf.routes.js";
+import servicesRoutes from "./back-end/routes/services.routes.js";
 import confirmationRoutes from "./back-end/routes/confirmation.routes.js";
 
 // Middleware
@@ -56,6 +57,7 @@ app.use(
 
 app.use("/scheduler", schedulerRoutes);
 app.use("/auth", authRoutes);
+app.use("/services", servicesRoutes);
 app.use(isAuthenticated); //Auth check past this point
 app.use("/product", productsRoutes);
 app.use("/clients", clientRoutes);

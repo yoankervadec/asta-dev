@@ -135,6 +135,9 @@ export const fetchViewOrderLines = async (
           posted: line.posted,
           statusCode: line.status,
         },
+        services: {
+          services: line.service_as_array || [],
+        },
       };
     });
 
