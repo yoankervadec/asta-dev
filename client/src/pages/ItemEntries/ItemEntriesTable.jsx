@@ -90,7 +90,7 @@ const TableRow = ({ row }) => {
         <span>{item?.quantity}</span>
       </td>
       <td>
-        <span>{item?.attributes?.attributesNamesAsString}</span>
+        <span>{item?.attributes?.attributesNameSetAsString}</span>
       </td>
       <td>
         <span>{documents?.transactionId}</span>

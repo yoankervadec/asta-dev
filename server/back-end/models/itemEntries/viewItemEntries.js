@@ -21,6 +21,14 @@ export const viewItemEntries = async (
         ie_type.name AS entry_type_name,
         ie.item_no,
         pr.description,
+        GROUP_CONCAT(
+          DISTINCT ie_attr.attr_id
+          ORDER BY ie_attr.attr_id SEPARATOR ', '
+        ) AS attr_id_set_as_string,
+        GROUP_CONCAT(
+          DISTINCT pr_attr.attr_name
+          ORDER BY ie_attr.attr_id SEPARATOR ', '
+        ) AS attr_name_set_as_string,
         JSON_ARRAYAGG(
           JSON_OBJECT(
             'attrId', ie_attr.attr_id,

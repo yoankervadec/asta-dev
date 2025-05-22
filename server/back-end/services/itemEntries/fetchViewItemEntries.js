@@ -53,6 +53,8 @@ export const fetchViewItemEntries = async (
           description: line.description,
           quantity: line.quantity,
           attributes: {
+            attributesIdSetAsString: line.attr_id_set_as_string,
+            attributesNameSetAsString: line.attr_name_set_as_string,
             attributes: line.attr_as_array,
           },
           costAsDecimal: parseFloat(line.cost),
