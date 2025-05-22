@@ -71,7 +71,7 @@ export const fetchViewItemEntries = async (
       };
     });
 
-    console.log(JSON.stringify(lines, null, 2));
+    // console.log(JSON.stringify(lines, null, 2));
     return lines;
   } catch (error) {
     throw error;

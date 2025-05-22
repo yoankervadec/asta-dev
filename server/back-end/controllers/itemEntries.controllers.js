@@ -19,7 +19,7 @@ export const handleFetchViewItemEntries = async (req, res) => {
   } = req.params;
 
   try {
-    const result = await fetchViewItemEntries(
+    const lines = await fetchViewItemEntries(
       entryNo,
       warehouseId,
       transactionId,
@@ -27,7 +27,7 @@ export const handleFetchViewItemEntries = async (req, res) => {
       documentNo
     );
 
-    sendSuccessResponse(res, 200, { result }, isAuthenticated);
+    sendSuccessResponse(res, 200, { lines }, isAuthenticated);
   } catch (err) {
     sendErrorResponse(
       res,

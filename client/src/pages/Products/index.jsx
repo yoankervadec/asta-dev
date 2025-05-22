@@ -80,6 +80,12 @@ const Products = () => {
       icon: "fas fa-check",
       onClick: () => handleValidateProducts(),
     },
+    {
+      type: "link",
+      to: "/products/item-entries",
+      title: "Item entries",
+      icon: "fas fa-list-ul",
+    },
   ];
 
   return (
