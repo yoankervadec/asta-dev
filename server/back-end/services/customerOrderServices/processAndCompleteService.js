@@ -77,7 +77,7 @@ export const processAndCompleteService = async (orderNo, lineNo, serviceId) => {
     if (!serviceConfig) {
       throw new AppError(400, "Service configuration not found.");
     }
-    const removeAttributes = serviceConfig.remove_attributes || [];
+    const removeAttributes = serviceConfig.removes_attributes || [];
     const addAttributes = serviceConfig.add_attributes || [];
 
     // Handle inventory movement if required
@@ -91,7 +91,7 @@ export const processAndCompleteService = async (orderNo, lineNo, serviceId) => {
         ITEM_ENTRY_TYPE,
         itemNo,
         quantity,
-        null,
+        0,
         orderNo
       );
       for (const attribute of removeAttributes) {
@@ -108,7 +108,7 @@ export const processAndCompleteService = async (orderNo, lineNo, serviceId) => {
         ITEM_ENTRY_TYPE,
         itemNo,
         quantity,
-        null,
+        0,
         orderNo
       );
       for (const attribute of addAttributes) {
@@ -149,6 +149,7 @@ export const processAndCompleteService = async (orderNo, lineNo, serviceId) => {
     );
 
     await connection.commit();
+    // await connection.rollback();
   } catch (error) {
     await connection.rollback();
     throw error;
