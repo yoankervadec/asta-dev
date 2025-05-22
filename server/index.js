@@ -59,7 +59,6 @@ app.use(
 app.use("/scheduler", schedulerRoutes);
 app.use("/auth", authRoutes);
 app.use("/services", servicesRoutes);
-app.use("/item-entries", itemEntriesRoutes);
 app.use(isAuthenticated); //Auth check past this point
 app.use("/product", productsRoutes);
 app.use("/clients", clientRoutes);
@@ -69,6 +68,7 @@ app.use("/customer-order", coRoutes);
 app.use("/production", proRoutes);
 app.use("/dashboard", dashboardRoutes);
 app.use("/pdf", pdfRoutes);
+app.use("/item-entries", itemEntriesRoutes);
 app.use("/request", confirmationRoutes);
 
 const PORT = process.env.PORT;
