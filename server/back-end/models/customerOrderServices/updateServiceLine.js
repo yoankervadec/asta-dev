@@ -15,7 +15,8 @@ export const updateServiceLine = async (
       UPDATE
         orders_list_services
       SET
-        ${field} = ?
+        ${field} = ?,
+        completed_at = CURRENT_TIMESTAMP
       WHERE
         order_no = ? AND
         line_no = ? AND

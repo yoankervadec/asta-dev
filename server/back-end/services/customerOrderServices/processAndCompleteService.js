@@ -69,6 +69,20 @@ export const processAndCompleteService = async (orderNo, lineNo, serviceId) => {
         "Service cannot be processed until the line is ready."
       );
     }
+
+    // Check if the service was already completed
+    const serviceToCheck = line.services.services.find(
+      (s) => s.serviceId === serviceId
+    );
+
+    if (!serviceToCheck) {
+      throw new AppError(400, "Service not found on this line.");
+    }
+
+    if (serviceToCheck.completed === 1) {
+      throw new AppError(400, "This service has already been completed.");
+    }
+
     const itemNo = line.item.itemNo;
     const quantity = line.item.quantity;
 
@@ -90,7 +104,7 @@ export const processAndCompleteService = async (orderNo, lineNo, serviceId) => {
         null,
         ITEM_ENTRY_TYPE,
         itemNo,
-        quantity,
+        -Math.abs(quantity), // Negative quantity
         0,
         orderNo
       );

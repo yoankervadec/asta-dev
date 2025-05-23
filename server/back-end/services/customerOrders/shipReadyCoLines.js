@@ -76,7 +76,7 @@ export const shipReadyCoLines = async (createdBy, orderNo) => {
         transactionId,
         ENTRY_TYPE,
         itemNo,
-        quantity
+        -Math.abs(quantity) // Negative quantity
       );
 
       for (const attr of attributes) {
