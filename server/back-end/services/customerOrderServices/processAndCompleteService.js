@@ -85,6 +85,7 @@ export const processAndCompleteService = async (orderNo, lineNo, serviceId) => {
 
     const itemNo = line.item.itemNo;
     const quantity = line.item.quantity;
+    const currentAttributes = line.item.attributes || [];
 
     // Fetch service configuration
     const [serviceConfig] = await selectServiceConfig(serviceId);
@@ -95,7 +96,7 @@ export const processAndCompleteService = async (orderNo, lineNo, serviceId) => {
     const addAttributes = serviceConfig.add_attributes || [];
 
     // Handle inventory movement if required
-    if (removeAttributes.length > 0) {
+    if (currentAttributes.length > 0) {
       const ITEM_ENTRY_TYPE = 5; // Negative
 
       const entryNo = await insertItemEntry(
@@ -108,11 +109,11 @@ export const processAndCompleteService = async (orderNo, lineNo, serviceId) => {
         0,
         orderNo
       );
-      for (const attribute of removeAttributes) {
-        await insertItemEntryAttribute(connection, entryNo, attribute);
+      for (const attribute of currentAttributes) {
+        await insertItemEntryAttribute(connection, entryNo, attribute.attrId);
       }
     }
-    if (addAttributes.length > 0) {
+    if (addAttributes.length > 0 || removeAttributes.length > 0) {
       const ITEM_ENTRY_TYPE = 4; // Positive
 
       const entryNo = await insertItemEntry(
@@ -125,8 +126,30 @@ export const processAndCompleteService = async (orderNo, lineNo, serviceId) => {
         0,
         orderNo
       );
-      for (const attribute of addAttributes) {
-        await insertItemEntryAttribute(connection, entryNo, attribute);
+      // Original attributes from line
+      const originalAttrs =
+        line.item.attributes?.map((attr) => attr.attrId) || [];
+
+      // Remove attributes
+      const removedAttrs = new Set(removeAttributes);
+
+      // Add attributes
+      const addedAttrs = new Set(addAttributes);
+
+      // Final set = (original - removed) + added
+      const finalAttrsSet = new Set(
+        originalAttrs.filter((attr) => !removedAttrs.has(attr))
+      );
+
+      for (const attr of addedAttrs) {
+        finalAttrsSet.add(attr);
+      }
+
+      // Sort final attribute IDs numerically
+      const sortedAttrIds = [...finalAttrsSet].sort((a, b) => a - b);
+
+      for (const attrId of sortedAttrIds) {
+        await insertItemEntryAttribute(connection, entryNo, attrId);
       }
     }
 
@@ -163,7 +186,6 @@ export const processAndCompleteService = async (orderNo, lineNo, serviceId) => {
     );
 
     await connection.commit();
-    // await connection.rollback();
   } catch (error) {
     await connection.rollback();
     throw error;

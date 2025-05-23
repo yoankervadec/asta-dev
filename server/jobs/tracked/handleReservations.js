@@ -158,41 +158,30 @@ export const handleReservations = async () => {
     );
 
     // Step 3: get available inventory based on ledgers and reservation entries
-    // (refunds + production + positive adjustments) - (sales + negative adjustments) - (quantities reserved)
     const [inventory] = await connection.query(
       `
       SELECT
-          ie.item_no,
-          GREATEST(
-              (
-                  SUM(
-                      CASE
-                          WHEN ie.TYPE IN (2, 3, 4) THEN ie.quantity
-                          ELSE 0
-                      END
-                  ) - SUM(
-                      CASE
-                          WHEN ie.TYPE IN (1, 5) THEN ie.quantity
-                          ELSE 0
-                      END
-                  )
-              ) - COALESCE(re.sum_quantity, 0), 0
-          ) AS available_inventory
-      FROM item_entries ie
-          LEFT JOIN (
-              SELECT
-                  ol.item_no,
-                  GREATEST(SUM(re.quantity_reserved), 0) AS sum_quantity
-              FROM
-                  reservation_entries AS re
-                  JOIN
-                      orders_list AS ol ON re.order_no = ol.order_no
-                      AND re.line_no = ol.line_no
-              GROUP BY
-                  ol.item_no
-          ) AS re ON ie.item_no = re.item_no
+        ie.item_no,
+        GREATEST(
+          COALESCE(SUM(ie.quantity), 0) - COALESCE(reserved_inventory.quantity_reserved, 0),
+          0
+        ) AS available_inventory
+      FROM
+        item_entries AS ie
+      LEFT JOIN (
+        SELECT
+          ol.item_no,
+          COALESCE(SUM(re.quantity_reserved), 0) AS quantity_reserved
+        FROM
+          reservation_entries AS re
+        JOIN
+          orders_list AS ol ON re.order_no = ol.order_no
+          AND re.line_no = ol.line_no
+        GROUP BY
+          ol.item_no
+      ) AS reserved_inventory ON ie.item_no = reserved_inventory.item_no
       GROUP BY
-          ie.item_no
+        ie.item_no
       `
     );
     // Create inventory map
