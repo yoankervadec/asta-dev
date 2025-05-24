@@ -30,6 +30,9 @@ export const fetchProducts = async (itemNo = null) => {
       return inventoryRows.map((row) => ({
         itemNo: row.item_no,
         quantity: row.actual_inventory,
+        actualInventory: row.actual_inventory,
+        reservedInventory: row.reserved_inventory,
+        availableInventory: row.available_inventory,
         attributeIdsAsString: row.attr_id_set_as_string,
         attributeNamesAsString: row.attr_name_set_as_string,
         attributes: row.attr_as_array ? JSON.parse(row.attr_as_array) : [], // Convert to JSON

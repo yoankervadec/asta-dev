@@ -1,7 +1,7 @@
 //
 // client/src/pages/Products/ValidateProductsModal.jsx
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 import useFetchProductCard from "../../hooks/fetch/products/useFetchProductCard";
 import NumericPad from "../../components/NumericPad";
@@ -17,6 +17,16 @@ const ValidateProductsModal = ({ products, onClose, onValidate }) => {
   const { data, isLoading } = useFetchProductCard(currentItemNo);
   const productInfo = data?.data?.productInfo[0] || {};
   const rows = productInfo?.inventory?.inventoryPerAttributes || [];
+
+  // Auto-select default row when no attributes exist
+  useEffect(() => {
+    if (rows.length === 0 && !selectedAttributes[currentItemNo]) {
+      setSelectedAttributes((prev) => ({
+        ...prev,
+        [currentItemNo]: [],
+      }));
+    }
+  }, [currentItemNo]);
 
   const handleSelectAttribute = (attribute) => {
     setSelectedAttributes((prev) => ({
@@ -80,27 +90,28 @@ const ValidateProductsModal = ({ products, onClose, onValidate }) => {
                 </tr>
               </thead>
               <tbody>
-                {rows?.map((row) => (
-                  <tr
-                    key={row.attributeIdsAsString}
-                    onClick={() => handleSelectAttribute(row)}
-                    className={
-                      selectedAttributes[currentItemNo] === row
-                        ? "selected"
-                        : ""
-                    }
-                  >
-                    <td>
-                      <span>{currentItemNo}</span>
-                    </td>
-                    <td>
-                      <span>{row?.quantity}</span>
-                    </td>
-                    <td>
-                      <span>{row?.attributeNamesAsString || "Default"}</span>
-                    </td>
-                  </tr>
-                ))}
+                {rows.length > 0 ? (
+                  rows.map((row) => (
+                    <AttributeRow
+                      key={row.attributeIdsAsString}
+                      row={row}
+                      isSelected={selectedAttributes[currentItemNo] === row}
+                      onClick={() => handleSelectAttribute(row)}
+                      itemNo={currentItemNo}
+                    />
+                  ))
+                ) : (
+                  <AttributeRow
+                    key="default"
+                    row={{
+                      availableInventory: 0,
+                      attributeNamesAsString: "Default",
+                    }}
+                    isSelected={true}
+                    onClick={() => handleSelectAttribute([])}
+                    itemNo={currentItemNo}
+                  />
+                )}
               </tbody>
             </table>
           </div>
@@ -129,3 +140,17 @@ const ValidateProductsModal = ({ products, onClose, onValidate }) => {
 };
 
 export default ValidateProductsModal;
+
+const AttributeRow = ({ row, isSelected, onClick, itemNo }) => (
+  <tr onClick={onClick} className={isSelected ? "selected" : ""}>
+    <td>
+      <span>{itemNo}</span>
+    </td>
+    <td>
+      <span>{row?.availableInventory}</span>
+    </td>
+    <td>
+      <span>{row?.attributeNamesAsString || "Default"}</span>
+    </td>
+  </tr>
+);

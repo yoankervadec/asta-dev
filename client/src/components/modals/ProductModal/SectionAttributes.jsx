@@ -17,7 +17,10 @@ const SectionAttributes = ({ data }) => {
                 <span>Item No.</span>
               </th>
               <th>
-                <span>Quantity</span>
+                <span>Quantity Available</span>
+              </th>
+              <th>
+                <span>Quantity Reserved</span>
               </th>
               <th>
                 <span>Attributes</span>
@@ -31,7 +34,10 @@ const SectionAttributes = ({ data }) => {
                   <span>{row?.itemNo}</span>
                 </td>
                 <td>
-                  <span>{row?.quantity}</span>
+                  <span>{row?.availableInventory}</span>
+                </td>
+                <td>
+                  <span>{row?.reservedInventory}</span>
                 </td>
                 <td>
                   <span>{row?.attributeNamesAsString || "..."}</span>
