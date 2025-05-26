@@ -16,19 +16,19 @@ const ValidateProductsModal = ({ products, onClose, onValidate }) => {
 
   const { data, isLoading } = useFetchProductCard(currentItemNo);
   const productInfo = data?.data?.productInfo[0] || {};
-  const rows = productInfo?.inventory?.inventoryPerAttributes || [];
+  const inventoryRows = productInfo?.inventory?.inventoryPerAttributes || [];
+  const defaultRow = {
+    attributeIdsAsString: "default",
+    attributeNamesAsString: "Default",
+    availableInventory: "",
+    isDefault: true,
+  };
 
-  // Auto-select default row when no attributes exist
-  useEffect(() => {
-    if (rows.length === 0 && !selectedAttributes[currentItemNo]) {
-      setSelectedAttributes((prev) => ({
-        ...prev,
-        [currentItemNo]: [],
-      }));
-    }
-  }, [currentItemNo]);
+  // Always include the default row as the first option
+  const rows = [defaultRow, ...inventoryRows];
 
   const handleSelectAttribute = (attribute) => {
+    console.log(attribute);
     setSelectedAttributes((prev) => ({
       ...prev,
       [currentItemNo]: attribute,
@@ -82,7 +82,7 @@ const ValidateProductsModal = ({ products, onClose, onValidate }) => {
                     <span>Item No.</span>
                   </th>
                   <th>
-                    <span>Actual Inventory</span>
+                    <span>Available Inventory</span>
                   </th>
                   <th>
                     <span>Attributes</span>
@@ -90,28 +90,18 @@ const ValidateProductsModal = ({ products, onClose, onValidate }) => {
                 </tr>
               </thead>
               <tbody>
-                {rows.length > 0 ? (
-                  rows.map((row) => (
-                    <AttributeRow
-                      key={row.attributeIdsAsString}
-                      row={row}
-                      isSelected={selectedAttributes[currentItemNo] === row}
-                      onClick={() => handleSelectAttribute(row)}
-                      itemNo={currentItemNo}
-                    />
-                  ))
-                ) : (
+                {rows.map((row) => (
                   <AttributeRow
-                    key="default"
-                    row={{
-                      availableInventory: 0,
-                      attributeNamesAsString: "Default",
-                    }}
-                    isSelected={true}
-                    onClick={() => handleSelectAttribute([])}
+                    key={row.attributeIdsAsString}
+                    row={row}
+                    isSelected={
+                      selectedAttributes[currentItemNo]
+                        ?.attributeIdsAsString === row.attributeIdsAsString
+                    }
+                    onClick={() => handleSelectAttribute(row)}
                     itemNo={currentItemNo}
                   />
-                )}
+                ))}
               </tbody>
             </table>
           </div>

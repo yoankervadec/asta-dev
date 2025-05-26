@@ -10,14 +10,17 @@ const PosFooter = ({ data }) => {
       <div className={styles.gridContainer}>
         <div className={styles.columnWrapper}>
           <FooterCell title="User&nbsp;:" value={details?.createdByNameShort} />
-          <FooterCell title="Client ID&nbsp;:" value={client?.clientId} />
-          <FooterCell title="Name&nbsp;:" value={client?.clientName} />
-          <FooterCell title="Phone&nbsp;:" value={client?.contact?.phone} />
+          <FooterCell title="Client ID&nbsp;:" value={client?.clientId || ""} />
+          <FooterCell title="Name&nbsp;:" value={client?.clientName || ""} />
+          <FooterCell
+            title="Phone&nbsp;:"
+            value={client?.contact?.phone || ""}
+          />
         </div>
         <div className={styles.columnWrapper}>
           <FooterCell
             title="Boardfeet&nbsp;:"
-            value={details?.totalBoardfeetToString}
+            value={details?.totalBoardfeetToString || ""}
           />
           <FooterCell title="Tax Region&nbsp;:" value={payment?.taxRegion} />
         </div>
@@ -46,7 +49,7 @@ const FooterCell = ({ title, value }) => {
   return (
     <div style={{ display: "flex", alignItems: "center" }}>
       <label style={{ width: "6em" }}>{title}</label>
-      <input value={value} disabled></input>
+      <input value={value || ""} disabled></input>
     </div>
   );
 };
