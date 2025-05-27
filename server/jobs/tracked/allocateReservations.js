@@ -97,64 +97,27 @@ export const allocateReservations = async (orderNo = null, itemNo = null) => {
     // FIND CONFLICT LINES
     const [conflictOrders] = await connection.query(
       `
-      WITH sorted_orders AS (
-        SELECT
-          ol.order_no,
-          ol.line_no,
-          ol.item_no,
-          ol.quantity,
-          o.required_date,
-          o.priority,
-          ROW_NUMBER() OVER (
-            PARTITION BY ol.item_no
-            ORDER BY o.priority DESC, o.required_date ASC, o.created_at ASC
-          ) AS order_priority
-        FROM
-          orders_list AS ol
-        JOIN
-          orders AS o
-          ON ol.order_no = o.order_no
-        WHERE
-          o.quote = 0
-          AND o.posted = 0
-          AND ol.active = 1
-          AND ol.posted = 0
-          AND ol.shipped = 0
-      )
       SELECT
-        s.order_no,
-        s.line_no,
-        s.item_no,
-        s.quantity,
-        s.required_date,
-        s.priority,
-        s.order_priority AS current_priority,
-        p.order_priority AS previous_priority
-      FROM
-        sorted_orders AS s
-      LEFT JOIN
-        orders_list_priority AS p
-        ON s.order_no = p.order_no AND s.line_no = p.line_no
-      WHERE
-        s.order_priority > p.order_priority
-        -- new priority higner than previous
-      UNION
-      SELECT
-        p.order_no,
-        p.line_no,
-        NULL AS item_no,
-        NULL AS quantity,
-        NULL AS required_date,
-        NULL AS priority,
-        NULL AS current_priority,
+        COALESCE(p.order_no, t.order_no) AS order_no,
+        COALESCE(p.line_no, t.line_no) AS line_no,
+        t.item_no,
+        t.quantity_ordered AS quantity,
+        t.required_date,
+        t.priority,
+        t.calculated_priority AS current_priority,
         p.order_priority AS previous_priority
       FROM
         orders_list_priority AS p
-      LEFT JOIN
-        sorted_orders AS s
-        ON p.order_no = s.order_no AND p.line_no = s.line_no
+        LEFT JOIN temp_order_lines AS t ON p.order_no = t.order_no
+        AND p.line_no = t.line_no
       WHERE
-        s.order_no IS NULL;
+        -- Case 1: priority has increased
+        (
+          t.calculated_priority IS NOT NULL
+          AND t.calculated_priority > p.order_priority
+        )
+        -- Case 2: old priority exists but no matching line anymore
+        OR (t.order_no IS NULL)
       `
     );
 

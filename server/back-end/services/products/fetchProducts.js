@@ -45,7 +45,7 @@ export const fetchProducts = async (itemNo = null) => {
       const cost = parseFloat(row.cost);
       const unitPrice = returnUnitPrice(pricePerThousand, boardfeet);
       const availableInventory = Math.max(
-        row.actual_inventory - row.quantity_on_orders,
+        row.actual_inventory - row.quantity_reserved,
         0
       );
 
