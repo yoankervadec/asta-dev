@@ -85,9 +85,9 @@ class Job {
   }
 
   // Run job once
-  async run() {
+  async run(params = undefined) {
     try {
-      const result = await this.executeTask();
+      const result = await this.executeTask(params);
       const now = new Date();
       const formatted = format(now, "yyyy-MM-dd HH:mm:ss:SSS");
       console.log(`[${formatted}] ${this.jobName}:\t${JSON.stringify(result)}`);

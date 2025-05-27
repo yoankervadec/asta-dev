@@ -2,9 +2,28 @@
 // server/jobs/tracked/allocateReservations.js
 
 import { getConnection } from "../../back-end/configs/db.config.js";
+import { buildInClause } from "../../back-end/utils/sql/buildInClause.js";
 
-export const allocateReservations = async (orderNo = null, itemNo = null) => {
+export const allocateReservations = async ({
+  orderNo = [],
+  itemNo = [],
+} = {}) => {
   const connection = await getConnection();
+
+  const {
+    whereClause: customerOrderItemWhereClause,
+    params: customerOrderItemParams,
+  } = buildInClause({
+    "ol.item_no": itemNo,
+  });
+  const { whereClause: priorityItemWhereClause, params: priorityItemParams } =
+    buildInClause({
+      "p.item_no": itemNo,
+    });
+  const { whereClause: inventoryItemWhereClause, params: inventoryItemParams } =
+    buildInClause({
+      "inv.item_no": itemNo,
+    });
 
   try {
     const startTime = performance.now();
@@ -86,12 +105,14 @@ export const allocateReservations = async (orderNo = null, itemNo = null) => {
         AND ol.active = 1
         AND ol.shipped = 0
         AND ol.posted = 0
+        ${customerOrderItemWhereClause}
       GROUP BY
         ol.order_no,
         ol.line_no
       ORDER BY
         calculated_priority;
-      `
+      `,
+      customerOrderItemParams
     );
 
     // FIND CONFLICT LINES
@@ -111,14 +132,16 @@ export const allocateReservations = async (orderNo = null, itemNo = null) => {
         LEFT JOIN temp_order_lines AS t ON p.order_no = t.order_no
         AND p.line_no = t.line_no
       WHERE
-        -- Case 1: priority has increased
+      -- Case 1: priority has increased
         (
-          t.calculated_priority IS NOT NULL
-          AND t.calculated_priority > p.order_priority
+        t.calculated_priority IS NOT NULL
+        AND t.calculated_priority > p.order_priority
         )
         -- Case 2: old priority exists but no matching line anymore
         OR (t.order_no IS NULL)
-      `
+        ${priorityItemWhereClause}
+      `,
+      priorityItemParams
     );
 
     // DELETE CONFLICT LINES
@@ -189,7 +212,9 @@ export const allocateReservations = async (orderNo = null, itemNo = null) => {
             attribute_group
         ) AS res ON inv.item_no = res.item_no
         AND inv.attr_id_set_as_string = res.attribute_group
-      `
+        ${inventoryItemWhereClause}
+      `,
+      inventoryItemParams
     );
 
     // FETCH CUSTOMER ORDERS FROM TEMP TABLE
@@ -261,8 +286,6 @@ export const allocateReservations = async (orderNo = null, itemNo = null) => {
       inventoryMap.set(itemKey, availableInventory - allocated);
     }
 
-    console.log(newReservations);
-
     // INSERT NEW RESERVATION ENTRIES
     let entries = { affectedRows: 0 };
 
@@ -315,7 +338,6 @@ export const allocateReservations = async (orderNo = null, itemNo = null) => {
     );
 
     connection.commit();
-    // connection.rollback();
     const endTime = performance.now();
 
     return {
@@ -325,7 +347,7 @@ export const allocateReservations = async (orderNo = null, itemNo = null) => {
     };
   } catch (error) {
     await connection.rollback();
-    console.error(error);
+    throw new Error("Failed to allocate reservations: " + error.message);
   } finally {
     connection.release();
   }

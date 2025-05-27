@@ -6,8 +6,8 @@ class JobRunner {
     this.queue = [];
     this.running = false;
   }
-  async enqueue(job) {
-    this.queue.push(job);
+  async enqueue(job, params = undefined) {
+    this.queue.push({ job, params });
     this.processQueue();
   }
 
@@ -15,10 +15,10 @@ class JobRunner {
     if (this.running || this.queue.length === 0) return;
 
     this.running = true;
-    const job = this.queue.shift();
+    const { job, params } = this.queue.shift();
 
     try {
-      await job.run();
+      await job.run(params);
     } catch (err) {
       console.error(`Failed to run job ${job.jobName}:`, err.message);
     }

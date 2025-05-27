@@ -59,13 +59,13 @@ class Scheduler {
     this.started = false;
   }
 
-  triggerJob(jobName) {
+  triggerJob(jobName, params = undefined) {
     const job = this.jobs.find((j) => j.jobName === jobName);
     if (!job) {
       console.warn(`Job "${jobName}" not found.`);
       return;
     }
-    jobRunner.enqueue(job);
+    jobRunner.enqueue(job, params);
   }
 }
 
