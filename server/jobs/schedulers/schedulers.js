@@ -6,6 +6,7 @@ import { updateLinesStatus } from "../tracked/updateLinesStatus.js";
 import { handleReservations } from "../tracked/handleReservations.js";
 import { updateInventorySummary } from "../tracked/updateInventorySummary.js";
 import { postCustomerOrders } from "../tracked/postCustomerOrders.js";
+import { allocateReservations } from "../tracked/allocateReservations.js";
 
 import Scheduler from "../manager/Scheduler.js";
 
@@ -20,7 +21,8 @@ const postCustomerOrdersJob = "postCustomerOrders";
 //  jobName:      database name
 //  executeTask:  function
 const scheduler = new Scheduler([
-  { jobName: allocateReservationsJob, executeTask: handleReservations },
+  // { jobName: allocateReservationsJob, executeTask: handleReservations },
+  { jobName: allocateReservationsJob, executeTask: allocateReservations },
   { jobName: updateOrderLinesStatusJob, executeTask: updateLinesStatus },
   { jobName: updateInventorySummaryJob, executeTask: updateInventorySummary },
   { jobName: updateWorkTableJob, executeTask: updateWorkTable },
