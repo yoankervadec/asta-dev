@@ -1,31 +1,71 @@
 //
 // server/back-end/utils/status/returnOrderStatus.js
 
+import {
+  ORDER_STATUS,
+  LINE_STATUS,
+} from "../../../constant/customerOrderStatus.js";
+
+/**
+ * Determine the status of a customer order.
+ *
+ * @param {number} quote
+ * @param {number} consolidated
+ * @param {Array<{
+ *   active: number,
+ *   shipped: number,
+ *   status_id: number
+ * }>} itemLines
+ * @param {number} balance
+ * @returns {string}
+ */
+
 export const returnOrderStatus = (quote, consolidated, itemLines, balance) => {
+  // Extract active lines and statuses
   const activeLines = itemLines.filter((item) => item.active);
-  const inactiveLines = itemLines.filter((item) => !item.active);
+  const statusIds = activeLines.map((line) => line.status_id);
 
-  const statusIds = activeLines.map((item) => item.status_id);
+  const hasAllCanceled = itemLines.length > 0 && activeLines.length === 0;
 
-  const allInactive = itemLines.length > 0 && activeLines.length === 0;
-  const allShipped =
-    activeLines.length > 0 && activeLines.every((item) => item.shipped);
-  const someShipped = activeLines.some((item) => item.shipped);
-  const allReady = statusIds.length > 0 && statusIds.every((id) => id === 1);
-  const someProcessing = statusIds.some((id) => id === 3);
-  const someWaiting = statusIds.some((id) => id === 2);
+  const hasAllShipped =
+    activeLines.length > 0 && activeLines.every((line) => line.shipped);
 
-  if (quote && allInactive) return "Canceled Quote";
-  if (quote) return "Quote";
-  if (consolidated) return "Consolidated";
-  if (allInactive) return "Canceled";
-  if (allShipped && balance > 0) return "Shipped with balance";
-  if (allShipped) return "Shipped";
-  if (someShipped && balance > 0) return "Partially Shipped with balance";
-  if (someShipped) return "Partially Shipped";
-  if (allReady && balance > 0) return "Payment Pending";
-  if (allReady && balance === 0) return "Ready";
-  if (someProcessing) return "Processing";
-  if (someWaiting) return "Waiting";
-  return "Not sure lol";
+  const hasSomeShipped = activeLines.some((line) => line.shipped);
+
+  const hasAllReady =
+    statusIds.length > 0 && statusIds.every((id) => id === LINE_STATUS.ready);
+
+  const hasSomeServicePending =
+    statusIds.length > 0 && statusIds.includes(LINE_STATUS.servicePending);
+
+  const hasSomeProcessing = statusIds.includes(LINE_STATUS.processing);
+
+  const hasSomeWaiting = statusIds.includes(LINE_STATUS.waiting);
+
+  // Return status name
+  if (hasAllCanceled) return ORDER_STATUS.canceled.statusName;
+
+  if (quote) return ORDER_STATUS.quote.statusName;
+
+  if (hasAllShipped && balance > 0)
+    return ORDER_STATUS.shippedWithBalance.statusName;
+
+  if (hasAllShipped) return ORDER_STATUS.shipped.statusName;
+
+  if (hasSomeShipped) return ORDER_STATUS.partiallyShipped.statusName;
+
+  if (consolidated) return ORDER_STATUS.consolidated.statusName;
+
+  if (hasSomeProcessing) return ORDER_STATUS.processing.statusName;
+
+  if (hasSomeWaiting) return ORDER_STATUS.waiting.statusName;
+
+  if (hasSomeServicePending && !hasSomeProcessing && !hasSomeWaiting)
+    return ORDER_STATUS.servicePending.statusName;
+
+  if (hasAllReady && balance > 0) return ORDER_STATUS.paymentPending.statusName;
+
+  if (hasAllReady && balance === 0) return ORDER_STATUS.ready.statusName;
+
+  return ORDER_STATUS.undetermined.statusName;
 };

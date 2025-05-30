@@ -2,15 +2,10 @@
 // server/jobs/updateLinesStatus.js
 
 import { getConnection } from "../../back-end/configs/db.config.js";
+import { LINE_STATUS } from "../../constant/customerOrderStatus.js";
 
 export const updateLinesStatus = async () => {
   const connection = await getConnection();
-
-  const STATUS = {
-    ready: 1,
-    waiting: 2,
-    servicePending: 5,
-  };
 
   try {
     await connection.beginTransaction();
@@ -100,41 +95,41 @@ export const updateLinesStatus = async () => {
 
       // READY
       if (
-        lineStatusId !== STATUS.ready &&
+        lineStatusId !== LINE_STATUS.ready &&
         hasServicesFullyComplete(services) &&
         isFullyReserved(quantityOrdered, quantityReserved)
       ) {
-        linesReady.push({ orderNo, lineNo, newStatus: STATUS.ready });
+        linesReady.push({ orderNo, lineNo, newStatus: LINE_STATUS.ready });
 
         // SERVICE PENDING
       } else if (
-        lineStatusId !== STATUS.servicePending &&
+        lineStatusId !== LINE_STATUS.servicePending &&
         !hasServicesFullyComplete(services) &&
         isFullyReserved(quantityOrdered, quantityReserved)
       ) {
         linesServicePending.push({
           orderNo,
           lineNo,
-          newStatus: STATUS.servicePending,
+          newStatus: LINE_STATUS.servicePending,
         });
 
         // WAITING
       } else if (
-        lineStatusId !== STATUS.waiting &&
+        lineStatusId !== LINE_STATUS.waiting &&
         !isFullyReserved(quantityOrdered, quantityReserved)
       ) {
-        linesWaiting.push({ orderNo, lineNo, newStatus: STATUS.waiting });
+        linesWaiting.push({ orderNo, lineNo, newStatus: LINE_STATUS.waiting });
       }
     }
 
     // Perform batched updates
-    await updateLineStatuses(connection, linesReady, STATUS.ready);
+    await updateLineStatuses(connection, linesReady, LINE_STATUS.ready);
     await updateLineStatuses(
       connection,
       linesServicePending,
-      STATUS.servicePending
+      LINE_STATUS.servicePending
     );
-    await updateLineStatuses(connection, linesWaiting, STATUS.waiting);
+    await updateLineStatuses(connection, linesWaiting, LINE_STATUS.waiting);
 
     const endTime = performance.now();
     const executionTime = (endTime - startTime).toFixed(2);
