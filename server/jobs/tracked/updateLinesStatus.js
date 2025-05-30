@@ -137,10 +137,10 @@ export const updateLinesStatus = async () => {
     await connection.commit();
 
     return {
-      executionTime,
       linesReady: linesReady.length,
       linesServicePending: linesServicePending.length,
       linesWaiting: linesWaiting.length,
+      executionTime,
     };
   } catch (error) {
     await connection.rollback();
