@@ -1,6 +1,8 @@
 //
 // server/back-end/services/customerOrderServices/addServiceLine.js
 
+import scheduler from "../../../jobs/schedulers/schedulers.js";
+
 import { fetchViewOrderLines } from "../customerOrders/fetchViewOrderLines.js";
 import { selectServiceConfig } from "../../models/customerOrderServices/selectServiceConfig.js";
 import { insertServiceLine } from "../../models/customerOrderServices/insertServiceLine.js";
@@ -83,6 +85,8 @@ export const addServiceLine = async (orderNo, lineNo, serviceId) => {
 
     // Insert service line
     await insertServiceLine(orderNo, lineNo, serviceId);
+
+    scheduler.triggerJob("updateLinesStatus", { orderNo: [orderNo] });
   } catch (error) {
     throw error;
   }

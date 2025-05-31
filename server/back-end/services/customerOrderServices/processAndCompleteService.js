@@ -1,6 +1,9 @@
 //
 // server/back-end/services/customerOrderServices/processAndCompleteService.js
 
+import { LINE_STATUS } from "../../../constant/customerOrderStatus.js";
+import scheduler from "../../../jobs/schedulers/schedulers.js";
+
 import { fetchViewOrderLines } from "../customerOrders/fetchViewOrderLines.js";
 import { selectServiceConfig } from "../../models/customerOrderServices/selectServiceConfig.js";
 import { insertItemEntry } from "../../models/itemEntries/insertItemEntry.js";
@@ -63,7 +66,7 @@ export const processAndCompleteService = async (orderNo, lineNo, serviceId) => {
     // Extract line and fields
     const line = processLine[0];
     // Reject if line not ready
-    if (line.status.statusCode !== 1) {
+    if (line.status.statusCode !== LINE_STATUS.servicePending) {
       throw new AppError(
         400,
         "Service cannot be processed until the line is ready."
@@ -186,6 +189,8 @@ export const processAndCompleteService = async (orderNo, lineNo, serviceId) => {
     );
 
     await connection.commit();
+
+    scheduler.triggerJob("updateLinesStatus", { orderNo: [orderNo] });
   } catch (error) {
     await connection.rollback();
     throw error;

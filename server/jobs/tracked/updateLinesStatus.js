@@ -2,10 +2,16 @@
 // server/jobs/updateLinesStatus.js
 
 import { getConnection } from "../../back-end/configs/db.config.js";
+import { buildInClause } from "../../back-end/utils/sql/buildInClause.js";
 import { LINE_STATUS } from "../../constant/customerOrderStatus.js";
 
-export const updateLinesStatus = async () => {
+export const updateLinesStatus = async ({ orderNo = [] } = {}) => {
   const connection = await getConnection();
+
+  const { whereClause: customerOrderWhereClause, params: customerOrderParams } =
+    buildInClause({
+      "ol.order_no": orderNo,
+    });
 
   try {
     await connection.beginTransaction();
@@ -60,13 +66,15 @@ export const updateLinesStatus = async () => {
         AND ol.posted = 0 -- NOT POSTED LINE
         AND ol.shipped = 0 -- NOT SHIPPED LINE
         AND ol.active = 1 -- NOT CANCELED
+        ${customerOrderWhereClause}
       GROUP BY
         ol.order_no,
         ol.line_no
       ORDER BY
         o.order_no DESC,
         ol.line_no ASC;
-      `
+      `,
+      customerOrderParams
     );
 
     // ARRAYS FOR UPDATES
