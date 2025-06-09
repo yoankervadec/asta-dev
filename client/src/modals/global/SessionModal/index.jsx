@@ -9,7 +9,7 @@ import usePostRequestCommitSession from "../../../hooks/fetch/production/usePost
 
 import SectionHeader from "./SectionHeader";
 import SectionLines from "./SectionLines";
-import Loading from "../../loaders/Loading";
+import Loading from "../../../components/loaders/Loading";
 
 const SessionModal = () => {
   const { modalParams, syncCloseModal, syncOpenModal } = useModalNavigation();

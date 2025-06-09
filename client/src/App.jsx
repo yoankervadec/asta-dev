@@ -7,7 +7,7 @@ import "@fortawesome/fontawesome-free/css/all.min.css";
 
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
-import ModalContainer from "./components/modals/ModalContainer/ModalContainer";
+import GlobalModalContainer from "./modals/global/GlobalModalContainer";
 import AuthPage from "./pages/AuthPage";
 import Home from "./pages/Home";
 import Products from "./pages/Products";
@@ -21,7 +21,7 @@ function App() {
   return (
     <>
       <BrowserRouter>
-        <ModalContainer />
+        <GlobalModalContainer />
         <main>
           <Routes>
             <Route path="/login" element={<AuthPage />} />

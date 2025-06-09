@@ -12,6 +12,12 @@ body {
   color: var(--cl-grey-dark);
 }
 
+/* Modal Portal */
+#as-modal-root {
+  position: fixed;
+  z-index: 999;
+}
+
 :root {
   /* Font sizes */
   --fs-xxs: clamp(0.4323rem, 0.1978rem + 0.4885vw, 0.5764rem);

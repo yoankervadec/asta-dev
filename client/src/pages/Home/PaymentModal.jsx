@@ -9,7 +9,7 @@ import useFormField from "../../hooks/useFormField";
 import { useQueryClient } from "@tanstack/react-query";
 import usePostCreateOrder from "../../hooks/fetch/pos/usePostCreateOrder";
 
-import styles from "../../components/modals/ProductModal/styles.module.css"; // from Product Modal
+import styles from "../../modals/global/ProductModal/styles.module.css";
 
 const PaymentModal = ({ onClose, data }) => {
   const queryClient = useQueryClient();

@@ -4,7 +4,7 @@
 import React, { useEffect, useState } from "react";
 import useFormField from "../../../hooks/useFormField";
 
-import InputCell from "../../Inputcell";
+import InputCell from "../../../components/Inputcell";
 
 const SectionInformation = ({ meta, data }) => {
   const { orderInfo, totals } = data || {};

@@ -1,7 +1,7 @@
 //
 // client/src/components/modals/CustomerOrderCard/PaymentModal.jsx
 
-import InputCell from "../../Inputcell";
+import InputCell from "../../../components/Inputcell";
 
 const PaymentModal = ({
   isRequired,

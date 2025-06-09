@@ -1,7 +1,7 @@
 //
 // client/src/components/modals/SessionModal/SectionHeader.jsx
 
-import InputCell from "../../Inputcell";
+import InputCell from "../../../components/Inputcell";
 
 const SectionHeader = ({ data }) => {
   const { warehouse, details } = data || {};

@@ -4,7 +4,7 @@
 import { useQueryClient } from "@tanstack/react-query";
 import { useModalStore } from "../../../store/useModalStore";
 import { usePostHelper } from "../../../api/postHelper";
-import Loading from "../../loaders/Loading";
+import Loading from "../../../components/loaders/Loading";
 
 import styles from "../ErrorModal/styles.module.css"; // from ErrorModal
 

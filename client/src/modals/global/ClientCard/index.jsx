@@ -5,7 +5,7 @@ import { useModalNavigation } from "../../../hooks/useModalNavigation";
 import useFetchCustomerCard from "../../../hooks/fetch/customers/useFetchCustomerCard";
 
 import SectionOrders from "./SectionOrders";
-import Loading from "../../loaders/Loading";
+import Loading from "../../../components/loaders/Loading";
 
 import styles from "../ProductModal/styles.module.css"; // From Product Modal
 

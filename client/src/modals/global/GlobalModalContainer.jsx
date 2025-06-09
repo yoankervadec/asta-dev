@@ -1,25 +1,25 @@
 //
-// client/src/components/modals/ModalContainer/ModalContainer.jsx
+// client/src/modals/global/GlobalModalContainer.jsx
 
-import { useEffect, useRef } from "react";
+import { useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
-import { useModalStore } from "../../../store/useModalStore";
-import { useModalNavigation } from "../../../hooks/useModalNavigation";
-import ErrorModal from "../ErrorModal";
-import ProgressModal from "../ProgressModal";
-import ConfirmationModal from "../ConfirmationModal";
-import CustomerOrderCard from "../CustomerOrderCard";
-import ClientCard from "../ClientCard";
-import ProductModal from "../ProductModal";
-import SessionModal from "../SessionModal";
+import { useModalStore } from "../../store/useModalStore";
+import { useModalNavigation } from "../../hooks/useModalNavigation";
 
-import styles from "./styles.module.css";
+import ErrorModal from "./ErrorModal";
+import ProgressModal from "./ProgressModal";
+import ConfirmationModal from "./ConfirmationModal";
+import CustomerOrderCard from "./CustomerOrderCard";
+import ClientCard from "./ClientCard";
+import ProductModal from "./ProductModal";
+import SessionModal from "./SessionModal";
 
-export default function ModalContainer() {
+import ASModalWrapper from "../ASModalWrapper";
+
+const GlobalModalContainer = () => {
   const { modals, setModalsFromURL } = useModalStore();
   const { syncCloseModal } = useModalNavigation();
   const [searchParams] = useSearchParams();
-  const dialogRefs = useRef([]);
 
   useEffect(() => {
     // Parse the URL and set modals in Zustand on page load
@@ -31,20 +31,20 @@ export default function ModalContainer() {
     }
   }, [searchParams]);
 
-  useEffect(() => {
-    modals.forEach((_, index) => {
-      if (dialogRefs.current[index]) {
-        dialogRefs.current[index].showModal();
-      }
-    });
-  }, [modals]);
+  // Prevent background scroll
+  // useEffect(() => {
+  //   document.body.style.overflow = modals.length > 0 ? "hidden" : "";
+  //   return () => {
+  //     document.body.style.overflow = "";
+  //   };
+  // }, [modals.length]);
 
   return (
     <>
       {modals.map((modal, index) => {
         const isHidden = index < modals.length - 3;
-
         let Content = null;
+
         switch (modal.type) {
           case "error":
             Content = <ErrorModal {...modal.props} />;
@@ -67,19 +67,23 @@ export default function ModalContainer() {
           case "session":
             Content = <SessionModal {...modal.props} />;
             break;
+          default:
+            return null;
         }
 
         return (
-          <dialog
+          <ASModalWrapper
             key={index}
-            ref={(el) => (dialogRefs.current[index] = el)}
-            className={`${styles.modal} ${isHidden ? styles.hidden : ""}`}
+            isHidden={isHidden}
+            zIndex={index}
             onClose={syncCloseModal}
           >
-            <div className={styles.modalContainer}>{Content}</div>
-          </dialog>
+            {Content}
+          </ASModalWrapper>
         );
       })}
     </>
   );
-}
+};
+
+export default GlobalModalContainer;

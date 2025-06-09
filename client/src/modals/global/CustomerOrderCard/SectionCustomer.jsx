@@ -5,7 +5,7 @@ import React, { useEffect, useState } from "react";
 import useFormField from "../../../hooks/useFormField";
 import { useModalNavigation } from "../../../hooks/useModalNavigation";
 
-import InputCell from "../../Inputcell";
+import InputCell from "../../../components/Inputcell";
 
 const SectionCustomer = ({ meta, data }) => {
   const { syncOpenModal } = useModalNavigation();

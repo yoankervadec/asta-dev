@@ -5,8 +5,8 @@ import React, { useState } from "react";
 import { useModalNavigation } from "../../../hooks/useModalNavigation";
 import usePostSessionProduct from "../../../hooks/fetch/production/usePostSessionProduct";
 
-import InputCell from "../../Inputcell";
-import Loading from "../../loaders/Loading";
+import InputCell from "../../../components/Inputcell";
+import Loading from "../../../components/loaders/Loading";
 
 import styles from "./styles.module.css";
 

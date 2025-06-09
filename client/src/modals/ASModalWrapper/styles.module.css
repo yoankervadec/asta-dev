@@ -1,0 +1,50 @@
+/* 
+================================
+Main ASModalContainer Style Sheet
+================================
+*/
+
+.modalOverlay {
+  position: fixed;
+  inset: 0;
+  background-color: var(--cl-transparent-backdrop);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: fadeIn 0.2s ease-out;
+}
+
+.childrenContainer {
+  background: var(--cl-background-light);
+  border-radius: 4px;
+  max-width: calc(100vw - 2em);
+  max-height: calc(100svh - 2em);
+  overflow: auto;
+  box-shadow: 0 4px 10px var(--cl-default-box-shadow);
+  animation: scaleIn 0.2s ease-out;
+}
+
+.hidden {
+  display: none;
+}
+
+/* Optional animations */
+@keyframes fadeIn {
+  from {
+    background-color: rgba(0, 0, 0, 0);
+  }
+  to {
+    background-color: rgba(0, 0, 0, 0.4);
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    transform: scale(0.95);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}

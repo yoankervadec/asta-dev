@@ -8,7 +8,7 @@ import SectionInventory from "./SectionInventory";
 import SectionAttributes from "./SectionAttributes";
 import SectionInformation from "./SectionInformation";
 import SectionOrders from "./SectionOrders";
-import Loading from "../../loaders/Loading";
+import Loading from "../../../components/loaders/Loading";
 
 import styles from "./styles.module.css";
 

@@ -2,7 +2,7 @@
 // client/src/components/modals/ProductModal/SectionInformation.jsx
 
 import useFormField from "../../../hooks/useFormField";
-import InputCell from "../../Inputcell";
+import InputCell from "../../../components/Inputcell";
 
 import styles from "./styles.module.css";
 
