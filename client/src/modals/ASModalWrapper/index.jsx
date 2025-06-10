@@ -6,14 +6,31 @@ import { createPortal } from "react-dom";
 import { FocusTrap } from "focus-trap-react";
 import styles from "./styles.module.css";
 
+// Pre-defined modal sizes
+const SIZE_MAP = {
+  extraSmall: { width: "calc(40em + 15vw)", height: "calc(35svh - 2em)" },
+  small: { width: "calc(40em + 15vw)", height: "calc(60svh - 2em)" },
+  medium: { width: "calc(60em + 15vw)", height: "calc(90svh - 2em)" },
+  large: { width: "calc(80em + 20vw)", height: "calc(100svh - 2em)" },
+  fullScreen: { width: "calc(100vw - 2em)", height: "calc(100svh - 2em)" },
+};
+
 const modalRoot = document.getElementById("as-modal-root");
 
-const ASModalWrapper = ({ isHidden, zIndex, onClose, children }) => {
+const ASModalWrapper = ({
+  isHidden = false,
+  zIndex = 0,
+  onClose,
+  size = "medium",
+  isFrozen = false,
+  children,
+}) => {
   if (!modalRoot) return null;
 
   useEffect(() => {
     const handleKeyDown = (e) => {
-      if (e.key === "Escape") {
+      // Prevents closing when frozen
+      if (e.key === "Escape" && !isFrozen) {
         e.preventDefault();
         onClose?.();
       }
@@ -23,28 +40,37 @@ const ASModalWrapper = ({ isHidden, zIndex, onClose, children }) => {
   }, [onClose]);
 
   return createPortal(
-    <FocusTrap
-      focusTrapOptions={{
-        onDeactivate: onClose,
-        escapeDeactivates: false,
+    <div
+      className={`${styles.modalOverlay} ${isHidden ? styles.hidden : ""}`}
+      style={{
+        "--modal-width": SIZE_MAP[size]?.width,
+        "--modal-height": SIZE_MAP[size]?.height,
       }}
+      onClick={onClose} // Closes when clicking overlay
     >
-      <div
-        className={`${styles.modalOverlay} ${isHidden ? styles.hidden : ""}`}
-        onClick={onClose}
+      <FocusTrap
+        focusTrapOptions={{
+          onDeactivate: () => onClose,
+          escapeDeactivates: false,
+          allowOutsideClick: () => !isFrozen,
+        }}
       >
-        <button style={{ position: "absolute", opacity: 0 }} tabIndex="0">
-          Hidden Focus Target
-        </button>
-        <div
-          className={styles.childrenContainer}
-          style={{ zIndex: zIndex }}
-          onClick={(e) => e.stopPropagation()} // Prevent closing when clicking inside
-        >
-          {children}
+        <div>
+          {/* Fallback for FocusTrap */}
+          <button style={{ position: "absolute", opacity: 0 }} tabIndex="0">
+            Hot Dogs
+          </button>
+          <div
+            className={styles.childrenContainer}
+            style={{ zIndex: zIndex }}
+            onClick={(e) => e.stopPropagation()} // Prevent closing when clicking inside
+          >
+            {children}
+            {isFrozen && <div className={styles.freezeOverlay}></div>}
+          </div>
         </div>
-      </div>
-    </FocusTrap>,
+      </FocusTrap>
+    </div>,
     modalRoot
   );
 };

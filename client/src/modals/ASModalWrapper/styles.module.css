@@ -17,11 +17,22 @@ Main ASModalContainer Style Sheet
 .childrenContainer {
   background: var(--cl-background-light);
   border-radius: 4px;
+  width: var(--modal-width, 50vw);
+  height: var(--modal-height, 50vh);
+  min-height: 20em;
   max-width: calc(100vw - 2em);
   max-height: calc(100svh - 2em);
   overflow: auto;
   box-shadow: 0 4px 10px var(--cl-default-box-shadow);
   animation: scaleIn 0.2s ease-out;
+}
+
+.freezeOverlay {
+  position: absolute;
+  inset: 0;
+  z-index: 10000;
+  pointer-events: all;
+  cursor: progress;
 }
 
 .hidden {

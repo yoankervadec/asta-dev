@@ -31,14 +31,6 @@ const GlobalModalContainer = () => {
     }
   }, [searchParams]);
 
-  // Prevent background scroll
-  // useEffect(() => {
-  //   document.body.style.overflow = modals.length > 0 ? "hidden" : "";
-  //   return () => {
-  //     document.body.style.overflow = "";
-  //   };
-  // }, [modals.length]);
-
   return (
     <>
       {modals.map((modal, index) => {
@@ -47,40 +39,73 @@ const GlobalModalContainer = () => {
 
         switch (modal.type) {
           case "error":
-            Content = <ErrorModal {...modal.props} />;
+            Content = (
+              <ErrorModal
+                {...modal.props}
+                isHidden={isHidden}
+                onClose={syncCloseModal}
+              />
+            );
             break;
           case "confirmation":
-            Content = <ConfirmationModal {...modal.props} />;
+            Content = (
+              <ConfirmationModal
+                {...modal.props}
+                isHidden={isHidden}
+                onClose={syncCloseModal}
+              />
+            );
             break;
           case "progress":
-            Content = <ProgressModal {...modal.props} />;
+            Content = (
+              <ProgressModal
+                {...modal.props}
+                isHidden={isHidden}
+                onClose={syncCloseModal}
+              />
+            );
             break;
           case "clientCard":
-            Content = <ClientCard {...modal.props} />;
+            Content = (
+              <ClientCard
+                {...modal.props}
+                isHidden={isHidden}
+                onClose={syncCloseModal}
+              />
+            );
             break;
           case "customerOrderCard":
-            Content = <CustomerOrderCard {...modal.props} />;
+            Content = (
+              <CustomerOrderCard
+                {...modal.props}
+                isHidden={isHidden}
+                onClose={syncCloseModal}
+              />
+            );
             break;
           case "productCard":
-            Content = <ProductModal {...modal.props} />;
+            Content = (
+              <ProductModal
+                {...modal.props}
+                isHidden={isHidden}
+                onClose={syncCloseModal}
+              />
+            );
             break;
           case "session":
-            Content = <SessionModal {...modal.props} />;
+            Content = (
+              <SessionModal
+                {...modal.props}
+                isHidden={isHidden}
+                onClose={syncCloseModal}
+              />
+            );
             break;
           default:
             return null;
         }
 
-        return (
-          <ASModalWrapper
-            key={index}
-            isHidden={isHidden}
-            zIndex={index}
-            onClose={syncCloseModal}
-          >
-            {Content}
-          </ASModalWrapper>
-        );
+        return <div key={index}>{Content}</div>;
       })}
     </>
   );
