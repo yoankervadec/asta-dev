@@ -1,7 +1,8 @@
 //
-// client/src/components/modals/SessionModal/index.jsx
+// client/src/modals/global/SessionModal/index.jsx
 
 import ASModalWrapper from "../../ASModalWrapper";
+import ASModalStyles from "../../ASModalWrapper/styles.module.css";
 
 import { useModalNavigation } from "../../../hooks/useModalNavigation";
 import { useQueryClient } from "@tanstack/react-query";
@@ -14,7 +15,7 @@ import SectionLines from "./SectionLines";
 import Loading from "../../../components/loaders/Loading";
 
 const SessionModal = ({ isHidden, onClose }) => {
-  const { modalParams, syncCloseModal, syncOpenModal } = useModalNavigation();
+  const { modalParams } = useModalNavigation();
   const requestCommitSession = usePostRequestCommitSession();
   const queryClient = useQueryClient();
 
@@ -44,33 +45,30 @@ const SessionModal = ({ isHidden, onClose }) => {
 
   if (!modalParams) return null;
   return (
-    <ASModalWrapper isHidden={isHidden} onClose={onClose}>
-      <div className="large-modal-container">
-        {isLoading && <Loading />}
-        <div className="modal-title-wrapper">
-          <div className="modal-title-content">
-            <h3>Session View</h3>
-            <div className="modal-title-btn-wrapper">
-              <button
-                className="small-btn cancel-btn"
-                onClick={() => handleCommit()}
-                disabled={header?.commitDisabled || header === null}
-              >
-                <i className="fas fa-check-to-slot"></i>
-                Commit
-              </button>
-            </div>
-          </div>
+    <ASModalWrapper isHidden={isHidden} onClose={onClose} size="medium">
+      <div className={ASModalStyles.stickyTitleBar}>
+        <div className={ASModalStyles.title}>
+          <h3>Inventory Session</h3>
         </div>
-        <div className="modal-body">
-          <SectionHeader data={header} />
-          <SectionLines rows={lines} />
-        </div>
-        <div className="btn-container">
-          <button className="regular-btn cancel-btn" onClick={onClose}>
-            Close
+        <div className={ASModalStyles.titleButtons}>
+          <button
+            className="small-btn cancel-btn"
+            onClick={() => handleCommit()}
+            disabled={header?.commitDisabled || header === null}
+          >
+            <i className="fas fa-check-to-slot"></i>
+            Commit
           </button>
         </div>
+      </div>
+      <div className={ASModalStyles.modalBody}>
+        <SectionHeader data={header} />
+        <SectionLines rows={lines} />
+      </div>
+      <div className="btn-container">
+        <button className="regular-btn cancel-btn" onClick={onClose}>
+          Close
+        </button>
       </div>
     </ASModalWrapper>
   );

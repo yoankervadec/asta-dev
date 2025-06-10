@@ -18,7 +18,7 @@ const SIZE_MAP = {
 const modalRoot = document.getElementById("as-modal-root");
 
 const ASModalWrapper = ({
-  isHidden = false,
+  isHidden = false, // avoids very dark overlay when multiple instances
   zIndex = 0,
   onClose,
   size = "medium",
@@ -42,10 +42,6 @@ const ASModalWrapper = ({
   return createPortal(
     <div
       className={`${styles.modalOverlay} ${isHidden ? styles.hidden : ""}`}
-      style={{
-        "--modal-width": SIZE_MAP[size]?.width,
-        "--modal-height": SIZE_MAP[size]?.height,
-      }}
       onClick={onClose} // Closes when clicking overlay
     >
       <FocusTrap
@@ -60,14 +56,23 @@ const ASModalWrapper = ({
           <button style={{ position: "absolute", opacity: 0 }} tabIndex="0">
             Hot Dogs
           </button>
+
+          {/* Actual Modal */}
           <div
-            className={styles.childrenContainer}
-            style={{ zIndex: zIndex }}
+            className={styles.modalWrapper}
+            style={{
+              zIndex: zIndex,
+              "--modal-width": SIZE_MAP[size]?.width,
+              "--modal-height": SIZE_MAP[size]?.height,
+            }}
             onClick={(e) => e.stopPropagation()} // Prevent closing when clicking inside
           >
-            {children}
+            <div className={styles.childrenContainer}>
+              <div className={styles.content}>{children}</div>
+            </div>
             {isFrozen && <div className={styles.freezeOverlay}></div>}
           </div>
+          {/* Actual Modal */}
         </div>
       </FocusTrap>
     </div>,

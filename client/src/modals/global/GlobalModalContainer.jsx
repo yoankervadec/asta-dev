@@ -14,8 +14,6 @@ import ClientCard from "./ClientCard";
 import ProductModal from "./ProductModal";
 import SessionModal from "./SessionModal";
 
-import ASModalWrapper from "../ASModalWrapper";
-
 const GlobalModalContainer = () => {
   const { modals, setModalsFromURL } = useModalStore();
   const { syncCloseModal } = useModalNavigation();

@@ -1,6 +1,12 @@
 /* 
-================================
+==========================================
 Main ASModalContainer Style Sheet
+==========================================
+*/
+
+/* 
+================================
+Overlay + Freezing State
 ================================
 */
 
@@ -14,19 +20,6 @@ Main ASModalContainer Style Sheet
   animation: fadeIn 0.2s ease-out;
 }
 
-.childrenContainer {
-  background: var(--cl-background-light);
-  border-radius: 4px;
-  width: var(--modal-width, 50vw);
-  height: var(--modal-height, 50vh);
-  min-height: 20em;
-  max-width: calc(100vw - 2em);
-  max-height: calc(100svh - 2em);
-  overflow: auto;
-  box-shadow: 0 4px 10px var(--cl-default-box-shadow);
-  animation: scaleIn 0.2s ease-out;
-}
-
 .freezeOverlay {
   position: absolute;
   inset: 0;
@@ -35,11 +28,92 @@ Main ASModalContainer Style Sheet
   cursor: progress;
 }
 
+/* 
+================================
+Main Containers
+================================
+*/
+
+.modalWrapper {
+  background: var(--cl-background-light);
+  padding: 1em;
+  overflow: hidden;
+  border-radius: 4px;
+  box-shadow: 0 4px 10px var(--cl-default-box-shadow);
+  animation: scaleIn 0.2s ease-out;
+}
+
+.childrenContainer {
+  background: var(--cl-background-light);
+  animation: scaleIn 0.2s ease-out;
+  overflow: auto;
+}
+
+.content {
+  background: var(--cl-background-light);
+  width: var(--modal-width, 50vw);
+  /* height: var(--modal-height, 50vh); */
+  min-height: 20em;
+  max-width: calc(100vw - 2em);
+  max-height: calc(100svh - 6em);
+  animation: scaleIn 0.2s ease-out;
+  overflow: auto;
+}
+
+/* 
+================================
+Modal Subcomponents
+================================
+*/
+
+/* TITLE BAR */
+.stickyTitleBar {
+  background-color: var(--cl-background-light);
+  z-index: 2;
+  position: sticky;
+  top: 0;
+  display: flex;
+  align-items: center;
+  gap: 1em;
+  padding-bottom: 1em;
+}
+
+.title {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+}
+
+.titleButtons {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+  width: 100%;
+  overflow-x: auto;
+}
+
+/* MODAL BODY */
+.modalBody {
+  overflow: hidden;
+  flex-grow: 1;
+}
+
+/* 
+================================
+State & Visibility Classes
+================================
+*/
+
 .hidden {
   display: none;
 }
 
-/* Optional animations */
+/* 
+================================
+Animations
+================================
+*/
+
 @keyframes fadeIn {
   from {
     background-color: rgba(0, 0, 0, 0);
