@@ -17,7 +17,7 @@ Overlay + Freezing State
   display: flex;
   align-items: center;
   justify-content: center;
-  animation: fadeIn 0.2s ease-out;
+  animation: fadeIn 0.1s ease-out;
 }
 
 .freezeOverlay {
@@ -40,12 +40,12 @@ Main Containers
   overflow: hidden;
   border-radius: 4px;
   box-shadow: 0 4px 10px var(--cl-default-box-shadow);
-  animation: scaleIn 0.2s ease-out;
+  animation: scaleIn 0.1s ease-out;
 }
 
 .childrenContainer {
   background: var(--cl-background-light);
-  animation: scaleIn 0.2s ease-out;
+  animation: scaleIn 0.1s ease-out;
   overflow: auto;
 }
 
@@ -53,10 +53,10 @@ Main Containers
   background: var(--cl-background-light);
   width: var(--modal-width, 50vw);
   /* height: var(--modal-height, 50vh); */
-  min-height: 20em;
-  max-width: calc(100vw - 2em);
+  min-height: 15em;
+  max-width: calc(100vw - 6em);
   max-height: calc(100svh - 6em);
-  animation: scaleIn 0.2s ease-out;
+  animation: scaleIn 0.1s ease-out;
   overflow: auto;
 }
 
@@ -76,12 +76,16 @@ Modal Subcomponents
   align-items: center;
   gap: 1em;
   padding-bottom: 1em;
+  margin-bottom: 1em;
+  border-bottom: 2px solid var(--cl-brown);
 }
 
 .title {
   display: flex;
   flex-shrink: 0;
   align-items: center;
+  text-wrap: nowrap;
+  text-overflow: ellipsis;
 }
 
 .titleButtons {

@@ -11,7 +11,7 @@ import SectionInformation from "./SectionInformation";
 import SectionOrders from "./SectionOrders";
 import Loading from "../../../components/loaders/Loading";
 
-import styles from "./styles.module.css";
+import ASModalStyles from "../../ASModalWrapper/styles.module.css";
 
 const ProductModal = ({ isHidden, onClose }) => {
   const { modalParams, syncCloseModal, syncOpenModal } = useModalNavigation();
@@ -24,34 +24,26 @@ const ProductModal = ({ isHidden, onClose }) => {
   if (!modalParams) return null;
   return (
     <ASModalWrapper isHidden={isHidden} onClose={onClose}>
-      <div className={styles.productCardContainer}>
-        {isLoading ? <Loading /> : null}
-        <div className={styles.mainTitleWrapper}>
-          <div className={styles.titleContent}>
-            <h3>{`Product Card ${"\u2022"} ${itemNo}`}</h3>
-            <div className={styles.mainButtonWrapper}>
-              {/* Add buttons later for Navigation between products? */}
-              {/* <button className="small-btn cancel-btn">
-              <i className="fas fa-angles-left"></i>
-            </button>
-            <button className="small-btn cancel-btn">
-              <i className="fas fa-angles-right"></i>
-            </button> */}
-            </div>
-          </div>
+      {isLoading ? <Loading /> : null}
+      <div className={ASModalStyles.stickyTitleBar}>
+        <div className={ASModalStyles.title}>
+          <h3>{`Product Card ${"\u2022"} ${itemNo || ""}`}</h3>
         </div>
-        <div className={styles.productCardContent}>
-          <SectionInventory data={product} session={sessionInfo} />
-          <SectionAttributes data={product} />
-          <SectionInformation data={product} />
-          <SectionOrders rows={customerOrders} />
+        <div className={ASModalStyles.titleButtons}>
+          {/* Add buttons later for Navigation between products? */}
         </div>
+      </div>
+      <div className={ASModalStyles.modalBody}>
+        <SectionInventory data={product} session={sessionInfo} />
+        <SectionAttributes data={product} />
+        <SectionInformation data={product} />
+        <SectionOrders rows={customerOrders} />
+      </div>
 
-        <div className="btn-container">
-          <button className="regular-btn cancel-btn" onClick={onClose}>
-            Close
-          </button>
-        </div>
+      <div className="btn-container">
+        <button className="regular-btn cancel-btn" onClick={onClose}>
+          Close
+        </button>
       </div>
     </ASModalWrapper>
   );

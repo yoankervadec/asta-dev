@@ -4,10 +4,6 @@ Main style sheet for Customer Order Card
 ================================
 */
 
-.customerOrderCardContainer {
-  width: 90vw;
-  /* min-height: 60svh; */
-}
 .mainTitleWrapper {
   background-color: var(--cl-background-light);
   z-index: 2;
@@ -30,8 +26,4 @@ Main style sheet for Customer Order Card
 .mainButtonWrapper {
   display: flex;
   gap: 0.5em;
-}
-
-.customerOrderCardContent {
-  overflow: hidden;
 }

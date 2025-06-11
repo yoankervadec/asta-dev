@@ -1,7 +1,10 @@
 //
 // client/src/components/modals/CustomerOrderCard/index.jsx
 
-import React, { useState } from "react";
+import ASModalWrapper from "../../ASModalWrapper";
+import ASModalStyles from "../../ASModalWrapper/styles.module.css";
+
+import { useState } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 
 import { useModalNavigation } from "../../../hooks/useModalNavigation";
@@ -11,8 +14,6 @@ import usePostRequestCancelCoLine from "../../../hooks/fetch/customerOrders/useP
 import usePostPayCo from "../../../hooks/fetch/customerOrders/usePostPayCo";
 import usePostRequestShipCo from "../../../hooks/fetch/customerOrders/usePostRequestShipCo";
 import usePostAddCoLine from "../../../hooks/fetch/customerOrders/usePostAddCoLine";
-import { viewPdf } from "../../../api/pdf/viewPdf";
-import { downloadPdf } from "../../../api/pdf/downloadPdf";
 
 import SectionInformation from "./SectionInformation";
 import SectionCustomer from "./SectionCustomer";
@@ -23,11 +24,9 @@ import SmallProductsModal from "../../../pages/Products/SmallProductsModal";
 import ValidateProductsModal from "../../../pages/Products/ValidateProductsModal";
 import PrintModal from "./PrintModal";
 
-import styles from "./styles.module.css";
-
-const CustomerOrderCard = () => {
+const CustomerOrderCard = ({ isHidden, onClose }) => {
   const queryClient = useQueryClient();
-  const { modalParams, syncCloseModal, syncOpenModal } = useModalNavigation();
+  const { modalParams } = useModalNavigation();
   const orderNo = modalParams?.orderNo;
   const postCancelCoLine = usePostCancelCoLine();
   const requestPostCancelCoLine = usePostRequestCancelCoLine();
@@ -212,47 +211,47 @@ const CustomerOrderCard = () => {
 
   if (!modalParams) return null;
   return (
-    <div className={styles.customerOrderCardContainer}>
-      <div className={styles.mainTitleWrapper}>
-        <div className={styles.titleContent}>
+    <ASModalWrapper isHidden={isHidden} onClose={onClose} size="fullScreen">
+      <div className={ASModalStyles.stickyTitleBar}>
+        <div className={ASModalStyles.title}>
           <h3>{`Customer Order ${"\u2022"} ${customer?.name || ""}`}</h3>
-          <div className={styles.mainButtonWrapper}>
-            <button
-              className="small-btn cancel-btn"
-              onClick={() => handleShip()}
-              disabled={meta?.toggles?.shipDisable}
-            >
-              <i className="fas fa-truck-fast"></i>Ship
-            </button>
-            <button
-              className="small-btn cancel-btn"
-              onClick={() => handleShowPaymentModal()}
-              disabled={meta?.toggles?.payDisable}
-            >
-              <i className="fas fa-dollar-sign"></i>Pay
-            </button>
-            <button
-              className="small-btn cancel-btn"
-              disabled={meta?.toggles?.convertDisable}
-            >
-              <i className="fas fa-repeat"></i>
-              Convert to order
-            </button>
-            <button
-              className="small-btn cancel-btn"
-              onClick={() => {
-                // downloadPdf(`/pdf/order-card`, orderNo);
-                handleShowPrintModal();
-              }}
-            >
-              <i className="fas fa-file-pdf"></i>Export
-            </button>
-          </div>
+        </div>
+        <div className={ASModalStyles.titleButtons}>
+          <button
+            className="small-btn cancel-btn"
+            onClick={() => handleShip()}
+            disabled={meta?.toggles?.shipDisable}
+          >
+            <i className="fas fa-truck-fast"></i>Ship
+          </button>
+          <button
+            className="small-btn cancel-btn"
+            onClick={() => handleShowPaymentModal()}
+            disabled={meta?.toggles?.payDisable}
+          >
+            <i className="fas fa-dollar-sign"></i>Pay
+          </button>
+          <button
+            className="small-btn cancel-btn"
+            disabled={meta?.toggles?.convertDisable}
+          >
+            <i className="fas fa-repeat"></i>
+            Convert to order
+          </button>
+          <button
+            className="small-btn cancel-btn"
+            onClick={() => {
+              // downloadPdf(`/pdf/order-card`, orderNo);
+              handleShowPrintModal();
+            }}
+          >
+            <i className="fas fa-file-pdf"></i>Export
+          </button>
         </div>
       </div>
 
       {/* Sections ... */}
-      <div className={styles.customerOrderCardContent}>
+      <div className={ASModalStyles.modalBody}>
         <SectionInformation meta={meta} data={orderHeader} />
         <SectionCustomer meta={meta} data={customer} />
         <SectionItems
@@ -264,7 +263,7 @@ const CustomerOrderCard = () => {
         <SectionPaymentEntries rows={paymentEntries} />
       </div>
       <div className="btn-container">
-        <button onClick={syncCloseModal} className="regular-btn cancel-btn">
+        <button onClick={onClose} className="regular-btn cancel-btn">
           Close
         </button>
       </div>
@@ -305,7 +304,7 @@ const CustomerOrderCard = () => {
           invoices={invoices}
         />
       )}
-    </div>
+    </ASModalWrapper>
   );
 };
 

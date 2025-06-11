@@ -7,7 +7,6 @@ Main style sheet for Error Modal
 .errorModalContainer {
   display: flex;
   flex-direction: column;
-  width: 35vw;
   gap: 1em;
 }
 

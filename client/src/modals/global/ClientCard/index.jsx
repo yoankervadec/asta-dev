@@ -1,16 +1,17 @@
 //
 // client/src/components/modals/ClientCard/index.jsx
 
+import ASModalWrapper from "../../ASModalWrapper";
+import ASModalStyles from "../../ASModalWrapper/styles.module.css";
+
 import { useModalNavigation } from "../../../hooks/useModalNavigation";
 import useFetchCustomerCard from "../../../hooks/fetch/customers/useFetchCustomerCard";
 
 import SectionOrders from "./SectionOrders";
 import Loading from "../../../components/loaders/Loading";
 
-import styles from "../ProductModal/styles.module.css"; // From Product Modal
-
-const ClientCard = () => {
-  const { modalParams, syncCloseModal } = useModalNavigation();
+const ClientCard = ({ isHidden, onClose }) => {
+  const { modalParams } = useModalNavigation();
   const clientId = modalParams?.clientId;
 
   const { data, isLoading } = useFetchCustomerCard(clientId);
@@ -19,23 +20,23 @@ const ClientCard = () => {
 
   if (!modalParams) return null;
   return (
-    <div className={styles.productCardContainer}>
+    <ASModalWrapper isHidden={isHidden} onClose={onClose} size="medium">
       {isLoading && <Loading />}
-      <div className={styles.mainTitleWrapper}>
-        <div className={styles.titleContent}>
+      <div className={ASModalStyles.stickyTitleBar}>
+        <div className={ASModalStyles.title}>
           <h3>{`Client Card ${"\u2022"} ${customer?.names?.name || ""}`}</h3>
-          <div className={styles.mainButtonWrapper}></div>
+          <div className={ASModalStyles.titleButtons}></div>
         </div>
       </div>
-      <div className={styles.productCardContent}>
+      <div className={ASModalStyles.modalBody}>
         <SectionOrders rows={orders} />
       </div>
       <div className="btn-container">
-        <button className="regular-btn cancel-btn" onClick={syncCloseModal}>
+        <button className="regular-btn cancel-btn" onClick={onClose}>
           Close
         </button>
       </div>
-    </div>
+    </ASModalWrapper>
   );
 };
 

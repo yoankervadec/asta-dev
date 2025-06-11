@@ -8,7 +8,7 @@ import styles from "./styles.module.css";
 
 // Pre-defined modal sizes
 const SIZE_MAP = {
-  extraSmall: { width: "calc(40em + 15vw)", height: "calc(35svh - 2em)" },
+  extraSmall: { width: "calc(25em + 15vw)", height: "calc(20svh - 2em)" },
   small: { width: "calc(40em + 15vw)", height: "calc(60svh - 2em)" },
   medium: { width: "calc(60em + 15vw)", height: "calc(90svh - 2em)" },
   large: { width: "calc(80em + 20vw)", height: "calc(100svh - 2em)" },
