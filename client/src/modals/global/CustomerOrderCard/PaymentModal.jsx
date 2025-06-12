@@ -2,6 +2,7 @@
 // client/src/components/modals/CustomerOrderCard/PaymentModal.jsx
 
 import ASModalWrapper from "../../ASModalWrapper";
+import ASModalStyles from "../../ASModalWrapper/styles.module.css";
 
 import InputCell from "../../../components/Inputcell";
 
@@ -20,10 +21,12 @@ const PaymentModal = ({
 
   return (
     <ASModalWrapper onClose={onClose} size="extraSmall">
-      <section className="df-section-wrapper">
-        <div className="df-section-title">
+      <div className={ASModalStyles.stickyTitleBar}>
+        <div className={ASModalStyles.title}>
           <h3>{isRequired ? "Refund Required for Cancelation" : "Payment"}</h3>
         </div>
+      </div>
+      <section className="df-section-wrapper">
         <div className="df-section-content-wrapper">
           <div className="df-section-content">
             <InputCell
