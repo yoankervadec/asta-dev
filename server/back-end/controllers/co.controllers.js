@@ -63,8 +63,14 @@ export const handleAddPayment = async (req, res) => {
 export const handleFetchOrdersList = async (req, res) => {
   const isAuthenticated = req.session.userId;
 
+  const { orderNo = null } = req.query;
+
   try {
-    const ordersList = await fetchViewOrderLines(null, null, null);
+    const ordersList = await fetchViewOrderLines(
+      null,
+      null,
+      parseFloat(orderNo)
+    );
 
     sendSuccessResponse(res, 200, { ordersList }, isAuthenticated);
   } catch (err) {

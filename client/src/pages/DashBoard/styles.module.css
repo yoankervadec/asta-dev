@@ -24,19 +24,18 @@ Main style sheet for Dashboard
   max-height: 100%;
 }
 
-/* Cards */
+/* 
+================================
+Job Cards
+================================
+*/
 .cardContainer {
   container-type: inline-size;
   container-name: card;
+  cursor: default;
   background-color: var(--cl-background-light);
-  cursor: grab;
-  height: 30em;
+  /* height: 40em; */
   padding: 0.5em;
-  user-select: none;
-  -webkit-user-select: none;
-}
-.cardContainer:active {
-  cursor: grabbing;
 }
 
 @container card (max-width: 420px) {
@@ -61,24 +60,151 @@ Main style sheet for Dashboard
   display: flex;
   gap: 1em;
 }
-.status span {
-  font-weight: 500;
-  min-width: 6em;
-  text-align: center;
-  padding: 0.4em 0.5em;
-  border-radius: 0.25em;
-}
 
 .cardBody {
   display: flex;
 }
 
-.orderInformation p {
-  font-size: var(--fs-md);
+/* 
+================================
+Job Cards/Job Header
+================================
+*/
+.jobHeaderContainer {
+  display: flex;
+  padding-bottom: 0.5em;
+  border-bottom: 1px solid var(--cl-grey-disabled);
 }
-.jobDetails {
+
+.statusContainer {
+  /* Status color */
+  --status-quote: #d1d3d4;
+  --status-ready: rgb(135, 220, 148);
+  --status-waiting: #fff9a6;
+  --status-payment-pending: #d5f1a3;
+  --status-processing: #f1a8a8;
+  /* Required date color */
+  --required-date-future: #a8e6a1;
+  --required-date-soon: #fff9a6;
+  --required-date-past: #f1a8a8;
+
+  display: flex;
+  flex-wrap: wrap;
+  font-size: var(--fs-sm);
+  font-weight: 500;
+  gap: 0.5em;
+}
+.statusContainer > span {
+  flex-grow: 1;
+  min-width: 7em;
+  border-radius: 0.5em;
+  padding: 0.7em 1em;
+  text-align: center;
+  text-wrap: nowrap;
+  text-overflow: ellipsis;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.headerButtonsContainer {
+  display: flex;
+  flex-grow: 1;
+}
+.pinButton {
+  background-color: var(--cl-background-focus);
+  color: var(--cl-green-dark);
+  margin-left: auto;
+  padding: 0.5em 1em;
+  border-radius: 0.5em;
+  transition: background-color 0.15s, color 0.15s;
+}
+.pinButton > i {
   font-size: var(--fs-base);
 }
-.jobDetails label {
-  width: 6em;
+.pinButton:hover {
+  background-color: var(--cl-green-dark);
+  color: var(--cl-background-light);
+  cursor: pointer;
+  transition: background-color 0.15s, color 0.15s;
+}
+
+/* 
+================================
+Job Cards/Job Details
+================================
+*/
+
+.jobDetailsContainer {
+}
+.jobContact {
+  /* outline: 1px solid red; */
+}
+.jobProductTags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5em;
+  margin-top: 1em;
+}
+.jobProductTags > span {
+  background-color: var(--cl-background-focus);
+  min-width: 4em;
+  padding: 0.25em 0.75em;
+  border-radius: 4px;
+  font-size: var(--fs-sm);
+  font-weight: 500;
+  text-align: center;
+  transition: background-color 0.15s;
+  user-select: none;
+  cursor: pointer;
+}
+.jobProductTags > span:hover {
+  background-color: var(--cl-grey-disabled);
+  transition: background-color 0.15s;
+}
+
+/* 
+================================
+Job Cards/Job Lines
+================================
+*/
+.jobLinesContainer {
+  margin-top: 1em;
+}
+.simpleLinesTableWrap {
+  cursor: zoom-in;
+}
+.simpleLinesTableWrap:hover {
+  background-color: var(--cl-background-light);
+  outline: 1px solid var(--cl-green-dark);
+}
+.simpleLinesTableWrap table tr:hover {
+  background-color: inherit;
+}
+
+/* 
+================================
+Job Cards/Footer
+================================
+*/
+
+.dragButton {
+  background-color: var(--cl-background-focus);
+  color: var(--cl-green-dark);
+  padding: 0.5em 1em;
+  border-radius: 0.5em;
+  margin-top: 0.5em;
+  transition: background-color 0.15s, color 0.15s;
+  user-select: none;
+  -webkit-user-select: none;
+  cursor: grab;
+}
+.dragButton > i {
+  font-size: var(--fs-base);
+  margin-right: 0.5em;
+}
+.dragButton:active {
+  background-color: var(--cl-green-dark);
+  color: var(--cl-background-light);
+  cursor: grabbing;
+  transition: background-color 0.15s, color 0.15s;
 }
