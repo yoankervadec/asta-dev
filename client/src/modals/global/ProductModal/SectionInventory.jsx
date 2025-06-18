@@ -1,7 +1,7 @@
 //
 // client/src/components/modals/ProductModal/SectionInventory.jsx
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useModalNavigation } from "../../../hooks/useModalNavigation";
 import usePostSessionProduct from "../../../hooks/fetch/production/usePostSessionProduct";
 
@@ -10,13 +10,26 @@ import Loading from "../../../components/loaders/Loading";
 
 import styles from "./styles.module.css";
 
-const SectionInventory = ({ data, session }) => {
+const SectionInventory = ({
+  data,
+  session,
+  overrideAttributes = null,
+  showSessionTable = true,
+}) => {
   const { syncOpenModal } = useModalNavigation();
   const { itemNo, inventory, possibleAttributes = [] } = data || {};
   const { header, lines = [] } = session || {};
   const [quantity, setQuantity] = useState(0);
-  const [selectedAttributes, setSelectedAttributes] = useState([1]);
+  const [selectedAttributes, setSelectedAttributes] = useState(
+    overrideAttributes ? overrideAttributes.map((a) => a.attrId) : [1]
+  );
   const postSessionProduct = usePostSessionProduct();
+
+  useEffect(() => {
+    if (overrideAttributes && overrideAttributes.length > 0) {
+      setSelectedAttributes(overrideAttributes.map((a) => a.attrId));
+    }
+  }, [overrideAttributes]);
 
   const toggleAttribute = (attrId) => {
     setSelectedAttributes((prev) =>
@@ -34,7 +47,9 @@ const SectionInventory = ({ data, session }) => {
       attributes: selectedAttributes,
     });
     setQuantity(0); // Reset input after commit
-    setSelectedAttributes([1]); // Reset selected attributes
+    setSelectedAttributes(
+      overrideAttributes ? overrideAttributes.map((a) => a.attrId) : [1]
+    ); // Reset selected attributes
   };
   return (
     <section className="df-section-wrapper">
@@ -89,7 +104,7 @@ const SectionInventory = ({ data, session }) => {
             readOnly
             disabled
           />
-          <SessionTable rows={lines} />
+          {showSessionTable && <SessionTable rows={lines} />}
         </div>
         <div className="df-section-content">
           <h4>Add to Inventory</h4>

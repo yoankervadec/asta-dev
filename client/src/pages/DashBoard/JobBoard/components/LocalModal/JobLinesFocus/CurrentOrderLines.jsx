@@ -1,7 +1,7 @@
 //
 // client/src/pages/DashBoard/JobBoard/components/LocalModal/JobLinesFocus/CurrentOrderLines.jsx
 
-const CurrentOrderLines = ({ rows = [] }) => {
+const CurrentOrderLines = ({ rows = [], selectedLine, onSelectLine }) => {
   return (
     <section
       className="df-section-wrapper"
@@ -36,7 +36,12 @@ const CurrentOrderLines = ({ rows = [] }) => {
           </thead>
           <tbody>
             {rows.map((row) => (
-              <TableRow key={row.lineNo} row={row} />
+              <TableRow
+                key={row.lineNo}
+                row={row}
+                selectedLine={selectedLine}
+                onSelectLine={onSelectLine}
+              />
             ))}
           </tbody>
         </table>
@@ -47,10 +52,13 @@ const CurrentOrderLines = ({ rows = [] }) => {
 
 export default CurrentOrderLines;
 
-const TableRow = ({ row }) => {
+const TableRow = ({ row, selectedLine, onSelectLine }) => {
   const { customer, item, pricing, status, services } = row || {};
   return (
-    <tr>
+    <tr
+      onClick={() => onSelectLine(row)}
+      className={selectedLine?.line?.lineNo === row?.lineNo ? "selected" : ""}
+    >
       <td>
         <span>{item?.quantity}</span>
       </td>
