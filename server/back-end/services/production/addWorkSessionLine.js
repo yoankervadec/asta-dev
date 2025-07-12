@@ -2,21 +2,25 @@
 // server/back-end/services/production/addWorkSessionLine.js
 
 import { getConnection } from "../../configs/db.config.js";
+import { AppError } from "../../utils/errorHandling/AppError.js";
 
 import { insertWorkSessionLine } from "../../models/production/insertWorkSessionLine.js";
 import { selectActiveSessionHeader } from "../../models/production/selectActiveSessionHeader.js";
 import { selectMaxLineNo } from "../../models/production/selectMaxLineNo.js";
 import { selectPossibleAttributes } from "../../models/products/selectPossibleAttributes.js";
 import { insertWorkSessionLineAttribute } from "../../models/production/insertWorkSessionLineAttribute.js";
+import { fetchViewOrderLines } from "../customerOrders/fetchViewOrderLines.js";
 
 export const addWorkSessionLine = async (
   itemNo,
   quantity,
   attributes = [],
+  orderDetails = null,
   createdBy
 ) => {
   // Initialize connection
   const connection = await getConnection();
+  console.log(attributes);
 
   // Validate itemNo and quantity
   try {
@@ -55,12 +59,48 @@ export const addWorkSessionLine = async (
       };
     }
 
+    if (orderDetails?.orderNo && orderDetails.lineNo) {
+      const [customerOrderLine] = await fetchViewOrderLines(
+        null,
+        null,
+        orderDetails.orderNo,
+        null,
+        orderDetails.lineNo
+      );
+
+      if (
+        !customerOrderLine ||
+        customerOrderLine?.status?.active === 0 ||
+        customerOrderLine?.status?.shipped === 1
+      ) {
+        var attributesMatch = false;
+      } else {
+        const expectedAttrIds = customerOrderLine.item.attributeIdSetAsString
+          .split(",")
+          .map((s) => parseInt(s.trim(), 10))
+          .sort((a, b) => a - b);
+
+        const providedAttrIds = [...attributes].sort((a, b) => a - b);
+
+        const arraysEqual = (a, b) => {
+          if (a.length !== b.length) return false;
+          return a.every((val, index) => val === b[index]);
+        };
+
+        var attributesMatch = arraysEqual(expectedAttrIds, providedAttrIds);
+      }
+    } else {
+      var attributesMatch = false; // if not reserving an order line
+    }
+
     await insertWorkSessionLine(
       connection,
       sessionNo,
-      lineNo + 1, // +1 to start at 1
+      lineNo + 1,
       itemNo,
       quantity,
+      attributesMatch ? orderDetails?.orderNo : null,
+      attributesMatch ? orderDetails?.lineNo : null,
       createdBy
     );
 

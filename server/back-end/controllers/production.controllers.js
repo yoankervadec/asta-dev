@@ -46,10 +46,16 @@ export const handleFetchWorkTable = async (req, res) => {
 export const handleAddWorkSessionLine = async (req, res) => {
   const isAuthenticated = req.session.userId;
   const createdBy = req.session.userId;
-  const { quantity, itemNo, attributes = [] } = req.body;
+  const { quantity, itemNo, attributes = [], orderDetails = {} } = req.body;
 
   try {
-    await addWorkSessionLine(itemNo, quantity, attributes, createdBy);
+    await addWorkSessionLine(
+      itemNo,
+      quantity,
+      attributes,
+      orderDetails,
+      createdBy
+    );
     sendSuccessResponse(res, 201, {}, isAuthenticated);
   } catch (err) {
     sendErrorResponse(

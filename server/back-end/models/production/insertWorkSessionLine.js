@@ -4,9 +4,11 @@
 export const insertWorkSessionLine = async (
   connection,
   sessionNo,
-  lineNo,
+  sessionLineNo,
   itemNo,
   quantity,
+  orderNo = null,
+  orderLineNo = null,
   createdBy
 ) => {
   try {
@@ -18,12 +20,22 @@ export const insertWorkSessionLine = async (
           session_no,
           item_no,
           quantity,
+          reserved_for_order_no,
+          reserved_for_order_line_no,
           created_by
         )
         VALUES
-          (?, ?, ?, ?, ?)
+          (?, ?, ?, ?, ?, ?, ?)
       `,
-      [lineNo, sessionNo, itemNo, quantity, createdBy]
+      [
+        sessionLineNo,
+        sessionNo,
+        itemNo,
+        quantity,
+        orderNo,
+        orderLineNo,
+        createdBy,
+      ]
     );
   } catch (error) {
     throw new Error("Failed to insert quantity: " + error.message);

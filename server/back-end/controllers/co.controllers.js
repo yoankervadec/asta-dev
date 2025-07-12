@@ -63,13 +63,17 @@ export const handleAddPayment = async (req, res) => {
 export const handleFetchOrdersList = async (req, res) => {
   const isAuthenticated = req.session.userId;
 
-  const { orderNo = null } = req.query;
+  const { orderNo = null, active = null, shipped = null } = req.query;
 
   try {
     const ordersList = await fetchViewOrderLines(
       null,
       null,
-      parseFloat(orderNo)
+      parseFloat(orderNo),
+      null,
+      null,
+      parseFloat(active),
+      parseFloat(shipped)
     );
 
     sendSuccessResponse(res, 200, { ordersList }, isAuthenticated);

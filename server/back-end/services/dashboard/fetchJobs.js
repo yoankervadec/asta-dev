@@ -8,7 +8,7 @@ export const fetchJobs = async (quote = null, posted = 0, orderNo = null) => {
   try {
     const [orderHeaders, orderLines] = await Promise.all([
       fetchMapOrderHeaders(quote, posted, orderNo),
-      fetchViewOrderLines(quote, posted, orderNo),
+      fetchViewOrderLines(quote, posted, orderNo, null, null, 1, 0),
     ]);
 
     const orderLinesMap = new Map();

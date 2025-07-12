@@ -63,7 +63,7 @@ const TableRow = ({ row, selectedLine, onSelectLine }) => {
         <span>{item?.quantity}</span>
       </td>
       <td>
-        <span>{item?.quantity}</span>
+        <span>{item?.quantityOnSession + item?.quantityReserved}</span>
       </td>
       <td>
         <span>{item?.itemNo}</span>

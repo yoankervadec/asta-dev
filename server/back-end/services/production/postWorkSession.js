@@ -8,6 +8,7 @@ import { updateWorkSession } from "../../models/production/updateWorkSession.js"
 import { insertWorkItemEntries } from "../../models/production/insertWorkItemEntries.js";
 import { insertWorkSession } from "../../models/production/insertWorkSession.js";
 import { selectActiveSessionLines } from "../../models/production/selectActiveSessionLines.js";
+import { addReservationFromSession } from "../reservations/addReservationFromSession.js";
 
 const entryType = 3; // Production
 
@@ -41,8 +42,10 @@ export const postWorkSession = async (userId) => {
     await insertWorkItemEntries(connection, entryType, sessionNo);
     await updateWorkSession(connection, sessionNo);
     await insertWorkSession(connection, userId);
+    await addReservationFromSession(sessionNo);
 
-    await connection.commit();
+    // await connection.commit();
+    await connection.rollback();
   } catch (error) {
     await connection.rollback();
     throw error;

@@ -19,6 +19,8 @@ const JobLinesFocus = ({ onClose, isFrozen, data }) => {
   const { data: currentOrderLinesRaw, isLoading: isOrderLinesLoading } =
     useFetchCustomerOrderLines({
       orderNo: data?.currentOrderNo,
+      active: 1,
+      shipped: 0,
     });
 
   const currentOrderLines = currentOrderLinesRaw?.data?.ordersList || [];
@@ -33,7 +35,6 @@ const JobLinesFocus = ({ onClose, isFrozen, data }) => {
   // Get details product info based on selected line
   const { data: rawProductData, isLoading: isProductDetailsLoading } =
     useFetchProductCard(selectedLine?.line?.item?.itemNo ?? null);
-
   const { productInfo = [], sessionInfo } = rawProductData?.data || {};
   const product = productInfo[0] || {};
 
@@ -42,7 +43,12 @@ const JobLinesFocus = ({ onClose, isFrozen, data }) => {
   };
 
   return (
-    <ASModalWrapper size="medium" onClose={onClose} isFrozen={isFrozen}>
+    <ASModalWrapper
+      size="medium"
+      onClose={onClose}
+      isFrozen={isFrozen}
+      isLocal={true}
+    >
       <div className={AMModalStyles.stickyTitleBar}>
         <div className={AMModalStyles.title}>
           <h3>Focus: Customer Order Lines</h3>
@@ -54,7 +60,12 @@ const JobLinesFocus = ({ onClose, isFrozen, data }) => {
           data={product}
           session={sessionInfo}
           overrideAttributes={selectedLine?.line?.item?.attributes || null}
+          orderDetails={{
+            orderNo: selectedLine?.line?.orderNo,
+            lineNo: selectedLine?.line?.lineNo,
+          }}
           showSessionTable={false}
+          showDetailedInventory={false}
         />
         <CurrentOrderLines
           rows={currentOrderLines}

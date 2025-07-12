@@ -42,6 +42,12 @@ Main style sheet for Product Card
   align-items: center;
   gap: 1em;
 }
+.quantityWrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1em;
+}
 .buttonWrapper {
   display: flex;
   gap: 1em;
@@ -53,7 +59,7 @@ Main style sheet for Product Card
   border-radius: 4px;
   background-color: var(--cl-background-focus);
 }
-.inventoryToolWrapper > input {
+.quantityInput {
   width: 6em;
   padding: 0.5em 0.15em;
   font-size: var(--fs-xl);

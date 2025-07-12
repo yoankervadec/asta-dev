@@ -16,10 +16,13 @@ export const selectSessionLines = async (
         sh.posted,
         sl.item_no,
         sl.quantity,
+        sl.reserved_for_order_no,
+        sl.reserved_for_order_line_no,
         sl.created_at,
         sl.created_by,
         u.name AS created_by_name,
         GROUP_CONCAT(pa.attr_name SEPARATOR ', ') AS attr_name_as_string,
+        GROUP_CONCAT(pa.attr_id SEPARATOR ', ') AS attr_id_as_string,
           COALESCE(
           JSON_ARRAYAGG(
             JSON_OBJECT('attr_id', pa.attr_id, 'attr_name', pa.attr_name)

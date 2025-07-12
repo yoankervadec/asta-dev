@@ -73,7 +73,11 @@ const TableRow = ({ row }) => {
         <span>{row?.item?.quantity || ""}</span>
       </td>
       <td>
-        <span>{row?.item?.quantity || ""}</span>
+        <span>
+          {row?.item?.quantity -
+            row?.item?.quantityReserved -
+            row?.item?.quantityOnSession || 0}
+        </span>
       </td>
       <td>
         <span>{row?.item?.attributeNameSetAsString || ""}</span>

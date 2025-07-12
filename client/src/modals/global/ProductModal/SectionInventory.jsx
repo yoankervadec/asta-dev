@@ -6,7 +6,6 @@ import { useModalNavigation } from "../../../hooks/useModalNavigation";
 import usePostSessionProduct from "../../../hooks/fetch/production/usePostSessionProduct";
 
 import InputCell from "../../../components/Inputcell";
-import Loading from "../../../components/loaders/Loading";
 
 import styles from "./styles.module.css";
 
@@ -14,7 +13,9 @@ const SectionInventory = ({
   data,
   session,
   overrideAttributes = null,
+  orderDetails = null,
   showSessionTable = true,
+  showDetailedInventory = true,
 }) => {
   const { syncOpenModal } = useModalNavigation();
   const { itemNo, inventory, possibleAttributes = [] } = data || {};
@@ -45,6 +46,7 @@ const SectionInventory = ({
       itemNo,
       quantity,
       attributes: selectedAttributes,
+      orderDetails,
     });
     setQuantity(0); // Reset input after commit
     setSelectedAttributes(
@@ -53,41 +55,43 @@ const SectionInventory = ({
   };
   return (
     <section className="df-section-wrapper">
-      {postSessionProduct.isPending && <Loading />}
       <div className="df-section-title">
         <h3>Inventory</h3>
       </div>
       <div
         className="df-section-content-wrapper"
-        style={{ "--column-width": "28em" }}
+        style={{ "--column-width": showDetailedInventory ? "28em" : "50em" }}
       >
-        <div className="df-section-content">
-          <h4>Quantity</h4>
-          <InputCell
-            label="Actual Inventory&nbsp;:"
-            value={inventory?.actualInventory}
-            readOnly
-            disabled
-          />
-          <InputCell
-            label="Available Inventory&nbsp;:"
-            value={inventory?.availableInventory}
-            readOnly
-            disabled
-          />
-          <InputCell
-            label="Quantity on Orders&nbsp;:"
-            value={inventory?.quantityOnOrders}
-            readOnly
-            disabled
-          />
-          <InputCell
-            label="Quantity Reserved&nbsp;:"
-            value={inventory?.quantityReserved}
-            readOnly
-            disabled
-          />
-        </div>
+        {showDetailedInventory && (
+          <div className="df-section-content">
+            <h4>Quantity</h4>
+            <InputCell
+              label="Actual Inventory&nbsp;:"
+              value={inventory?.actualInventory}
+              readOnly
+              disabled
+            />
+            <InputCell
+              label="Available Inventory&nbsp;:"
+              value={inventory?.availableInventory}
+              readOnly
+              disabled
+            />
+            <InputCell
+              label="Quantity on Orders&nbsp;:"
+              value={inventory?.quantityOnOrders}
+              readOnly
+              disabled
+            />
+            <InputCell
+              label="Quantity Reserved&nbsp;:"
+              value={inventory?.quantityReserved}
+              readOnly
+              disabled
+            />
+          </div>
+        )}
+
         <div className="df-section-content">
           <h4>Session</h4>
           <InputCell
@@ -104,25 +108,33 @@ const SectionInventory = ({
             readOnly
             disabled
           />
+
           {showSessionTable && <SessionTable rows={lines} />}
         </div>
+
         <div className="df-section-content">
           <h4>Add to Inventory</h4>
-          <div className={styles.inventoryToolWrapper}>
-            <div className={styles.buttonWrapper}>
-              <button
-                onClick={() => setQuantity((q) => Math.max(0, q - 1))}
-              >{`\u2212`}</button>
-              <button
-                onClick={() => setQuantity((q) => q + 1)}
-              >{`\u002B`}</button>
+          <div
+            className={styles.inventoryToolWrapper}
+            style={{ flexDirection: showDetailedInventory ? "column" : "row" }}
+          >
+            <div className={styles.quantityWrapper}>
+              <div className={styles.buttonWrapper}>
+                <button
+                  onClick={() => setQuantity((q) => Math.max(0, q - 1))}
+                >{`\u2212`}</button>
+                <button
+                  onClick={() => setQuantity((q) => q + 1)}
+                >{`\u002B`}</button>
+              </div>
+              <input
+                type="number"
+                inputMode="numeric"
+                value={quantity}
+                className={styles.quantityInput}
+                onChange={(e) => setQuantity(Number(e.target.value))}
+              />
             </div>
-            <input
-              type="number"
-              inputMode="numeric"
-              value={quantity}
-              onChange={(e) => setQuantity(Number(e.target.value))}
-            />
 
             {/* Attributes */}
             <div className={styles.attributeSelection}>

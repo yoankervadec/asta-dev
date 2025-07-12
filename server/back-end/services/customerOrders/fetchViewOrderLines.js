@@ -20,11 +20,19 @@ export const fetchViewOrderLines = async (
   quote = null,
   posted = null,
   orderNo = null,
-  itemNo = null
+  itemNo = null,
+  lineNo = null,
+  active = null,
+  shipped = null
 ) => {
   try {
     // Input validation check for quote, posted and orderNo
-    if (!isValidBooleanOrNull(quote) || !isValidBooleanOrNull(posted)) {
+    if (
+      !isValidBooleanOrNull(quote) ||
+      !isValidBooleanOrNull(posted) ||
+      !isValidBooleanOrNull(shipped) ||
+      !isValidBooleanOrNull(active)
+    ) {
       throw {
         status: 400,
         message: "Failed to fetch order lines.",
@@ -50,7 +58,15 @@ export const fetchViewOrderLines = async (
     }
 
     // Fetch raw data from database
-    const result = await viewOrderLines(quote, posted, orderNo, itemNo);
+    const result = await viewOrderLines(
+      quote,
+      posted,
+      orderNo,
+      itemNo,
+      lineNo,
+      active,
+      shipped
+    );
 
     // Use Map to store orders keyed by orderNo
     const lines = result.map((line) => {
@@ -101,6 +117,8 @@ export const fetchViewOrderLines = async (
           itemNo: line.item_no,
           description: line.description,
           quantity: line.quantity,
+          quantityReserved: parseFloat(line.quantity_reserved),
+          quantityOnSession: parseFloat(line.quantity_on_session),
           attributeIdSetAsString: line.attr_id_set_as_string,
           attributeNameSetAsString: line.attr_name_set_as_string,
           attributes: line.attr_as_array,

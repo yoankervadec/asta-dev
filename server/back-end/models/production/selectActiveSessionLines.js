@@ -14,6 +14,8 @@ export const selectActiveSessionLines = async (
         sl.session_no,
         sl.item_no,
         sl.quantity,
+        sl.reserved_for_order_no,
+        sl.reserved_for_order_line_no,
         sl.created_at,
         GROUP_CONCAT(pa.attr_name SEPARATOR ', ') AS attr_name_as_string,
           COALESCE(

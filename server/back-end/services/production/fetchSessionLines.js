@@ -47,10 +47,16 @@ export const fetchSessionLines = async (
           quantity: line.quantity,
           attributes: {
             attributeNameAsString: line.attr_name_as_string,
+            attributeIdAsString: line.attr_id_as_string,
             attributes: line.attr_as_array
               ? JSON.parse(line.attr_as_array)
               : [],
           },
+        },
+        reservation: {
+          reservedForOrder: line.reserved_for_order_no,
+          reservedForLine: line.reserved_for_order_line_no,
+          quantity: line.quantity,
         },
         details: {
           createdAt: formatDate(line.created_at),

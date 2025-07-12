@@ -23,21 +23,37 @@ const ASModalWrapper = ({
   onClose,
   size = "medium",
   isFrozen = false,
+  isLocal = false,
   children,
 }) => {
   if (!modalRoot) return null;
 
   useEffect(() => {
     const handleKeyDown = (e) => {
-      // Prevents closing when frozen
       if (e.key === "Escape" && !isFrozen) {
         e.preventDefault();
         onClose?.();
       }
     };
+
     document.addEventListener("keydown", handleKeyDown);
-    return () => document.removeEventListener("keydown", handleKeyDown);
-  }, [onClose]);
+
+    let handleBeforeUnload;
+    if (isLocal) {
+      handleBeforeUnload = (e) => {
+        e.preventDefault();
+        e.returnValue = ""; // Required for modern browsers
+      };
+      window.addEventListener("beforeunload", handleBeforeUnload);
+    }
+
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+      if (isLocal && handleBeforeUnload) {
+        window.removeEventListener("beforeunload", handleBeforeUnload);
+      }
+    };
+  }, [onClose, isFrozen, isLocal]);
 
   return createPortal(
     <div
