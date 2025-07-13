@@ -2,7 +2,7 @@
 // client/src/pages/DashBoard/JobBoard/components/JobHeader.jsx
 
 import React from "react";
-import { useModalNavigation } from "../../../../hooks/useModalNavigation";
+import { useModalNavigation } from "../../../../../hooks/useModalNavigation";
 
 const JobHeader = ({ styles, data }) => {
   const { orderInfo, orderStatus } = data;

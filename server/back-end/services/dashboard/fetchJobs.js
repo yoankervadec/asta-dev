@@ -4,11 +4,17 @@
 import { fetchMapOrderHeaders } from "../customerOrders/fetchMapOrderHeaders.js";
 import { fetchViewOrderLines } from "../customerOrders/fetchViewOrderLines.js";
 
-export const fetchJobs = async (quote = null, posted = 0, orderNo = null) => {
+export const fetchJobs = async ({
+  woodType,
+  hasCanceledLines,
+  hasFulfilledLines,
+  showQuotes,
+  showPostedOrders,
+}) => {
   try {
     const [orderHeaders, orderLines] = await Promise.all([
-      fetchMapOrderHeaders(quote, posted, orderNo),
-      fetchViewOrderLines(quote, posted, orderNo, null, null, 1, 0),
+      fetchMapOrderHeaders(showQuotes, showPostedOrders, null),
+      fetchViewOrderLines(showQuotes, showPostedOrders, null, null, null, 1, 0),
     ]);
 
     const orderLinesMap = new Map();
@@ -21,10 +27,16 @@ export const fetchJobs = async (quote = null, posted = 0, orderNo = null) => {
 
     if (orderHeaders.length === 0) return null;
 
-    const ordersWithLines = orderHeaders.map((order) => ({
-      ...order,
-      orderLines: orderLinesMap.get(order.meta.orderNo) || [],
-    }));
+    const ordersWithLines = orderHeaders.reduce((acc, order) => {
+      const lines = orderLinesMap.get(order.meta.orderNo);
+      if (lines && lines.length > 0) {
+        acc.push({
+          ...order,
+          orderLines: lines,
+        });
+      }
+      return acc;
+    }, []);
 
     return ordersWithLines;
   } catch (error) {

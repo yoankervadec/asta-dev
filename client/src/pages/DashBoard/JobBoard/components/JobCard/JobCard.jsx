@@ -1,17 +1,17 @@
 //
 // client/src/pages/DashBoard/JobBoard/JobCard.jsx
 
-import { useModalNavigation } from "../../../hooks/useModalNavigation";
+import { useModalNavigation } from "../../../../../hooks/useModalNavigation";
 
-import JobHeader from "./components/JobHeader";
-import JobDetails from "./components/JobDetails";
-import JobLines from "./components/JobLines";
-import JobFooter from "./components/JobFooter";
+import JobHeader from "./JobHeader";
+import JobDetails from "./JobDetails";
+import JobLines from "./JobLines";
+import JobFooter from "./JobFooter";
 
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 
-import styles from "../styles.module.css";
+import styles from "../../../styles.module.css";
 
 const JobCard = ({ job }) => {
   const { syncOpenModal } = useModalNavigation();

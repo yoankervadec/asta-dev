@@ -10,6 +10,8 @@ import { returnLineStatus } from "../../utils/status/returnLineStatus.js";
 import { returnBoardfeet } from "../../utils/financial/returnBoardfeet.js";
 import { selectSingleProduct } from "../../models/products/selectSingleProduct.js";
 
+import { AppError } from "../../utils/errorHandling/AppError.js";
+
 import {
   isValidBooleanOrNull,
   isValidNumberOrNull,
@@ -33,27 +35,27 @@ export const fetchViewOrderLines = async (
       !isValidBooleanOrNull(shipped) ||
       !isValidBooleanOrNull(active)
     ) {
-      throw {
-        status: 400,
-        message: "Failed to fetch order lines.",
-        title: "Contact Yoan.",
-      };
+      throw new AppError(
+        400,
+        "Failed to fetch order lines.",
+        "Invalid Boolean values."
+      );
     }
     if (!isValidNumberOrNull(orderNo)) {
-      throw {
-        status: 400,
-        message: `Failed to fetch order lines: Order number "${orderNo}" is invalid.`,
-        title: "Contact Yoan.",
-      };
+      throw new AppError(
+        400,
+        `Failed to fetch order lines: Order number "${orderNo}" is invalid.`,
+        "Contact Yoan."
+      );
     }
     if (itemNo !== null) {
       const validProduct = await selectSingleProduct(itemNo);
       if (validProduct === null) {
-        throw {
-          status: 400,
-          message: `Invalid Item Number: "${itemNo}".`,
-          title: "Invalid parameters.",
-        };
+        throw new AppError(
+          400,
+          `Invalid Item Number: "${itemNo}".`,
+          "Invalid parameters."
+        );
       }
     }
 
@@ -162,7 +164,6 @@ export const fetchViewOrderLines = async (
     // console.log(JSON.stringify(lines, null, 2));
     return lines;
   } catch (error) {
-    console.error(error);
     throw error;
   }
 };

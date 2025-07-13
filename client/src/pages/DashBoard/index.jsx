@@ -4,13 +4,26 @@
 import { viewPdf } from "../../api/pdf/viewPdf";
 
 import useFetchJobs from "../../hooks/fetch/dashboard/useFetchJobs";
+import { useUserFilters } from "../../hooks/useUserFilters";
 
 import Loading from "../../components/loaders/Loading";
 import NavigationBar from "../../components/NavigationBar";
 import JobBoard from "./JobBoard";
 
 const DashBoard = () => {
-  const { data, isLoading } = useFetchJobs();
+  const defaultFilters = {
+    woodType: null,
+    hasCanceledLines: true,
+    hasFulfilledLines: true,
+    showQuotes: null,
+    showPostedOrders: false,
+  };
+  const { filters, setFilters } = useUserFilters(
+    defaultFilters,
+    "dashboardJobsFilters"
+  );
+
+  const { data, isLoading } = useFetchJobs(filters);
   const jobs = data?.data?.jobs || [];
 
   const navIcons = [
@@ -31,9 +44,9 @@ const DashBoard = () => {
   ];
   return (
     <div className="content-wrapper">
-      {isLoading ? <Loading /> : null}
+      {isLoading && <Loading />}
       <div className="content">
-        <JobBoard jobs={jobs} />
+        <JobBoard jobs={jobs} filters={filters} setFilters={setFilters} />
       </div>
       <NavigationBar navIcons={navIcons} />
     </div>

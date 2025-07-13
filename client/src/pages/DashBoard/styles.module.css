@@ -21,7 +21,7 @@ Main style sheet for Dashboard
   padding: 0.6em;
   overflow-y: auto;
   overflow-x: hidden;
-  max-height: 100%;
+  max-height: calc(100% - 5.5em);
 }
 
 /* 
@@ -207,4 +207,58 @@ Job Cards/Footer
   color: var(--cl-background-light);
   cursor: grabbing;
   transition: background-color 0.15s, color 0.15s;
+}
+
+/* 
+================================
+Job Board Filter Pannel
+================================
+*/
+
+.filterPannelContainer {
+  display: flex;
+  align-items: center;
+  gap: 1em;
+  flex-wrap: wrap;
+}
+
+/* 
+================================
+Job Board Filter Pannel/Filter Components
+================================
+*/
+
+.filterButtonContainer {
+  padding: 0.5em 1em;
+  text-align: center;
+  border: 1px solid var(--cl-grey-disabled);
+  border-radius: 4px;
+  min-width: 12em;
+}
+.filterButtonContainer label {
+  font-style: italic;
+}
+.filterValue {
+  display: flex;
+  justify-content: space-around;
+  gap: 1em;
+  margin-top: 0.75em;
+}
+.buttonValue {
+  background-color: var(--cl-background-focus);
+  min-width: 4em;
+  padding: 0.25em 0.75em;
+  border-radius: 4px;
+  font-weight: 500;
+  text-align: center;
+  transition: background-color 0.15s;
+  user-select: none;
+  transition: transform 0.125s;
+}
+.buttonValue:hover {
+  text-decoration: underline;
+}
+.activeButtonValue {
+  background-color: var(--cl-grey-disabled);
+  text-decoration: underline;
 }

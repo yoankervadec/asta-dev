@@ -5,11 +5,12 @@ import { useQuery } from "@tanstack/react-query";
 import { fetchHelper } from "../../../api/fetchHelper";
 import { useNavigate } from "react-router-dom";
 
-const useFetchJobs = () => {
+const useFetchJobs = (filters) => {
   const navigate = useNavigate();
   return useQuery({
-    queryKey: ["dashboardJobs"],
-    queryFn: () => fetchHelper("/dashboard/jobs", navigate),
+    queryKey: ["dashboardJobs", filters],
+    queryFn: () =>
+      fetchHelper("/dashboard/jobs", navigate, { params: filters }),
   });
 };
 

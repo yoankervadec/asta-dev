@@ -13,6 +13,7 @@ import {
   isValidBooleanOrNull,
   isValidNumberOrNull,
 } from "../../utils/typeCheck/typeCheck.js";
+import { AppError } from "../../utils/errorHandling/AppError.js";
 
 // Fetch general information on orders lines for further calculation
 
@@ -25,18 +26,14 @@ export const fetchOrderLines = async (
   try {
     // Input validation check for quote, posted and orderNo
     if (!isValidBooleanOrNull(quote) || !isValidBooleanOrNull(posted)) {
-      throw {
-        status: 400,
-        message: "Failed to fetch order lines.",
-        title: "Contact Yoan.",
-      };
+      throw new AppError(400, "Failed to fetch order lines.", "Contact Yoan.");
     }
     if (!isValidNumberOrNull(orderNo) || !isValidNumberOrNull(clientId)) {
-      throw {
-        status: 400,
-        message: `Failed to fetch order lines: Order number "${orderNo}" is invalid.`,
-        title: "Contact Yoan.",
-      };
+      throw new AppError(
+        400,
+        `Failed to fetch order lines: Order number "${orderNo}" is invalid.`,
+        "Contact Yoan."
+      );
     }
 
     // Fetch raw data from database

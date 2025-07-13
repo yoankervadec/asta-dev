@@ -18,6 +18,7 @@ import {
   isValidBooleanOrNull,
   isValidNumberOrNull,
 } from "../../utils/typeCheck/typeCheck.js";
+import { AppError } from "../../utils/errorHandling/AppError.js";
 
 export const fetchMapOrderHeaders = async (
   quote = null,
@@ -28,18 +29,18 @@ export const fetchMapOrderHeaders = async (
   try {
     // Input validation
     if (!isValidBooleanOrNull(quote) || !isValidBooleanOrNull(posted)) {
-      throw {
-        status: 400,
-        message: "Failed to fetch order lines.",
-        title: "Contact Yoan.",
-      };
+      throw new AppError(
+        400,
+        "Failed to fetch order headers.",
+        "Invalid Boolean values."
+      );
     }
     if (!isValidNumberOrNull(orderNo) || !isValidNumberOrNull(clientId)) {
-      throw {
-        status: 400,
-        message: `Failed to fetch order lines: Client ID "${clientId}" is invalid.`,
-        title: "Contact Yoan.",
-      };
+      throw new AppError(
+        400,
+        `Failed to fetch order lines: Client ID "${clientId}" is invalid.`,
+        "Contact Yoan."
+      );
     }
 
     // Fetch data
@@ -230,7 +231,6 @@ export const fetchMapOrderHeaders = async (
     // console.log(groupedOrders);
     return groupedOrders;
   } catch (error) {
-    console.error(error);
     throw error;
   }
 };

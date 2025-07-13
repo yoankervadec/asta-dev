@@ -22,9 +22,10 @@ import {
 import { restrictToParentElement } from "@dnd-kit/modifiers";
 
 import styles from "../styles.module.css";
-import JobCard from "./JobCard";
+import JobBoardFilterPannel from "./components/JobBoardFilterPannel";
+import JobCard from "./components/JobCard/JobCard";
 
-const JobBoard = ({ jobs }) => {
+const JobBoard = ({ jobs, filters, setFilters }) => {
   const [jobList, setJobList] = useState([]);
 
   useEffect(() => {
@@ -71,6 +72,7 @@ const JobBoard = ({ jobs }) => {
       modifiers={[restrictToParentElement]}
     >
       <div className={styles.contentWrapper}>
+        <JobBoardFilterPannel filters={filters} setFilters={setFilters} />
         <div className={styles.jobsWrapper}>
           <SortableContext
             items={jobList.map((job) => job.meta.orderNo)}

@@ -2,7 +2,7 @@
 // client/src/pages/DashBoard/JobBoard/components/JobLines.jsx
 
 import { useState } from "react";
-import JobLinesFocus from "./LocalModal/JobLinesFocus";
+import JobLinesFocus from "../../LocalModal/JobLinesFocus";
 
 const JobLines = ({ styles, data }) => {
   const { orderLines: rows, orderInfo } = data || [];

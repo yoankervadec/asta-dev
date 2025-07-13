@@ -2,16 +2,16 @@
 // client/src/pages/DashBoard/JobBoard/components/LocalModal/JobLinesFocus/index.jsx
 
 import { useState, useEffect } from "react";
-import SectionInventory from "../../../../../../modals/global/ProductModal/SectionInventory";
+import SectionInventory from "../../../../../modals/global/ProductModal/SectionInventory";
 
-import ASModalWrapper from "../../../../../../modals/ASModalWrapper";
-import AMModalStyles from "../../../../../../modals/ASModalWrapper/styles.module.css";
+import ASModalWrapper from "../../../../../modals/ASModalWrapper";
+import AMModalStyles from "../../../../../modals/ASModalWrapper/styles.module.css";
 
 import CurrentOrderLines from "./CurrentOrderLines";
 import SuggestedOrderLines from "./SuggestedOrderLines";
 
-import useFetchCustomerOrderLines from "../../../../../../hooks/fetch/customerOrders/useFetchCustomerOrderLines";
-import useFetchProductCard from "../../../../../../hooks/fetch/products/useFetchProductCard";
+import useFetchCustomerOrderLines from "../../../../../hooks/fetch/customerOrders/useFetchCustomerOrderLines";
+import useFetchProductCard from "../../../../../hooks/fetch/products/useFetchProductCard";
 
 const JobLinesFocus = ({ onClose, isFrozen, data }) => {
   const [selectedLine, setSelectedLine] = useState(null);
