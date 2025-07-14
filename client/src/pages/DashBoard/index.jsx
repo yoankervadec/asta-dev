@@ -13,7 +13,7 @@ import JobBoard from "./JobBoard";
 const DashBoard = () => {
   const defaultFilters = {
     woodType: null,
-    hasCanceledLines: true,
+    showCanceledLines: true,
     hasFulfilledLines: true,
     showQuotes: null,
     showPostedOrders: false,

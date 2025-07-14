@@ -28,6 +28,9 @@ const JobLines = ({ styles, data }) => {
           <thead>
             <tr>
               <th>
+                <span>Status</span>
+              </th>
+              <th>
                 <span>Item No.</span>
               </th>
               <th>
@@ -65,7 +68,10 @@ export default JobLines;
 
 const TableRow = ({ row }) => {
   return (
-    <tr>
+    <tr className={row?.status?.active === 1 ? "" : "row-canceled"}>
+      <td>
+        <span>{row?.lineStatus}</span>
+      </td>
       <td>
         <span>{row?.item?.itemNo || ""}</span>
       </td>
@@ -74,9 +80,12 @@ const TableRow = ({ row }) => {
       </td>
       <td>
         <span>
-          {row?.item?.quantity -
-            row?.item?.quantityReserved -
-            row?.item?.quantityOnSession || 0}
+          {Math.max(
+            row?.item?.quantity -
+              row?.item?.quantityReserved -
+              row?.item?.quantityOnSession || 0,
+            0
+          )}
         </span>
       </td>
       <td>

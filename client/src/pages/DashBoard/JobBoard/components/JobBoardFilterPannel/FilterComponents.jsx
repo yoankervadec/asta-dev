@@ -88,7 +88,7 @@ export const DropDownFilter = ({
         <select
           value={value ?? ""}
           onChange={(e) =>
-            onChange(e.target.value === "" ? null : Number(e.target.value))
+            onChange(e.target.value === "" ? null : e.target.value)
           }
           className={styles.buttonValue}
         >

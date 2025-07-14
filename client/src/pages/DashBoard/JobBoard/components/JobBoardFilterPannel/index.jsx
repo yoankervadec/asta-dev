@@ -23,13 +23,13 @@ const JobBoardFilterPannel = ({ filters, setFilters }) => {
     >
       <div className={styles.filterPannelContainer}>
         <TrueFalseNullFilterSelect
-          filterLabel="Show canceled lines"
-          value={filters.hasCanceledLines}
-          onChange={(val) => setFilters({ hasCanceledLines: val })}
+          filterLabel="Show only active lines"
+          value={filters.showCanceledLines}
+          onChange={(val) => setFilters({ showCanceledLines: val })}
           styles={styles}
         />
         <TrueFalseNullFilterButton
-          filterLabel="Show fulfilled lines"
+          filterLabel="Hide fulfilled lines"
           value={filters.hasFulfilledLines}
           onChange={(val) => setFilters({ hasFulfilledLines: val })}
           styles={styles}
@@ -50,10 +50,10 @@ const JobBoardFilterPannel = ({ filters, setFilters }) => {
           filterLabel="Wood type"
           value={filters.woodType}
           options={[
-            { value: 1, label: "Pin" },
-            { value: 2, label: "Pruche" },
-            { value: 3, label: "Erable" },
-            { value: 4, label: "Cedre" },
+            { value: "Pin", label: "Pin" },
+            { value: "Pruche", label: "Pruche" },
+            { value: "Erable", label: "Erable" },
+            { value: "Cedre", label: "Cedre" },
           ]}
           onChange={(val) => setFilters({ woodType: val })}
           styles={styles}

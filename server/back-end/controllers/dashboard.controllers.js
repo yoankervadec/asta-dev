@@ -15,7 +15,7 @@ export const handleFetchJobs = async (req, res) => {
 
   const { woodType = null } = req.query;
 
-  const hasCanceledLines = parseBool(req.query.hasCanceledLines);
+  const showCanceledLines = parseBool(req.query.showCanceledLines);
   const hasFulfilledLines = parseBool(req.query.hasFulfilledLines);
   const showQuotes = parseBool(req.query.showQuotes);
   const showPostedOrders = parseBool(req.query.showPostedOrders);
@@ -23,7 +23,7 @@ export const handleFetchJobs = async (req, res) => {
   try {
     const jobs = await fetchJobs({
       woodType,
-      hasCanceledLines,
+      showCanceledLines,
       hasFulfilledLines,
       showQuotes,
       showPostedOrders,

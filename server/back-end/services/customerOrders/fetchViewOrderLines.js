@@ -118,6 +118,7 @@ export const fetchViewOrderLines = async (
         item: {
           itemNo: line.item_no,
           description: line.description,
+          woodType: line.type,
           quantity: line.quantity,
           quantityReserved: parseFloat(line.quantity_reserved),
           quantityOnSession: parseFloat(line.quantity_on_session),

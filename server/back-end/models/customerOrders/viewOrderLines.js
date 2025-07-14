@@ -22,6 +22,7 @@ export const viewOrderLines = async (
         ol.line_no,
         ol.item_no,
         pr.description,
+        pr.type,
         pr.thickness,
         pr.width,
         pr.length,
