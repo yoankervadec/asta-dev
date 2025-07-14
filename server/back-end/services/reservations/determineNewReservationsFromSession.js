@@ -1,11 +1,11 @@
 //
-// server/back-end/services/reservations/addReservationFromSession.js
+// server/back-end/services/reservations/determineNewReservationsFromSession.js
 
 import { AppError } from "../../utils/errorHandling/AppError.js";
 import { fetchSessionLines } from "../production/fetchSessionLines.js";
 import { fetchViewOrderLines } from "../customerOrders/fetchViewOrderLines.js";
 
-export const addReservationFromSession = async (sessionNo) => {
+export const determineNewReservationsFromSession = async (sessionNo) => {
   try {
     const sessionLines = await fetchSessionLines(sessionNo);
 
@@ -55,7 +55,12 @@ export const addReservationFromSession = async (sessionNo) => {
       const {
         orderNo,
         lineNo,
-        item: { itemNo, quantity: quantityOrdered, attributeIdSetAsString },
+        item: {
+          itemNo,
+          quantity: quantityOrdered,
+          quantityReserved,
+          attributeIdSetAsString,
+        },
       } = customerOrderLine;
 
       const expectedItemKey = makeKey(itemNo, attributeIdSetAsString);
@@ -76,7 +81,8 @@ export const addReservationFromSession = async (sessionNo) => {
         quantity: 0,
       };
 
-      const remainingQty = quantityOrdered - current.quantity;
+      const qtyNeeded = Math.max(quantityOrdered - quantityReserved, 0);
+      const remainingQty = qtyNeeded - current.quantity;
       const qtyToAllocate = Math.min(item.quantity, remainingQty);
 
       if (qtyToAllocate > 0) {
@@ -89,8 +95,6 @@ export const addReservationFromSession = async (sessionNo) => {
         );
       }
     }
-
-    console.log(orderAllocations);
 
     return Array.from(orderAllocations.values());
   } catch (error) {

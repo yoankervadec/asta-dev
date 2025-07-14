@@ -151,7 +151,8 @@ export const allocateReservations = async ({
           reservation_entries
         WHERE
           (order_no, line_no) IN
-          (${conflictOrders.map(() => `(?, ?)`).join(", ")})     
+          (${conflictOrders.map(() => `(?, ?)`).join(", ")})    
+          AND manual_entry = 0 
       `;
       const params = conflictOrders.flatMap(({ order_no, line_no }) => [
         order_no,

@@ -34,8 +34,6 @@ export const insertWorkItemEntries = async (
       [sessionNo]
     );
 
-    console.log(items);
-
     const entryMap = new Map(); // Store multiple entry_nos for each item_no
 
     for (const item of items) {
@@ -56,8 +54,6 @@ export const insertWorkItemEntries = async (
       entryMap.get(item_no).push({ entryNo: result.insertId, attr_set });
     }
 
-    console.log(entryMap);
-
     const attributes = [];
 
     for (const [item_no, entries] of entryMap.entries()) {
@@ -70,8 +66,6 @@ export const insertWorkItemEntries = async (
         }
       }
     }
-
-    console.log(attributes);
 
     // Bulk insert attributes
     if (attributes.length) {

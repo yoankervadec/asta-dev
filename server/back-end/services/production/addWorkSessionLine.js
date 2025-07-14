@@ -20,7 +20,6 @@ export const addWorkSessionLine = async (
 ) => {
   // Initialize connection
   const connection = await getConnection();
-  console.log(attributes);
 
   // Validate itemNo and quantity
   try {
