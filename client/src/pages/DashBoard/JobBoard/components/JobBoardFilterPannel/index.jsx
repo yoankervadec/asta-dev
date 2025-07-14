@@ -29,7 +29,7 @@ const JobBoardFilterPannel = ({ filters, setFilters }) => {
           styles={styles}
         />
         <TrueFalseNullFilterButton
-          filterLabel="Hide fulfilled lines"
+          filterLabel="Show fulfilled lines"
           value={filters.hasFulfilledLines}
           onChange={(val) => setFilters({ hasFulfilledLines: val })}
           styles={styles}
