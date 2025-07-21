@@ -23,6 +23,7 @@ import PaymentModal from "./PaymentModal";
 import SmallProductsModal from "../../../pages/Products/SmallProductsModal";
 import ValidateProductsModal from "../../../pages/Products/ValidateProductsModal";
 import PrintModal from "./PrintModal";
+import usePostConvertQuoteToOrder from "../../../hooks/fetch/customerOrders/usePostConvertQuoteToOrder";
 
 const CustomerOrderCard = ({ isHidden, onClose }) => {
   const queryClient = useQueryClient();
@@ -33,6 +34,7 @@ const CustomerOrderCard = ({ isHidden, onClose }) => {
   const postPayCo = usePostPayCo();
   const postRequestShipCo = usePostRequestShipCo();
   const postAddCoLine = usePostAddCoLine();
+  const convertQuoteToOrder = usePostConvertQuoteToOrder();
 
   // States
   const [paymentModalData, setPaymentModalData] = useState({
@@ -163,6 +165,20 @@ const CustomerOrderCard = ({ isHidden, onClose }) => {
     }
   };
 
+  // Convert Quote to Order
+  const handleConvertQuoteToOrder = () => {
+    if (!convertQuoteToOrder.isPending) {
+      convertQuoteToOrder.mutate(
+        { orderNo: meta.orderNo },
+        {
+          onSuccess: () => {
+            queryClient.invalidateQueries(["customerOrderCard", meta.orderNo]);
+          },
+        }
+      );
+    }
+  };
+
   //
   // Add Product(s) to Order
   const handleShowProductsModal = () => {
@@ -233,6 +249,7 @@ const CustomerOrderCard = ({ isHidden, onClose }) => {
           </button>
           <button
             className="small-btn cancel-btn"
+            onClick={() => handleConvertQuoteToOrder()}
             disabled={meta?.toggles?.convertDisable}
           >
             <i className="fas fa-repeat"></i>
@@ -241,7 +258,6 @@ const CustomerOrderCard = ({ isHidden, onClose }) => {
           <button
             className="small-btn cancel-btn"
             onClick={() => {
-              // downloadPdf(`/pdf/order-card`, orderNo);
               handleShowPrintModal();
             }}
           >

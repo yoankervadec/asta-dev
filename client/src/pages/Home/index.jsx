@@ -99,9 +99,9 @@ const Home = () => {
     },
     {
       type: "link",
-      to: "/dashboard",
-      title: "Dashboard",
-      icon: "fas fa-chart-line",
+      to: "/production",
+      title: "Production",
+      icon: "fas fa-tree",
     },
     {
       type: "link",

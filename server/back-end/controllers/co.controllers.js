@@ -16,6 +16,7 @@ import { addCustomerOrderLine } from "../services/customerOrders/addCustomerOrde
 import { fetchViewOrderCard } from "../services/customerOrders/fetchViewOrderCard.js";
 
 import { fetchMapOrderHeaders } from "../services/customerOrders/fetchMapOrderHeaders.js";
+import { convertQuoteToOrder } from "../services/customerOrders/convertQuoteToOrder.js";
 
 export const handleFetchCoCard = async (req, res) => {
   const isAuthenticated = req.session.userId;
@@ -199,6 +200,27 @@ export const handleAddCustomerOrderLine = async (req, res) => {
       attribute,
       createdBy
     );
+
+    sendSuccessResponse(res, 200, {}, isAuthenticated);
+  } catch (err) {
+    sendErrorResponse(
+      res,
+      err.status || 500,
+      err.message,
+      err.title || "An unnexpected error occured",
+      isAuthenticated,
+      err.stack || new Error().stack
+    );
+  }
+};
+
+export const handleConvertQuoteToOrder = async (req, res) => {
+  const isAuthenticated = req.session?.userId;
+  const createdBy = req.session?.userId;
+  const { orderNo } = req.body;
+
+  try {
+    await convertQuoteToOrder(parseFloat(orderNo), createdBy);
 
     sendSuccessResponse(res, 200, {}, isAuthenticated);
   } catch (err) {

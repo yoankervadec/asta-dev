@@ -12,6 +12,7 @@ import {
   handleAlterOrder,
   handleCancelCoLine,
   handleAddCustomerOrderLine,
+  handleConvertQuoteToOrder,
 } from "../controllers/co.controllers.js";
 
 const router = express.Router();
@@ -24,5 +25,6 @@ router.post("/card/alter/:order_no", handleAlterOrder);
 router.post("/ship", handleShipCustomerOrder);
 router.post("/cancel-line", handleCancelCoLine);
 router.post("/add-line", handleAddCustomerOrderLine);
+router.post("/convert-to-order", handleConvertQuoteToOrder);
 
 export default router;
