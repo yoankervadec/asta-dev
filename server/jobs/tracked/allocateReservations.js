@@ -94,6 +94,9 @@ export const allocateReservations = async ({
             SUM(quantity_reserved) AS quantity_reserved
           FROM
             reservation_entries
+          -- IGNORE MANUAL ENTRIES
+          WHERE
+            manual_entry = 0
           GROUP BY
             order_no,
             line_no
@@ -115,8 +118,10 @@ export const allocateReservations = async ({
       customerOrderItemParams
     );
 
+    let conflictOrders = [];
+
     // FIND CONFLICT LINES
-    const [conflictOrders] = await connection.query(
+    [conflictOrders] = await connection.query(
       `
       SELECT
         COALESCE(p.order_no, t.order_no) AS order_no,
@@ -144,7 +149,37 @@ export const allocateReservations = async ({
       priorityItemParams
     );
 
-    // DELETE CONFLICT LINES
+    // FIND CANCELED OR SHIPPED LINES
+    const [canceledOrShippedLines] = await connection.query(
+      `
+      SELECT
+        re.order_no,
+        re.line_no,
+        ol.item_no,
+        ol.quantity,
+        o.required_date,
+        o.priority,
+        0 AS priority,
+        0 AS calculated_priority,
+        0 AS previous_priority
+      FROM
+        reservation_entries AS re
+      JOIN
+        orders AS o ON re.order_no = o.order_no
+      JOIN
+        orders_list AS ol ON re.order_no = ol.order_no AND re.line_no = ol.line_no
+      WHERE
+        o.posted = 1 OR
+        o.quote = 1 OR
+        ol.active = 0 OR
+        ol.shipped = 1 OR
+        ol.posted = 1
+      `
+    );
+
+    conflictOrders.push(...canceledOrShippedLines);
+
+    // DELETE CONFLICT, CANCELED, OR SHIPPED LINES
     if (conflictOrders.length > 0) {
       const removeConflictsQuery = `
         DELETE FROM
@@ -152,7 +187,6 @@ export const allocateReservations = async ({
         WHERE
           (order_no, line_no) IN
           (${conflictOrders.map(() => `(?, ?)`).join(", ")})    
-          AND manual_entry = 0 
       `;
       const params = conflictOrders.flatMap(({ order_no, line_no }) => [
         order_no,
